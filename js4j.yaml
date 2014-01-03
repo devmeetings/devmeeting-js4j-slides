@@ -207,6 +207,12 @@ slides:
         Your task is to write code in <code>main.js</code>
         to display a list of todos in DOM.
       </h3>
+    code:
+        language: generic
+        content: |
+          for each todo in todos do
+            domNode = createDomNodeForTodo()
+            displayDomNode()
     task:
         duration: 45
         objectives: Iterate over an array of todos and create DOM elements to display them.
