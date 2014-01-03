@@ -172,7 +172,7 @@ slides:
     title: Hello DOM
     monitor: content
     code: |
-        var h1 = document.querySelector('.main-content h1');
+        var h1 = document.querySelector(".main-content h1");
         h1.innerHTML += "...";
 
         var content = h1.innerHTML;
@@ -188,13 +188,33 @@ slides:
         var d = document;
         var link = d.createElement('a');
         link.id = 'link';
-        link.href = "https://developer.mozilla.org/en-US/docs/Web/API/Element";
-        link.innerHTML = "DOM: Element specification";
+        link.href = 'https://developer.mozilla.org/en-US/docs/Web/API/Element';
+        link.innerHTML = 'DOM: Element specification';
 
         if (!d.querySelectorAll('#link')) {
             d.querySelector('.main-content h1').appendChild(link);
         }
     notes: |
         1. Talk about difference between `querySelector` and `querySelectorAll`
+        2. Maybe someone will notice that strings are created via `'` not `"`.
+
+  - id: task1
+    name: Task 1
+    title: "Task: Displaying list of todos"
+    text:
+      >
+      <h3>
+        Your task is to write code in <code>main.js</code>
+        to display a list of todos in DOM.
+      </h3>
+    task:
+        duration: 45
+        objectives: Iterate over an array of todos and create DOM elements to display them.
+        extras:
+              - Use Bootstrap <code>.list-group</code> component.
+              - Don't use <code>.innerHTML</code>, <code>.textContent</code>, etc.
+
+
+
 
 
