@@ -11,7 +11,6 @@ slides:
     notes:
   - id: setup
     name: Environment
-    title: Environment
     text:
         >
         <p>By now you should have following software installed.</p>
@@ -25,16 +24,25 @@ slides:
   - id: run
     name: Run
     title: Run Forest, Run!
-    text:
-        >
+    text: |
         <p>Invoke in console:</p>
-        <code>play run</code>
+        <pre><code>$ play run
+
+        [info] Loading project definition from /share/public_html/devmeetings/Todos/project
+        [info] Set current project to Todos (in build file:/share/public_html/devmeetings/Todos/)
+
+        --- (Running the application from SBT, auto-reloading is enabled) ---
+
+        [info] play - Listening for HTTP on /0:0:0:0:0:0:0:0:9000
+
+        (Server started, use Ctrl+D to stop and go back to the console...)
+        </code></pre>
         <p>Open <a href="http://localhost:9000">localhost:9000</a></p>
 
   - id: basics1
     name: JS Basics (1)
-    code: 
-        >
+    title: Variables and Literals
+    code: |
         var todos = [
             "Checkout project from github",
             "Invoke 'play run' in your console",
@@ -42,8 +50,7 @@ slides:
             "Learn JS essentials"
         ];
     monitor: todos
-    notes:
-        >
+    notes: |
         0. JS is:
           * interpreted
           * dynamically typed
@@ -54,10 +61,11 @@ slides:
 
         - Say something about auto-execution
         - Show how to use object inspector
+
   - id: basics2
     name: JS Basics (2)
-    code: 
-        >
+    title: Methods
+    code: | 
         var todos = [
             "Checkout project from github",
             "Invoke 'play run' in your console",
@@ -67,8 +75,7 @@ slides:
 
         console.log(todos);
     monitor: todos
-    notes:
-        >
+    notes: |
         0. Invoking method
         1. Say about some global variables that are out there
           - console
@@ -81,62 +88,113 @@ slides:
           - Show where to search for errors
           - Mention about Debugging
 
+  - id: basics3
+    name: JS Basics (3)
+    title: Simple loop (C-style)
+    code: |
+        var todos = [
+            "Checkout project from github",
+            "Invoke 'play run' in your console",
+            "Open your browser and head over to http://localhost:9000",
+            "Learn JS essentials"
+        ];
+
+        for (var i=0; i<todos.length; i++) {
+          console.log(i, todos[i]);
+        }
+    monitor: todos
+    notes: |
+        1. Getting property of object `todos.length`
+        2. `[]` access operator
+
+  - id: basics4
+    name: JS Basics (4)
+    title: Simple loop (Java-style)
+    code: |
+        var todos = [
+            "Checkout project from github",
+            "Invoke 'play run' in your console",
+            "Open your browser and head over to http://localhost:9000",
+            "Learn JS essentials"
+        ];
+
+        for (var k in todos) {
+          console.log(k, todos[k]);
+        }
+    monitor: todos
+    notes: |
+        0. Point out difference to Java loop
+        1. Notice a difference in naming
+        2. `[]` access operator
+        3. Mention something about going through **object** properties
+
+  - id: dom0
+    name: DOM
+    title: Document Object Model (DOM)
+    text: |
+        <figure>
+        <img src="http://watershedcreative.com/naked/img/dom-tree.png" />
+        <figcaption>
+          <address>Source: http://watershedcreative.com/naked/html-tree.html</address>
+        </figcaption>
+        </figure>
+    notes: |
+        1. Ask about knowledge of DOM
+        2. Explain some basics and relation to XML
+
+  - id: dom1
+    name: HTML5
+    title: Minimal HTML5 webpage
+    code:
+      language: html
+      content: |
+            <!DOCTYPE html>
+            <html lang="en">
+              <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Hello World</title>
+                <link rel="stylesheet" href="css/bootstrap.css">
+              </head>
+              <body>
+                <!-- page content -->
+                 <script src="//code.jquery.com/jquery.js"></script>
+                 <script src="js/bootstrap.js"></script>
+              </body>
+            </html>
+    notes: |
+        Talk sth about frameworks like TwitterBootstrap.
+        Other examples: Foundation,
+        Grid systems: Skeleton, HTML5 Boilerplate, LESS Framework
+
+  - id: dom2
+    name: Accessing DOM (1)
+    title: Hello DOM
+    monitor: content
+    code: |
+        var h1 = document.querySelector('.main-content h1');
+        h1.innerHTML += "...";
+
+        var content = h1.innerHTML;
+
+    notes: |
+        Say about accessing DOM and JavaScript representation of DOM
+
+  - id: dom3
+    name: Accessing DOM (2)
+    title: Creating DOM elements
+    monitor: link
+    code: |
+        var d = document;
+        var link = d.createElement('a');
+        link.id = 'link';
+        link.href = "https://developer.mozilla.org/en-US/docs/Web/API/Element";
+        link.innerHTML = "DOM: Element specification";
+
+        if (!d.querySelectorAll('#link')) {
+            d.querySelector('.main-content h1').appendChild(link);
+        }
+    notes: |
+        1. Talk about difference between `querySelector` and `querySelectorAll`
 
 
-# - id: entry
-#   name: Hello World
-#   title: First slide!
-#   notes:
-#       >
-#       // These are some notes for fist slide. Just goan with standard 'Hello' for guys.
-#   text: 
-#       >
-#       <h2><span class="glyphicon glyphicon-heart"></span> Nothing interesting here.</h2>
-#       <h3>But something should be!</h3>
-#       <p>Hello small text!</p>
-
-# - id: slide1
-#   name: Slide 1
-#   title: Slides are awesome
-#   notes:
-#       >
-#       On this slide we show basic code execution with monitoring.
-#       If you change the code the output will change accordingly.
-#   monitor: x
-#   code:
-#      >
-#      function foo(items) {
-#        var x = "All this is syntax highlighted" + items;
-#        return x;
-#      }
-#      var x = {
-#        name: foo("something")
-#      };
-
-# - id: slide2
-#   name: Second slide
-#   title: Second slide is also awesome
-#   notes:
-#      >
-#      On this slide we show capabilities of our JSON inspector. Just dig inside array.
-
-#      Some another snippet
-#      var y = function() {
-#        var x = "123" + 4;
-#        return ~x;
-#      };
-#      console.log(y());
-#   monitor: array
-#   code:
-#      >
-#      var array = [1, 2, 3, [4, 5]];
-# - id: slide3
-#   name: Ending
-#   title: This is the end...
-#   notes:
-#       >
-#       "Say goodbye nicely";
-#   monitor: end
-#   code:
-#      >
-#      end = "Thanks for listening!"
