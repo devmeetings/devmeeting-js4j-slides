@@ -196,7 +196,7 @@ var noOfCompletedTodos = this._todos.reduce(function(sum, todo) {
 
 
 // Functional-style with context
-this._todos.forEach(function(todo){
+this._todos.forEach(function(todo) {
     this.displayTodo(todo);
 }, TodosView);
 

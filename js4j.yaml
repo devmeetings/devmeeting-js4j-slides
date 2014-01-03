@@ -1,0 +1,142 @@
+---
+title: JavaScript For Java Developers
+trainersSecret: 123asd
+slides:
+  - id: opening
+    name: Hello World
+    title: JS 4 Java Devs
+    text:
+        >
+        <h2>Devmeetings rocks!</h2>
+    notes:
+  - id: setup
+    name: Environment
+    title: Environment
+    text:
+        >
+        <p>By now you should have following software installed.</p>
+        <ul>
+        <li>GIT</li>
+        <li>Sublime Text</li>
+        <li>Node.js</li>
+        <li>Play! Framework</li>
+        </ul>
+
+  - id: run
+    name: Run
+    title: Run Forest, Run!
+    text:
+        >
+        <p>Invoke in console:</p>
+        <code>play run</code>
+        <p>Open <a href="http://localhost:9000">localhost:9000</a></p>
+
+  - id: basics1
+    name: JS Basics (1)
+    code: 
+        >
+        var todos = [
+            "Checkout project from github",
+            "Invoke 'play run' in your console",
+            "Open your browser and head over to http://localhost:9000",
+            "Learn JS essentials"
+        ];
+    monitor: todos
+    notes:
+        >
+        0. JS is:
+          * interpreted
+          * dynamically typed
+          * awesome
+        1. Keyword `var`
+        2. Assignment
+        3. String literal, Array literal
+
+        - Say something about auto-execution
+        - Show how to use object inspector
+  - id: basics2
+    name: JS Basics (2)
+    code: 
+        >
+        var todos = [
+            "Checkout project from github",
+            "Invoke 'play run' in your console",
+            "Open your browser and head over to http://localhost:9000",
+            "Learn JS essentials"
+        ];
+
+        console.log(todos);
+    monitor: todos
+    notes:
+        >
+        0. Invoking method
+        1. Say about some global variables that are out there
+          - console
+          - window (browser)
+          - document (browser)
+        2. Mention something about history of JS - browser/server
+        3. Opening Chrome Dev Tools / Firebug:
+          - F12 / Ctrl+Shift+I
+          - Go to "Console" tab.
+          - Show where to search for errors
+          - Mention about Debugging
+
+
+
+# - id: entry
+#   name: Hello World
+#   title: First slide!
+#   notes:
+#       >
+#       // These are some notes for fist slide. Just goan with standard 'Hello' for guys.
+#   text: 
+#       >
+#       <h2><span class="glyphicon glyphicon-heart"></span> Nothing interesting here.</h2>
+#       <h3>But something should be!</h3>
+#       <p>Hello small text!</p>
+
+# - id: slide1
+#   name: Slide 1
+#   title: Slides are awesome
+#   notes:
+#       >
+#       On this slide we show basic code execution with monitoring.
+#       If you change the code the output will change accordingly.
+#   monitor: x
+#   code:
+#      >
+#      function foo(items) {
+#        var x = "All this is syntax highlighted" + items;
+#        return x;
+#      }
+#      var x = {
+#        name: foo("something")
+#      };
+
+# - id: slide2
+#   name: Second slide
+#   title: Second slide is also awesome
+#   notes:
+#      >
+#      On this slide we show capabilities of our JSON inspector. Just dig inside array.
+
+#      Some another snippet
+#      var y = function() {
+#        var x = "123" + 4;
+#        return ~x;
+#      };
+#      console.log(y());
+#   monitor: array
+#   code:
+#      >
+#      var array = [1, 2, 3, [4, 5]];
+# - id: slide3
+#   name: Ending
+#   title: This is the end...
+#   notes:
+#       >
+#       "Say goodbye nicely";
+#   monitor: end
+#   code:
+#      >
+#      end = "Thanks for listening!"
