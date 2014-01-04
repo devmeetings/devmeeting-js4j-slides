@@ -191,7 +191,7 @@ slides:
         link.href = 'https://developer.mozilla.org/en-US/docs/Web/API/Element';
         link.innerHTML = 'DOM: Element specification';
 
-        if (!d.querySelectorAll('#link')) {
+        if (!d.querySelectorAll('#link').length) {
             d.querySelector('.main-content h1').appendChild(link);
         }
     notes: |
@@ -214,11 +214,49 @@ slides:
             domNode = createDomNodeForTodo()
             displayDomNode()
     task:
-        duration: 45
+        duration: 30
         objectives: Iterate over an array of todos and create DOM elements to display them.
         extras:
               - Use Bootstrap <code>.list-group</code> component.
               - Don't use <code>.innerHTML</code>, <code>.textContent</code>, etc.
+        solution:
+            name: Task 1 - Solution
+            title: Displaying list of todos
+            code:
+                language: javascript
+                hideOutput: true
+                content: |
+                    var todos= ["a", "b", "c"];
+                    var $todosContainer = document.createElement('div');
+                    $todosContainer.className = 'list-group';
+
+                    var k, todo, $todo;
+                    for (k in todos) {
+                        todo = todos[k];
+
+                        $todo = document.createElement('a');
+                        $todo.className = 'list-group-item';
+                        $todo.appendChild(document.createTextNode(todo));
+
+                        $todosContainer.appendChild($todo);
+                    }
+
+                    document.body.appendChild($todosContainer);
+
+
+  - id: objects
+    name: Objects
+    title: Object literal
+    monitor: obj
+    code: |
+      var obj = {
+          key: 'value',
+          array: ['has', 3, 'values'],
+          object: {
+              0: 'First'
+          }
+      };
+    notes: |
 
 
 
