@@ -244,12 +244,12 @@ slides:
                     document.body.appendChild($todosContainer);
 
 
-  - id: objects
-    name: Objects
+  - id: objects1
+    name: Objects (1)
     title: Object literal
-    monitor: obj
+    monitor: x
     code: |
-      var obj = {
+      var x = {
           key: 'value',
           array: ['has', 3, 'values'],
           object: {
@@ -257,6 +257,187 @@ slides:
           }
       };
     notes: |
+      - Similarities to Java Map<String, Object>
+
+
+  - id: objects2
+    name: Objects (2)
+    title: Accessing properties
+    monitor: x
+    code: |
+      var x = {
+          key: 'value',
+          array: ['has', 3, 'values'],
+          object: {
+              0: 'First'
+          }
+      };
+
+      console.log(x.key);
+      console.log(x.array[0]);
+
+      // Setting value
+      x.object.something = 5;
+    notes: |
+        Ask audience how to reference x.object[0] and show life example.
+
+        Insert new property to `x` using [] notation.
+
+  - id: objects3
+    name: Objects (3)
+    title: Everything is an object
+    monitor: todos
+    code: |
+      var todos = ["Todo 1", "Todo 2"];
+      todos.noOfTodos = 2;
+
+      console.log("Length", todos['length']);
+      console.log("Property", todos['noOfTodos']);
+
+      console.log("Todos", todos.toString());
+      console.log("Todo", todos['0'].toString());
+    notes: |
+        Same as in Java everything is an Object, but in Javascript
+        objects are open so we can modify properties dynamically.
+
+        Notice interchangable notation of "." and "[]"
+        Point out that we can invoke todo.toString() method like on every object.
+
+  - id: task2
+    name: Task 2
+    title: "Task 2: Add todo state"
+    text:
+        >
+        <h3>
+          Your task is to add <code>completed</code>
+          state to todo and display that using checkbox.
+        </h3>
+    code:
+        language: javascript
+        hideOutput: true
+        content: |
+          //Creating checkbox
+          var $checkbox = document.createElement('input');
+          $checkbox.type = 'checkbox';
+          $checkbox.checked = true;
+
+          console.log($checkbox);
+    task:
+        duration: 20
+        objectives:
+            - Todos should have a read-only checkbox that displays if they are completed or not.
+        extras:
+            - Add tags to todos.
+            - Display them using Bootstrap <code>.badge</code>.
+        solution:
+            name: Task 2 - Solution
+            title: Displaying if todo is completed
+            code:
+                language: javascript
+                hideOutput: true
+                content: |
+                    var todos= [{
+                      title: "a", completed: true, tags: ["a", "b"]
+                    }, {
+                      title: "b", completed: false, tags: []
+                    }];
+
+                    var $todosContainer = document.createElement('div');
+                    $todosContainer.className = 'list-group';
+
+                    var k,j,todo,$todo, $checkbox, $tag;
+                    for (k in todos) {
+                        todo = todos[k];
+
+                        $todo = document.createElement('a');
+                        $todo.className = 'list-group-item';
+
+                        $checkbox = document.createElement('input');
+                        $checkbox.type = 'checkbox';
+                        $checkbox.checked = todo.completed;
+                        $checkbox.disabled = true;
+
+                        for (j in todo.tags) {
+                          $tag = document.createElement('span');
+                          $tag.className = 'badge pull-right'
+                          $tag.innerHTML = todo.tags[j];
+                          $todo.appendChild($tag);
+                        }
+
+                        $todo.appendChild($checkbox);
+                        $todo.appendChild(document.createTextNode(todo.title));
+
+                        $todosContainer.appendChild($todo);
+                    }
+                    document.body.appendChild($todosContainer);
+
+  - id: functions1
+    name: Functions (1)
+    title: Functions basics
+    monitor: result
+    code: |
+      function add(a, b) {
+        var sum = a + b;
+        console.log(a, " + ", b, " = ", sum);
+        return sum;
+      }
+      var sum1 = add(4, 5);
+      var sum2 = add(sum1, 5);
+
+      var result = {
+        sum1: sum1,
+        sum2: sum2
+      };
+
+  - id: functions2
+    name: Functions (2)
+    title: Fun with functions
+    monitor: result
+    code: |
+      function add(a, b) {
+        var sum = a + b;
+        console.log(a, " + ", b, " = ", sum);
+        return sum;
+      }
+      var sum = add;
+
+      var result = sum(2, 2);
+
+  - id: functions3
+    name: Functions (3)
+    title: Fun with functions
+    monitor: result
+    code: |
+      var add = function(a, b) {
+        return a + b;
+      };
+      var sub = function(a, b) {
+        return a - b;
+      };
+
+      var makeOperation = function(operation, a, b) {
+        return operation(a, b);
+      };
+
+      var result = {
+        add: makeOperation(add, 5, 4),
+        sub: makeOperation(sub, 5, 4)
+      };
+# Functions
+# DOM event binding
+# Task: Completed state binding
+# Task: Adding todo
+# Functions as objects
+# Simple classes (Singletons)
+# Event-driven design
+# MV*
+# Functional style
+# Contexts
+# LocalStorage
+# REST
+
+
+
 
 
 
