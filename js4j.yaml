@@ -198,7 +198,7 @@ slides:
         1. Talk about difference between `querySelector` and `querySelectorAll`
         2. Maybe someone will notice that strings are created via `'` not `"`.
 
-  - id: task1
+  - id: task-dom
     name: Task 1
     title: "Task: Displaying list of todos"
     text:
@@ -220,7 +220,7 @@ slides:
               - Use Bootstrap <code>.list-group</code> component.
               - Don't use <code>.innerHTML</code>, <code>.textContent</code>, etc.
         solution:
-            name: Task 1 - Solution
+            name: Displaying list of todos - Solution
             title: Displaying list of todos
             code:
                 language: javascript
@@ -303,9 +303,9 @@ slides:
         Notice interchangable notation of "." and "[]"
         Point out that we can invoke todo.toString() method like on every object.
 
-  - id: task2
+  - id: task-objects
     name: Task 2
-    title: "Task 2: Add todo state"
+    title: "Task: Add todo state"
     text:
         >
         <h3>
@@ -330,7 +330,7 @@ slides:
             - Add tags to todos.
             - Display them using Bootstrap <code>.badge</code>.
         solution:
-            name: Task 2 - Solution
+            name: Todo state - Solution
             title: Displaying if todo is completed
             code:
                 language: javascript
@@ -388,6 +388,11 @@ slides:
         sum1: sum1,
         sum2: sum2
       };
+    notes: |
+      Naked functions that exists outside of object.
+      Similarity to Java staticly imported static function (where object just defines namespace)
+      This notation is called function declaration.
+
 
   - id: functions2
     name: Functions (2)
@@ -402,10 +407,14 @@ slides:
       var sum = add;
 
       var result = sum(2, 2);
+    notes: |
+      Functions are first-class citizens in JS.
+      So you can just change name by assigning to different variable.
+      Like assigning pointers to functions in C.
 
   - id: functions3
     name: Functions (3)
-    title: Fun with functions
+    title: Passing functions
     monitor: result
     code: |
       var add = function(a, b) {
@@ -415,15 +424,156 @@ slides:
         return a - b;
       };
 
-      var makeOperation = function(operation, a, b) {
+      var make = function(operation, a, b) {
         return operation(a, b);
       };
 
       var result = {
-        add: makeOperation(add, 5, 4),
-        sub: makeOperation(sub, 5, 4)
+        add: make(add, 5, 4),
+        sub: make(sub, 5, 4)
       };
-# Functions
+    notes: |
+      By using `function expression` notation we are treating functions
+      the same as other variable values.
+
+      We can pass functions to other functions.
+
+  - id: functions4
+    name: Functions (4)
+    title: Scoping
+    monitor: result
+    code: |
+      var CONST = 5;
+      var createAdder = function(name) {
+
+        return function(a) {
+          console.log("Adder " + name, "using", a, CONST);
+          return a + CONST;
+        };
+      };
+
+      var add5to = createAdder("of five");
+      var result = add5to(3);
+    notes: |
+      1. Explain that when we create function it creates it's own scope.
+      2. Function has also access to all parent scopes, so you
+         can access variables defined in upper scope.
+      3. At the very top there is special scope called "Global scope".
+
+  - id: functions5
+    name: Functions (5)
+    title: Variables reference resolving
+    monitor: result
+    code: |
+      var CONST = 5;
+      var createAdder = function(name) {
+        return function(a) {
+          console.log("Adder " + name, "using", a, CONST);
+          return a + CONST;
+        };
+      };
+
+      var result = {};
+      var add5to = createAdder("of five");
+      result.add5to3 = add5to(3);
+
+      // no we are modifying CONST
+      CONST = 3;
+      var add3to = createAdder("of three");
+      result.add3to6 = add3to(6);
+
+      // But what happens now?
+      result.add5to10 = add5to(10);
+    notes: |
+      1. When we are creating function the value of variables in scope is not resolved yet.
+      2. Unlike Java (where you have to declare variables as final) you can modify variables in upper scopes.
+      3. So variables values are resolved when function is being executed.
+
+  - id: domEvents1
+    name: DOM Events
+    title: Handling of User Actions
+    code:
+      language: javascript
+      hideOutput: true
+      content: |
+        // Cleanup
+        var b = document.querySelector('.my-btn');
+        b && b.remove();
+
+        // Create new button
+        var $btn = document.createElement('button');
+        $btn.className = 'btn btn-default my-btn';
+        $btn.innerHTML = 'Click me!';
+        document.body.appendChild($btn);
+
+
+        $btn.addEventListener('click', function(ev) {
+          console.log(ev);
+          alert("Good job");
+        });
+    notes: |
+      1. Tell audience to check out event in Chrome console and the properties that it has.
+      2. If someone asks explain "b && b.remove()" syntax
+
+  - id: task-events
+    name: Task 3
+    title: Changing todo state by user
+    task:
+        duration: 20
+        objectives:
+            - Clicking on todo should change completeness state.
+        extras:
+            - Add listener inline (inside loop)
+            - Keyboard support - Change completeness of focused todo by pressing "space".
+            - Keyboard support - Change todos by "tab" or arrows.
+        solution:
+            name: Todo state - Solution
+            title: Changing todo state by user
+            code:
+              language: javascript
+              hideOutput: true
+              content: |
+                  var todos= [{
+                    title: "a", completed: true
+                  }, {
+                    title: "b", completed: false
+                  }];
+
+                  var $todosContainer = document.createElement('div');
+                  $todosContainer.className = 'list-group';
+
+                  var k,j,todo,$todo, $checkbox, $tag;
+                  for (k in todos) {
+                      todo = todos[k];
+
+                      $todo = document.createElement('a');
+                      $todo.className = 'list-group-item';
+
+                      $checkbox = document.createElement('input');
+                      $checkbox.type = 'checkbox';
+                      $checkbox.checked = todo.completed;
+
+                      $checkbox.addEventListener('change', (function(todo2){
+                        return function() {
+                          todo2.completed = !todo2.completed;
+                          console.table(todos);
+                        };
+                      }(todo)));
+
+                      $todo.appendChild($checkbox);
+                      $todo.appendChild(document.createTextNode(todo.title));
+
+                      $todosContainer.appendChild($todo);
+                  }
+                  document.body.appendChild($todosContainer);
+    notes: |
+      1. Ask about difficulties
+      2. Ask why in solution there is another anonymous function returned.
+      3. Tell about `console.table`.
+      4. Explain why it is important to write good, semantic HTML code - keyboard support works out of the box.
+
+
+
 # DOM event binding
 # Task: Completed state binding
 # Task: Adding todo
