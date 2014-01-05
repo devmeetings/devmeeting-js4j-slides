@@ -569,16 +569,74 @@ slides:
     notes: |
       1. Ask about difficulties
       2. Ask why in solution there is another anonymous function returned.
+      3. Tell about other solution -> refactoring to function and why it works.
       3. Tell about `console.table`.
       4. Explain why it is important to write good, semantic HTML code - keyboard support works out of the box.
 
+  - id: functions6
+    name: More Functions (1)
+    title: Creating functions in loops is bad
+    code:
+      language: javascript
+      hideOutput: true
+      content: |
+        var todos = ["todo 1", "todo 2"],
+            functions = [],
+            k, printTodo;
+
+        for (var k in todos) {
+          printTodo = function() {
+            console.log(todos[k]);
+          }; 
+          functions.push(printTodo);
+        }
+
+        for (var j in functions) {
+          functions[j]();
+        }
+    notes: |
+      1. Notice the warning sign that comes from jslint.
+      2. Ask why it doesn't work
+      3. Suggest checking in SlowMo
+      4. Ask for proposed solutions
+
+  - id: functions7
+    name: More Functions (2)
+    title: Everything is an object
+    code:
+      language: javascript
+      hideOutput: true
+      content: |
+        var todos = ["todo 1", "todo 2"],
+            functions = [], printTodo;
+
+        for (var k in todos) {
+          printTodo = function printTodoFunction() {
+            console.log(printTodoFunction.todo);
+          }; 
+          printTodo.todo = todos[k];
+          functions.push(printTodo);
+        }
+
+        for (var j in functions) {
+          functions[j]();
+        }
+    notes: |
+      1. Remind about saying that "Everything is an object"
+      2. Function expression & declaration as solution to referencing itself
+         For instance for recursion
+      3. Say about browser differences supports
+
+  - id: codeOrganization
+    name: Singletons
+    title: Objects and methods
+    code: |
 
 
-# DOM event binding
-# Task: Completed state binding
-# Task: Adding todo
+
 # Functions as objects
 # Simple classes (Singletons)
+# Task: Adding todo
 # Event-driven design
 # MV*
 # Functional style
