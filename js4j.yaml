@@ -960,6 +960,30 @@ slides:
   - id: task-functional
     name: Task 5
     title: "Task: Add button to hide completed todos"
+    notes: |
+      // Solution to finding count of `reduce`
+      var TodosModel = {
+        _todos: [
+          { title: "Buy beer", completed: true },
+          { title: "Buy bread", completed: false },
+        ],
+        getStats: function() {
+          return TodosModel._todos.reduce(function(memo, todo) {
+            if (todo.completed) {
+              memo.completed++;
+            } else {
+              memo.uncompleted++;
+            }
+            return memo;
+          }, {
+            completed: 0,
+            uncompleted: 0
+          });
+        }
+      };
+
+      var result = TodosModel.getStats();
+
     task:
       duration: 30
       objectives:
@@ -968,11 +992,149 @@ slides:
       extras:
         - Count both completed and uncompleted todos using <code>reduce</code>
       solution:
+        name: Add button to hide completed todos - Solution
+        title: Add button to hide completed todos
+        monitor: result
+        code: |
+          var TodosModel = {
+            hideCompleted: false,
+            _todos: [
+              { title: "Buy beer", completed: true },
+              { title: "Buy bread", completed: false },
+            ],
+            getTodos: function() {
+              if (TodosModel.hideCompleted) {
+                return TodosModel._todos.filter(function(todo) {
+                  return !todo.completed;
+                });
+              }
+              return TodosModel._todos;
+            }
+          };
+          var result = {};
+          result.all = TodosModel.getTodos();
+
+          TodosModel.hideCompleted = true;
+          result.uncompleted = TodosModel.getTodos();
+
+  - id: contexts1
+    name: Contexts (1)
+    title: Reusability of methods
+    monitor: TodosModel._todos
+    code: |
+      var TodosModel = {
+        _todos: [],
+
+        addTodo: function(title) {
+          TodosModel._todos.push({
+            title: title,
+            completed: false
+          });
+        }
+      };
+
+      TodosModel.addTodo("New todo");
+    notes: |
+      Remind about reusability matter that we have been talking about earlier.
+      Change TodosModel to "this" in this snippet and explain similarity to Java
+
+  - id: contexts2
+    name: Contexts (2)
+    title: Contexts - caveats
+    monitor: results
+    code: |
+      var results = [];
+      var adder1 = {
+        b: 5,
+        add: function(a) {
+          return a + this.b;
+        }
+      };
+      results.push(
+        adder1.add(10)
+      );
+
+      var adder2 = {
+        b: 7
+      };
+      //Borrow function
+      adder2.add = adder1.add;
+
+      results.push(
+        adder2.add(10)
+      );
+    notes: |
+      Remind that value is resolved during execution - same is with `this` keyword.
+
+      Try to ask how JS knows what should `this` be resolved to?
+
+  - id: contexts3
+    name: Contexts (3)
+    title: Contexts - more caveats
+    monitor: result
+    code: |
+      var adder1 = {
+        b: 5,
+        add: function(a) {
+          return a + this.b;
+        }
+      };
+
+      var justAdd = adder1.add;
+
+      var result = "Result is " + justAdd(10);
+    notes: |
+      // Now ask if someone understands what happened:)
+
+      // Introduce more confusement by writing
+      window.b = 7
+
+      // Explain what global scope is and that `this` is set to global scope if none can be found.
+
+  - id: contexts4
+    name: Contexts (4)
+    title: Contexts - even more caveats
+    monitor: result
+    code:
+      language: javascript
+      hideOutput: true
+      content:
+        var $btn = document.querySelector('.increment-btn');
+        $btn && $btn.remove();
+        $btn = document.createElement('button');
+        $btn.className = 'btn btn-default increment-btn';
+        $btn.innerHTML = 'Increment'
+
+        // ---- Important stuff below ----
+        var State = {
+          i: 0,
+          increment: function() {
+            this.i++;
+            console.log(this.i, State.i);
+          }
+        };
+        State.increment();
+        $btn.addEventListener('click', State.increment);
+
+        document.body.appendChild($btn);
+    notes: |
+      // Now ask if someone understands what happened:)
+      
+      // Propose to
+      console.log(this) 
+      // to check in which context are we
+
+      // refactor this to sth like
+      var incr = State.increment;
+      $btn.addEventListener('click', incr);
+
+      // to make it clear that we have lost context of execution
 
 
 
 
-# Functional style
+
+
 # Contexts
 # LocalStorage
 # REST
