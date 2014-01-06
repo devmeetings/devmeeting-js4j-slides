@@ -862,6 +862,114 @@ slides:
 
               document.body.appendChild(TodosView.renderAddTodoForm());
 
+  - id: hoisting
+    name: Hoisting (1)
+    title: Function scope in javascript
+    monitor: k
+    code: |
+      var todos = ["First todo", "Second todo"];
+      for (var k in todos) {
+        // do nothing
+      }
+
+      // Whoops?
+      console.log(k);
+    notes: |
+      // Say about hoisting and scopes.
+      // Do live demo of how the code is interpreted
+      (function() {
+        var todos;
+        var k;
+
+        todos = ["First todo", "Second todo"];
+        for (k in todos) {
+          // do nothing
+        }
+
+        // Whoops?
+        console.log(k);
+
+      }())
+
+      // Explain that in JS there is no "block scope", we have only "function scope"
+      // Mention that block scope variables comes in ECMAScript6
+
+  - id: functional1
+    name: Functional JS (1)
+    title: JS functional-style
+    monitor: primes2
+    code: |
+      var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
+
+      var primes2 = [];
+      for (var k in primes) {
+         primes2.push(primes[k]);
+      }
+
+      primes.forEach(function(prime, k) {
+        primes2.push(prime);
+      });
+
+    notes: |
+      This is example is not impressive yet.
+      But most important advantage is new scope created for loop.
+
+  - id: functional2
+    name: Functional JS (2)
+    title: JS functional-style processing
+    monitor: result
+    code: |
+      var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
+
+      var result = primes.map(function(prime) {
+        return prime * prime;
+      });
+    notes: |
+      `map` will return new array with every item converted by given function
+      But what if we want to process only completed elements?
+
+  - id: functional3
+    name: Functional JS (3)
+    title: JS functional-style processing - chaining
+    monitor: result
+    code: |
+      var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
+
+      var result = primes.filter(function(prime) {
+        return prime > 13;
+      }).map(function(prime) {
+        return prime * prime;
+      });
+    notes: |
+      We can chain invocations because those functions just returns new arrays
+
+  - id: functional4
+    name: Functional JS (4)
+    title: JS functional-style reduce
+    monitor: result
+    code: |
+      var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
+
+      var result = primes.reduce(function(sum, prime) {
+        return sum + prime;
+      }, 0);
+
+    notes: |
+      Using `reduce` we can process arrays in more advanced ways.
+
+  - id: task-functional
+    name: Task 5
+    title: "Task: Add button to hide completed todos"
+    task:
+      duration: 30
+      objectives:
+        - Add button or checkbox to show / hide completed todos
+        - Do it using <code>filter</code> function
+      extras:
+        - Count both completed and uncompleted todos using <code>reduce</code>
+      solution:
+
+
 
 
 # Functional style
