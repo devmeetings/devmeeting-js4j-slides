@@ -546,7 +546,7 @@ slides:
                   for (k in todos) {
                       todo = todos[k];
 
-                      $todo = document.createElement('a');
+                      $todo = document.createElement('label');
                       $todo.className = 'list-group-item';
 
                       $checkbox = document.createElement('input');
@@ -631,7 +631,124 @@ slides:
     name: Singletons
     title: Objects and methods
     code: |
+      var Todos = {
+        _todos: [],
 
+        getTodos: function() {
+          return Todos._todos;
+        },
+
+        addTodo: function(title) {
+          Todos._todos.push({
+            title: title,
+            completed: false
+          });
+        }
+      };
+    notes: |
+      1. Notice that we use Todos._todos notation.
+      2. Mention that it might be inconvienient because of tight bounding.
+         What happens if you change name?
+      3. Say that later we will introduce something more flexible.
+
+  - id: mvc1
+    name: MV* (1)
+    title: Model-View-* architecture
+    code:
+      language: javascript
+      hideOutput: true
+      content: |
+        var TodosModel = {
+          getTodos: function() {
+            // ✂---
+          },
+          addTodo: function(title) {
+            // ✂---
+          }
+        };
+
+        var TodosView = {
+          renderAllTodos: function() {
+            // Clear todos
+            var todos = TodosModel.getTodos();
+            for (var k in todos) {
+              TodosView.renderTodo(todos[k]);
+            }
+          },
+          renderTodo: function(todo) {
+            // ✂---
+          }
+        };
+
+    notes: |
+      1. We have clear separation of responsibilities.
+      2. But Model and View is tightly bound.
+      3. We can try to decouple a bit by introducing controller.
+
+  - id: mvc2
+    name: MV* (2)
+    title: Model-View-* architecture
+    code: 
+      language: javascript
+      hideOutput: true
+      content: |
+        var TodosModel = {
+          getTodos: function() {
+            // ✂---
+          },
+          addTodo: function(title) {
+            // Adds new todo to model and returns them
+            // ✂---
+          }
+        };
+
+        var TodosView = {
+          renderAllTodos: function(todos) {
+            for (var k in todos) {
+              TodosView.renderTodo(todos[k]);
+            }
+          },
+          renderTodo: function(todo) {
+            // creates DOM elements and appends them
+            // ✂---
+          }
+        };
+
+        // Controller
+        TodosView.renderAllTodos(TodosModel.getTodos());
+
+        // Adding new todo
+        var todo = TodosModel.addTodo("New todo");
+        // We have to remember about rendering
+        TodosView.renderTodo(todo);
+
+    notes: |
+      1. Model and view is decoupled, but Controller has to care about synchronizing model and view.
+      2. It would be good if changes in Model could be automatically reflected in view.
+
+  - id: eventDriven
+    name: Events
+    title: Event-driven design
+    code: |
+
+    notes: |
+      Motivation - how to ensure that when we modify model view will be refreshed?
+      Why view have to be tied to only one model (or vice-versa)? How can we decouple them?
+      We want to operate only on models and views should be refreshed automatically.
+
+  - id: task-mvc-adding
+    name: Task 4
+    title: "Task: Adding new todo"
+    task:
+        duration: 60
+        objectives:
+            - It should be possible to add new todo.
+            - Code should be organized in MV* manner.
+        extras:
+            - Adding by pressing "Enter"
+            - Adding tags
+        solution:
+            # TODO
 
 
 # Functions as objects
