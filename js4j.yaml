@@ -1094,11 +1094,10 @@ slides:
   - id: contexts4
     name: Contexts (4)
     title: Contexts - even more caveats
-    monitor: result
     code:
       language: javascript
       hideOutput: true
-      content:
+      content: |
         var $btn = document.querySelector('.increment-btn');
         $btn && $btn.remove();
         $btn = document.createElement('button');
@@ -1129,6 +1128,63 @@ slides:
       $btn.addEventListener('click', incr);
 
       // to make it clear that we have lost context of execution
+
+      // Ask for possible fixes:
+      //  1. Wrapping in anonymous function
+      //  2. Use `bind` function
+
+  - id: contexts5
+    name: Contexts (5)
+    title: Invoking function in specific context
+    monitor: result
+    code: |
+      var result = [];
+      var State1 = {
+        name: 'State 1'
+      };
+      var State2 = {
+        name: 'State 2'
+      };
+      var increment = function(arg1) {
+        console.log(result.push("Invoking in context of " + this.name + " with argument " + arg1));
+      };
+
+      increment.call(State1, "arg1");
+
+      increment.apply(State2, ["arg2"]);
+
+      var fixedContext = increment.bind(State1);
+      fixedContext("arg1");
+
+      fixedContext.call(State2, "arg2");
+
+    notes: |
+      1. Describe differences between `call` and `apply`
+      2. Make sure that everyone notices that after binding context .call (and .apply) doesn't matter
+
+  - id: contexts6
+    name: Contexts (6)
+    title: Other applications of <code>bind</code>
+    monitor: result
+    code: |
+        var result = [];
+        var add = function(a, b) {
+          var sum = a + b;
+          result.push(
+            a + " + " + b + " = " + sum + " in context of: " + this
+          );
+
+          return sum;
+        };
+
+        add(3, 4);
+
+        var add3 = add.bind("add3", 3);
+        add3(4);
+    notes: |
+      Point out that everything can be used as context (even other function)
+
+      Explain that using `bind` we can create partially applied functions.
 
 
 
