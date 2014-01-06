@@ -1186,9 +1186,77 @@ slides:
 
       Explain that using `bind` we can create partially applied functions.
 
+  - id: context7
+    name: Contexts (7)
+    title: Contexts and functional-style
+    monitor: TodosView._results
+    code: |
+      var TodosView = {
+        _results: [],
+        renderAllTodos: function(todos) {
 
+          for (var k in todos) {
+            this.renderTodo(todos[k]);
+          }
 
+        },
+        renderTodo: function(todo) {
+          this._results.push("Rendering todo " + todo);
+        }
+      };
 
+      TodosView.renderAllTodos(["Todo 1", "Todo 2"]);
+    notes: |
+      // 1. Propose to jointly refactor for-in loop to functional style.
+      // 2. Show how easy it is to break context.
+
+      // Try two solutions:
+      renderAllTodos: function(todos) {
+        todos.forEach(function(todo) {
+          this.renderTodo(todo);
+        }, this);
+      },
+      // 2
+      renderAllTodos: function(todos) {
+        todos.map(this.renderTodo.bind(this));
+      }
+
+      // And show that we break two different contexts.
+
+  - id: task-contexts
+    name: Task 6
+    title: Event bus
+    code:
+      language: javascript
+      hideOutput: true
+      content: |
+        var EventBus = {
+          listenTo: function(eventName, func, context) {
+            // TODO
+          },
+          trigger: function(eventName /* arguments */) {
+            // TODO
+          }
+        };
+        var State = {
+          i: 0,
+          increment: function(amount) {
+            this.i++;
+          }
+        };
+
+        EventBus.listenTo('increment', State.increment, State);
+
+        EventBus.trigger('increment');
+        // This should result in "1"
+        console.log(State.i);
+
+    task:
+      duration: 60
+      objectives:
+        - Implement <code>EventBus</code> object that will trigger all listeners for specific <code>eventName</code> in proper context
+      extras:
+        - Pass additional arguments from <code>trigger</code> method to listeners.
 
 
 # Contexts
