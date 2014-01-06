@@ -729,33 +729,125 @@ slides:
   - id: eventDriven
     name: Events
     title: Event-driven design
-    code: |
+    code:
+      language: javascript
+      hideOutput: true
+      content: |
+        var TodosModel = {
+          addTodo: function(title) {
+            var todo;
+            // ✂---
+            TodosModel.trigger('add', todo);
+          },
+          trigger: function(name, data) {
+            TodosModel._listener({
+              name: name,
+              data: data
+            });
+          },
+          listen: function(listener) {
+            TodosModel._listener = listener;
+          }
+        };
+        var TodosView = {
+          renderTodo: function(todo) {
+            // ✂---
+          },
+          listener: function(ev) {
+            if (ev.name === 'add') {
+              TodosView.renderTodo(ev.data);
+            }
+          }
+        };
+        TodosModel.listen(TodosView.listener);
+
+        // View is automagically notified
+        TodosModel.addTodo("New todo");
 
     notes: |
       Motivation - how to ensure that when we modify model view will be refreshed?
       Why view have to be tied to only one model (or vice-versa)? How can we decouple them?
       We want to operate only on models and views should be refreshed automatically.
 
+      Describe similarities to DOM. Talk about reactive design.
+      Maybe mention something about one-thread(ness?) of JS.
+
+      Java Observer pattern.
+
   - id: task-mvc-adding
     name: Task 4
     title: "Task: Adding new todo"
+    code: |
+      var todos = [];
+
+      todos.push("append");
+      todos.unshift("at the beginning");
+
+      todos.push("at the end");
+      todos.reverse();
     task:
         duration: 60
         objectives:
             - It should be possible to add new todo.
             - Code should be organized in MV* manner.
         extras:
+            - Use Bootstrap inline form
             - Adding by pressing "Enter"
             - Adding tags
         solution:
-            # TODO
+            var TodosModel = {
+              _todos: [],
+              listener: null,
+              addTodo: function(title) {
+                TodosModel._todos.push({
+                  title: title,
+                  completed: false
+                });
+                TodosModel.listener({
+                  name: 'add',
+                  data: TodosModel._todos
+                });
+              }
+            };
+
+            var TodosView = {
+              listener: function(ev) {
+                console.table(ev.data);
+              },
+              renderAddTodoForm: function() {
+                var $form = document.createElement('form');
+                $form.className = 'form-inline';
+
+                var $input = document.createElement('input');
+                $input.type = 'text';
+                $input.className = 'form-control';
+
+                var $btn = document.createElement('button');
+                $btn.className = 'btn btn-default';
+                $btn.addEventListener('click', function() {
+                    if (!$input.value) {
+                      return;
+                    }
+                    TodosModel.addTodo($input.value);
+                    $input.value = '';
+                });
+
+                $form.appendChild($input);
+                $form.appendChild($btn);
+                return $form;
+              }
+            };
+
+            // Assign listener
+            TodosModel.listener = TodosView.listener;
+
+            TodosModel.addTodo("New todo 1");
+            TodosModel.addTodo("New todo 2");
+
+            document.appendChild(TodosView.renderAddTodoForm());
 
 
-# Functions as objects
-# Simple classes (Singletons)
-# Task: Adding todo
-# Event-driven design
-# MV*
+
 # Functional style
 # Contexts
 # LocalStorage
