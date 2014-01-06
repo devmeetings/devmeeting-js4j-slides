@@ -985,7 +985,7 @@ slides:
       var result = TodosModel.getStats();
 
     task:
-      duration: 30
+      duration: 20
       objectives:
         - Add button or checkbox to show / hide completed todos
         - Do it using <code>filter</code> function
@@ -1225,7 +1225,7 @@ slides:
 
   - id: task-contexts
     name: Task 6
-    title: Event bus
+    title: "Task: Event Bus"
     code:
       language: javascript
       hideOutput: true
@@ -1240,7 +1240,7 @@ slides:
         };
         var State = {
           i: 0,
-          increment: function(amount) {
+          increment: function() {
             this.i++;
           }
         };
@@ -1252,21 +1252,126 @@ slides:
         console.log(State.i);
 
     task:
-      duration: 60
+      duration: 30
       objectives:
         - Implement <code>EventBus</code> object that will trigger all listeners for specific <code>eventName</code> in proper context
       extras:
         - Pass additional arguments from <code>trigger</code> method to listeners.
+      solution:
+        name: Event Bus - solution
+        title: Event Bus
+        monitor: State
+        code: |
+          var EventBus = {
+            _listeners : {},
+            listenTo: function(eventName, func, context) {
+              var listeners = this._listeners[eventName];
+              if (!listeners) {
+                this._listeners[eventName] = listeners = [];
+              }
 
+              listeners.push({
+                func: func,
+                ctx: context
+              });
+            },
+            trigger: function(eventName /* arguments */) {
+              var listeners = this._listeners[eventName] || [];
 
-# Contexts
-# LocalStorage
-# REST
+              //var args = arguments.slice(1);
+              var args = [].slice.call(arguments, 1);
 
+              listeners.forEach(function(listener) {
+                listener.func.apply(listener.ctx, args);
+              });
+            }
+          };
+          var State = {
+            i: 0,
+            increment: function(amount) {
+              this.i += amount;
+            }
+          };
 
+          EventBus.listenTo('increment', State.increment, State);
 
+          EventBus.trigger('increment', 5);
+          // This should result in "5"
+          console.log(State.i);
 
+  - id: json
+    name: JSON
+    title: JavaScript Object Notation
+    monitor: json
+    code: |
+      var o = {
+        array: [1, 2, 3, 4],
+        string: "xyz",
+        date: new Date(),
+        empty: undefined
+      };
 
+      // serialize to JSON
+      var json = JSON.stringify(o);
 
+      // deserialize
+      console.log(JSON.parse(json));
+    notes: |
+      Lightweight, human readable exchange format.
+      Supports only objects, arrays, strings and numbers.
+      Builtin support for serializing and deserializing
 
+      More strict then JS object literals (quotes are required)
 
+  - id: localStorage
+    name: Persistence
+    title: Persistence using Local Storage
+    monitor: noOfVisits
+    code: |
+      // retrieve something from localStorage
+      var noOfVisits = window.localStorage['noOfVisits'];
+
+      noOfVisits = parseInt(noOfVisits, 10);
+      if (isNaN(noOfVisits)) {
+        noOfVisits = 0;
+      }
+
+      // put something to localStorage
+      localStorage.setItem('noOfVisits', noOfVisits + 1);
+
+      // You can also use method instead of []
+      var result = localStorage.getItem('noOfVisits');
+
+    notes: |
+      Point out that localStorage
+        1. Is persistent (even when you turn off the browser)
+        2. Is limited (5MB per domain)
+        3. Is only readable by your domain
+        4. Can only store strings
+        5. Is synchronous :(
+
+      Ask how to store complex structures inside localStorage.
+
+  - id: task-localStorage
+    name: Task 7
+    title: "Task: Add persistence to your todos application" 
+    task:
+      duration: 30
+      objectives:
+        - List of todos should be automatically saved to <code>localStorage</code>
+      extras:
+        - Add button(s) to delete todos.
+
+# REST introduction
+# AJAX calls using jQuery
+# Play! Framework introduction
+
+  - id: task-rest
+    name: Task 8
+    title: "Task: Implement REST in Java and use it for persistence"
+    task:
+      duration: 60
+      objectives:
+        - TODO
+      extras:
+        - TODO
