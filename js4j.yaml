@@ -587,7 +587,7 @@ slides:
         for (var k in todos) {
           printTodo = function() {
             console.log(todos[k]);
-          }; 
+          };
           functions.push(printTodo);
         }
 
@@ -613,7 +613,7 @@ slides:
         for (var k in todos) {
           printTodo = function printTodoFunction() {
             console.log(printTodoFunction.todo);
-          }; 
+          };
           printTodo.todo = todos[k];
           functions.push(printTodo);
         }
@@ -630,6 +630,7 @@ slides:
   - id: codeOrganization
     name: Singletons
     title: Objects and methods
+    monitor: Todos._todos
     code: |
       var Todos = {
         _todos: [],
@@ -645,6 +646,8 @@ slides:
           });
         }
       };
+
+      Todos.addTodo("New todo");
     notes: |
       1. Notice that we use Todos._todos notation.
       2. Mention that it might be inconvienient because of tight bounding.
@@ -699,6 +702,7 @@ slides:
           addTodo: function(title) {
             // Adds new todo to model and returns them
             // ✂---
+            return title;
           }
         };
 
@@ -710,6 +714,7 @@ slides:
           },
           renderTodo: function(todo) {
             // creates DOM elements and appends them
+            console.log("Rendering", todo);
             // ✂---
           }
         };
@@ -734,8 +739,7 @@ slides:
       hideOutput: true
       content: |
         var TodosModel = {
-          addTodo: function(title) {
-            var todo;
+          addTodo: function(todo) {
             // ✂---
             TodosModel.trigger('add', todo);
           },
@@ -751,6 +755,7 @@ slides:
         };
         var TodosView = {
           renderTodo: function(todo) {
+            console.log("Rendering", todo);
             // ✂---
           },
           listener: function(ev) {
@@ -777,14 +782,18 @@ slides:
   - id: task-mvc-adding
     name: Task 4
     title: "Task: Adding new todo"
-    code: |
-      var todos = [];
+    code:
+      language: javascript
+      hideOutput: true
+      content: |
+        var todos = [];
 
-      todos.push("append");
-      todos.unshift("at the beginning");
+        todos.push("append");
+        todos.unshift("at the beginning");
 
-      todos.push("at the end");
-      todos.reverse();
+        todos.push("at the end");
+        todos.reverse();
+        console.log(todos);
     task:
         duration: 60
         objectives:
@@ -795,56 +804,63 @@ slides:
             - Adding by pressing "Enter"
             - Adding tags
         solution:
-            var TodosModel = {
-              _todos: [],
-              listener: null,
-              addTodo: function(title) {
-                TodosModel._todos.push({
-                  title: title,
-                  completed: false
-                });
-                TodosModel.listener({
-                  name: 'add',
-                  data: TodosModel._todos
-                });
-              }
-            };
+          name: Adding new todo - Solution
+          title: Adding new todo
+          code:
+            language: javascript
+            hideOutput: true
+            content: |
+              var TodosModel = {
+                _todos: [],
+                listener: null,
+                addTodo: function(title) {
+                  TodosModel._todos.push({
+                    title: title,
+                    completed: false
+                  });
+                  TodosModel.listener({
+                    name: 'add',
+                    data: TodosModel._todos
+                  });
+                }
+              };
 
-            var TodosView = {
-              listener: function(ev) {
-                console.table(ev.data);
-              },
-              renderAddTodoForm: function() {
-                var $form = document.createElement('form');
-                $form.className = 'form-inline';
+              var TodosView = {
+                listener: function(ev) {
+                  console.table(ev.data);
+                },
+                renderAddTodoForm: function() {
+                  var $form = document.createElement('div');
+                  $form.className = 'form-inline';
 
-                var $input = document.createElement('input');
-                $input.type = 'text';
-                $input.className = 'form-control';
+                  var $input = document.createElement('input');
+                  $input.type = 'text';
+                  $input.className = 'form-control';
 
-                var $btn = document.createElement('button');
-                $btn.className = 'btn btn-default';
-                $btn.addEventListener('click', function() {
-                    if (!$input.value) {
-                      return;
-                    }
-                    TodosModel.addTodo($input.value);
-                    $input.value = '';
-                });
+                  var $btn = document.createElement('button');
+                  $btn.className = 'btn btn-default';
+                  $btn.innerHTML = 'Add todo';
+                  $btn.addEventListener('click', function() {
+                      if (!$input.value) {
+                        return;
+                      }
+                      TodosModel.addTodo($input.value);
+                      $input.value = '';
+                  });
 
-                $form.appendChild($input);
-                $form.appendChild($btn);
-                return $form;
-              }
-            };
+                  $form.appendChild($input);
+                  $form.appendChild($btn);
+                  return $form;
+                }
+              };
 
-            // Assign listener
-            TodosModel.listener = TodosView.listener;
+              // Assign listener
+              TodosModel.listener = TodosView.listener;
 
-            TodosModel.addTodo("New todo 1");
-            TodosModel.addTodo("New todo 2");
+              TodosModel.addTodo("New todo 1");
+              TodosModel.addTodo("New todo 2");
 
-            document.appendChild(TodosView.renderAddTodoForm());
+              document.body.appendChild(TodosView.renderAddTodoForm());
 
 
 
