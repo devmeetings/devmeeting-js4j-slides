@@ -672,7 +672,7 @@ slides:
           printTodo = function() {
             console.log(todos[k]);
           };
-          functions.push(printTodo);
+          functions[k] = printTodo;
         }
 
         for (var j in functions) {
@@ -699,7 +699,7 @@ slides:
             console.log(printTodoFunction.todo);
           };
           printTodo.todo = todos[k];
-          functions.push(printTodo);
+          functions[k] = printTodo;
         }
 
         for (var j in functions) {
@@ -1298,16 +1298,19 @@ slides:
         var adder2 = {
           b: 7
         };
-        //Borrow function
-        adder2.add = adder1.add;
-
-        results.push(
-          adder2.add(10)
-        );
     notes: |
-      Remind that value is resolved during execution - same is with `this` keyword.
+      // Remind that value is resolved during execution - same is with `this` keyword.
 
-      Try to ask how JS knows what should `this` be resolved to?
+      // Try to ask how JS knows what should `this` be resolved to?
+
+      // Add this code
+
+      //Borrow function
+      adder2.add = adder1.add;
+
+      results.push(
+        adder2.add(10)
+      );
 
   - id: contexts3
     name: Contexts (3)
@@ -1574,9 +1577,208 @@ slides:
       More strict then JS object literals (quotes are required)
 
       Explain how outputs under code works.
+  - id: rest1
+    name: REST (1)
+    title: REST - Representational State Transfer
+    text: |
+      <h2 class="text-warning">RESTful architecture constraints</h2>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Client-server
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Stateless
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Cacheable
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Layered system
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Uniform interface
+      </h3>
+    notes: |
+      1. Client-server - we have clear separation between client and server.
+         We can change any part of client code
+         Or modify internals of server, or even change database
+         but as long as interface is defined between them everything has to work.
+      2. Stateless - Server should not store any context of client.
+         Each request has to contain everything that is need by server.
+      3. Cacheable - resources should defined them as cacheable.
+      4. Layered system - a client cannot distinguish between end server or intermediary.
+      5. Uniform interface - FUNDAMENTAL!!!
+         - identification of resource / for instance URIs
+         - manipulation through representations
+         - self-descriptive messages - enough information to describe how to process the message
+         - Hypermedia as the engine of application state (HATEOAS)
+           no prior knowledge about how to interact with any application or server is required
 
-# REST introduction
-# AJAX calls using jQuery
+      Example of REST architecture implementation is Web (to support session we have to pass Cookie, SessionID or something)
+      But we can also build APIs on top of that.
+
+      REST is architecture vs SOAP is a protocol.
+
+  - id: rest2
+    name: REST (2)
+    title: RESTful API Example (URLs)
+    text: |
+      <h2>
+        <span class="glyphicon glyphicon-link text-success"></span>
+        <code>http://api.example.com/fruits</code>
+      </h2>
+      <h3>URL representing a collection of fruits</h3>
+      <br>
+      <h2>
+        <span class="glyphicon glyphicon-link text-success"></span>
+        <code>http://api.example.com/fruits/apple1</code>
+      </h2>
+      <h3>URL representing a single fruit with id <code>apple1</code></h3>
+
+  - id: rest3
+    name: REST (3)
+    title: RESTful API Example (Methods on collection)
+    text: |
+      <h2>
+        <span class="label label-success">GET</span>
+        <code>http://api.example.com/fruits</code>
+      </h2>
+      <h3><strong>Retrieve</strong> collection of fruits</h3>
+      <br>
+      <h2>
+        <span class="label label-warning">PUT</span>
+        <code>http://api.example.com/fruits</code>
+      </h2>
+      <h3><strong>Replace</strong> entire collection with new one</h3>
+      <br>
+      <h2>
+        <span class="label label-primary">POST</span>
+        <code>http://api.example.com/fruits</code>
+      </h2>
+      <h3><strong>Create</strong> a new entry in collection.</h3>
+      <br>
+      <h2>
+        <span class="label label-danger">DELETE</span>
+        <code>http://api.example.com/fruits</code>
+      </h2>
+      <h3><strong>Delete</strong> entire collection</h3>
+    notes: |
+      We use POST as Create operation due to HTTP specification:
+      GET - safe operation (nullipotent) - should not produce any side-effects
+      POST - has side-effects
+      PUT & DELETE - idempotent methods - invoking them multiple times should have same effect.
+
+      These properties might be used by Proxies or clients implementations.
+
+  - id: rest4
+    name: REST (4)
+    title: RESTful API Example (Methods on objects)
+    text: |
+      <h2>
+        <span class="label label-success">GET</span>
+        <code>http://api.example.com/fruits/apple1</code>
+      </h2>
+      <h3><strong>Retrieve</strong> details about <code>apple1</code>.</h3>
+      <br>
+      <h2>
+        <span class="label label-warning">PUT</span>
+        <code>http://api.example.com/fruits/apple1</code>
+      </h2>
+      <h3><strong>Replace / Update</strong> <code>apple1</code></h3>
+      <br>
+      <h2>
+        <span class="label label-danger">DELETE</span>
+        <code>http://api.example.com/fruits/apple1</code>
+      </h2>
+      <h3><strong>Remove</strong> <code>apple1</code> from collection</h3>
+    notes: |
+      POST (Create) operation is rarely used on specific objects.
+
+  - id: rest5
+    name: REST (5)
+    title: RESTful JSON API Example
+    monitor: result
+    code:
+      big: true
+      content: |
+        var result = {};
+        // GET https://api.github.com/users
+        result.collection = [
+          {
+            "login": "mojombo",
+            "id": 1,
+            "html_url": "https://github.com/mojombo",
+            "type": "User",
+            "site_admin": true
+          }
+        ];
+
+        // GET https://api.github.com/users/tomusdrw
+        result.tomusdrw = {
+          "login": "tomusdrw",
+          "id": 581548,
+          "html_url": "https://github.com/tomusdrw",
+          "type": "User",
+          "site_admin": false,
+          "name": "Tomasz Drwięga",
+        };
+    notes: |
+      First call returns collection of users (but of course is limited)
+      Audience can open the link in browser - it should show the content
+
+      Second call returns a single user out of collection, with more detailed information (like "name")
+
+  - id: ajax1
+    name: AJAX (1)
+    title: Asynchronous JavaScript and XML
+    monitor: promise
+    code:
+      small: true
+      async: true
+      content: |
+        var promise = $.ajax({
+          url: '/js/example.json',
+          success: function(data) {
+            console.log(data);
+          }
+        });
+    notes: |
+      Requesting single file (asynchronously) - remind about event-driven design in JS
+      Mention something about one-threaded enviroment.
+
+      Tell that output is updated with delay to show asynchronous nature.
+
+      Mention that AJAX calls cannot be made across different domains.
+
+  - id: ajax2
+    name: AJAX (2)
+    title: Using jQuery to make AJAX calls
+    monitor: promise
+    code:
+      async: true
+      content: |
+        var promise = $.ajax({
+          url: 'https://api.github.com/users/tomusdrw'
+        }).then(function(data){
+          return {
+            user: data
+          };
+        }).then(function(data){
+          console.log(data);
+          return data;
+        });
+
+        promise.loading = "...";
+    notes: |
+      Explain that you didn't lie guys.
+      jQuery automagically switches to JSONp; it uses a different mechanism (explain if there are questions)
+
+      Say something about promises and how do they work.
+
 # Play! Framework introduction
 
   - id: task-rest
@@ -1627,3 +1829,7 @@ slides:
         - List of todos should be automatically saved to <code>localStorage</code>
       extras:
         - Add button(s) to delete todos.
+
+  # Demo of applications in different implementations
+
+  # Teaser about mixins, prototype inheritance etc
