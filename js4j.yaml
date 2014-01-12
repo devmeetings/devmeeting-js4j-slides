@@ -808,8 +808,38 @@ slides:
       1. Model and view is decoupled, but Controller has to care about synchronizing model and view.
       2. It would be good if changes in Model could be automatically reflected in view.
 
-  - id: eventDriven
-    name: Events
+  - id: eventDriven1
+    name: Events (1)
+    title: Observer pattern
+    code:
+      big: true
+      language: java
+      hideOutput: true
+      content: |
+        public interface Observer {
+            void update(Observable obj, Object data); 
+        }
+
+        public class Observable {
+            private Collection<Observer> observers = new LinkedHashSet<>();
+
+            public void addObserver(Observer o) {
+                observers.add(o);
+            }
+
+            public void notifyObservers(Object data) {
+               for (Observer observer : observers) {
+                    observer.update(this, data);
+               }
+            }
+        }
+    notes: |
+      Observable object (subject) takes care about list of listeners and notifies them about changes.
+
+      We can actually use this to decouple Model and View a little bit more.
+
+  - id: eventDriven2
+    name: Events (2)
     title: Event-driven design
     code:
       big: true
