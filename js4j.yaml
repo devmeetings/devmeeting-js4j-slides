@@ -190,26 +190,50 @@ slides:
       small: true
       content: |
         var h1 = document.querySelector(".main-content h1");
-        h1.innerHTML += "...";
+        h1.innerText += "...";
 
         var content = h1.innerHTML;
 
     notes: |
         Say about accessing DOM and JavaScript representation of DOM
 
+        Encourage ppl to play with content inside slide to see that more "..." is appended each time.
+
   - id: dom3
     name: Accessing DOM (2)
+    title: jQuery style
+    text: |
+      <h4><a href="http://jquery.com/">What is jQuery?</a></h4>
+    monitor: content
+    code:
+      small: true
+      content: |
+        var $h1 = $('.main-content h1');
+        $h1.text($h1.text() + "...");
+
+        var content = $h1.html();
+    notes: |
+      Mention that this way might be more familiar to some developers.
+      Explain that jQuery is great library to manipulate DOM,
+      and it makes perfect sense to use it because it hides differences 
+      between old web browsers.
+
+      However rest of slides will be using vanilla JS to simplify syntax.
+
+      Explain why we are using variables with such naming ($h1)
+  - id: dom4
+    name: Accessing DOM (3)
     title: Creating DOM elements
     monitor: link
     fiddle: 
       js: |
         var d = document;
-        var link = d.createElement('a');
-        link.id = 'link';
-        link.href = 'https://developer.mozilla.org/en-US/docs/Web/API/Element';
-        link.innerHTML = 'DOM: Element specification';
+        var $link = d.createElement('a');
+        $link.id = 'link';
+        $link.href = 'https://developer.mozilla.org/en-US/docs/Web/API/Element';
+        $link.innerHTML = 'DOM: Element specification';
 
-        d.body.appendChild(link);
+        d.body.appendChild($link);
 
     notes: |
         1. Talk about difference between `querySelector` and `querySelectorAll`
@@ -847,6 +871,9 @@ slides:
             - Use Bootstrap inline form
             - Adding by pressing "Enter"
             - Adding tags
+        notes: |
+          In solution point out that there is no need to handle keypress.
+          It's better to just listen for $form.submit event.
         solution:
           name: Adding new todo - Solution
           title: Adding new todo
@@ -873,12 +900,13 @@ slides:
               var TodosView = {
                 initialize: function() {
                   var $input = document.querySelector('input.todo-add-input');
-                  var $btn = document.querySelector('button.todo-add-button');
+                  var $form = document.querySelector('form.todo-add-form');
 
-                  $btn.addEventListener('click', function() {
+                  $form.addEventListener('submit', function(ev) {
                       if (!$input.value) { return; }
                       TodosModel.addTodo($input.value);
                       $input.value = '';
+                      ev.preventDefault();
                   });
                 },
 
@@ -931,7 +959,7 @@ slides:
                 <body>
                   <!-- page content -->
                   <div class="todos list-group"></div>
-                  <div class="form-inline">
+                  <form class="form-inline todo-add-form">
                     <input type="text" class="form-control todo-add-input">
                     <button class="btn btn-default todo-add-button">
                       <span class="glyphicon glyphicon-plus"></span>
@@ -944,7 +972,7 @@ slides:
               </html>
 
   - id: hoisting
-    name: Hoisting (1)
+    name: Hoisting
     title: Function scope in javascript
     monitor: k
     code: |
