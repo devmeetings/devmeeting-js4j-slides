@@ -1779,20 +1779,226 @@ slides:
 
       Say something about promises and how do they work.
 
-# Play! Framework introduction
+  - id: play1
+    name: Play! (1)
+    title: Play! Framework
+    text: |
+      <h4 class="text-muted">The High Velocity Web Framework For Java and Scala</h4>
+      <br>
+      <h2>Modern framework for writing Web Servers in Java</h2>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        RESTful and Stateless by default
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        JSON is a first class citizen
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Non-blocking I/O
+      </h3>
+      <h2>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        <span class="text-warning">Hot reload - just hit refresh in browser!</span>
+      </h2>
+
+      <br>
+      <h4><a href="http://www.playframework.com/">http://www.playframework.com/</a></h4>
+    notes: |
+      Inspired by frameworks available in interpreted languages like: python, JS, Ruby etc.
+
+      Netty (nio framework) and Akka (scala concurrency and distributed computing framework) under-the-hood.
+
+  - id: play2
+    name: Play! (2)
+    title: Routes definition
+    text: |
+      <h4><a href="http://www.playframework.com/documentation/2.2.x/JavaRouting">HTTP Routing docs</a></h4>
+      <br>
+      <h3>File path: <code>conf/routes</code></h3>
+    code:
+      language: generic
+      content: |
+        GET   /                     controllers.Application.index()
+
+        GET   /clients              controllers.Clients.list()
+        GET   /clients/:id          controllers.Clients.show(id: java.lang.Long)
+
+        # Map static resources from the /public folder to the /assets URL path
+        GET   /assets/*file         controllers.Assets.at(path="/public", file)
+
+
+    notes: |
+      In conf/routes file you define what resources are available:
+        It can be either JSON API
+        or just HTML webpages or static files
+      Explain what :id means and *file
+
+      Tell about link to documentation
+
+  - id: play3
+    name: Play! (3)
+    title: Writing controller and actions
+    text: |
+      <h4><a href="http://www.playframework.com/documentation/2.2.x/JavaActions">Controllers & Actions Docs</a></h4>
+      <br>
+      <h3>File path: <code>app/controllers/Application.java</code></h3>
+    code:
+      language: java
+      big: true
+      content: |
+        package controllers;
+
+        import play.*;
+        import play.libs.Json;
+        import play.mvc.*;
+
+        public class Application extends Controller {
+
+            public static Result index() {
+                return ok("It works!");
+            }
+
+            public static Result apiCall() {
+                List<String> list = Arrays.asList("Hello", "World", "!");
+                return ok(Json.toJson(list)).as("application/json");
+            }
+
+        }
+    notes: |
+      Tell about simple action that just returns a string.
+      And about converting object to JSON.
+
+  - id: play4
+    name: Play! (4)
+    title: Ebean ORM
+    text: |
+      <h4><a href="http://www.playframework.com/documentation/2.2.x/JavaEbean">Using Ebean Docs</a></h4>
+      <br>
+      <h3>File path: <code>app/models/Todo.java</code></h3>
+    code: 
+      language: java
+      big: true
+      content: |
+        package models;
+
+        import javax.persistence.Entity;
+        import javax.persistence.Id;
+
+        import play.db.ebean.Model;
+        import play.db.ebean.Model.Finder;
+
+        @Entity
+        public class Todo extends Model {
+
+          @Id
+          public long id;
+
+          public String title;
+
+          public boolean completed;
+
+
+          public static final Finder<Long, Todo> find = new Finder<>(Long.class, Todo.class);
+        }
+    notes: |
+      Tell that configuration is already defined and model is created
+
+  - id: play5
+    name: Play! (5)
+    title: Fetching objects
+    text: |
+      <h4><a href="http://www.playframework.com/documentation/2.2.x/JavaEbean">Using Ebean Docs</a></h4>
+      <br>
+      <h3>File path: <code>app/controllers/Application.java</code></h3>
+    code: 
+      language: java
+      big: true
+      content: |
+        package controllers;
+
+        import play.*;
+        import play.libs.Json;
+        import play.mvc.*;
+
+        public class Application extends Controller {
+
+            public static Result getTodos() {
+                List<models.Todo> todos = models.Todo.find.findList();
+                return ok(Json.toJson(todos)).as("application/json");
+            }
+        }
+    notes: |
+      Other methods are described in documentation.
 
   - id: task-rest
-    name: Task 8
-    title: "Task: Implement REST in Java and use it for persistence"
+    name: Task 7
+    title: "Task: Implement REST API in Java and use it for persistence"
     task:
       duration: 60
       objectives:
-        - TODO
+        - Implement simplified REST API for Todos (Get list, Replace list)
+        - Add persistence to Todos application using created REST API.
       extras:
-        - TODO
+        - Implement and use full REST API for Todos (Get list, Get Single, Update, Create, Delete)
+      solution:
+        name: REST API - Solution
+        title: REST API
+        code:
+          language: java
+          big: true
+          content: |
+            package controllers;
+
+            import java.util.List;
+            import com.avaje.ebean.Ebean;
+            import com.fasterxml.jackson.databind.JsonNode;
+            import play.libs.Json;
+            import play.mvc.*;
+            import views.html.*;
+
+            public class Application extends Controller {
+
+              public static Result getTodos() {
+                List<models.Todo> todos = models.Todo.find.findList();
+                return okJsonResponse(todos);
+              }
+
+              public static Result createTodo() {
+                models.Todo todo = readTodo();
+                //add the new one
+                Ebean.save(todo);
+
+                return okJsonResponse(todo);
+              }
+
+              public static Result updateTodo(Long id) {
+                models.Todo todo = readTodo();
+                todo.id = id;
+
+                todo.update();
+
+                return okJsonResponse(todo);
+              }
+
+              private static models.Todo readTodo() {
+                JsonNode jsonNode = request().body().asJson();
+                models.Todo todo = Json.fromJson(jsonNode, models.Todo.class);
+                return todo;
+              }
+
+              private static Result okJsonResponse(Object o) {
+                return ok(Json.toJson(o)).as("application/json");
+              }
+            }
+      notes: |
+        Tell that we don't want to allow overriding id. this is why we ensure in updateTodo method that id is the same.
+        Instead of using todo.save() we can also use Ebean.save(todo)
+
 
   - id: localStorage
-    name: Persistence
+    name: Local Storage
     title: Persistence using Local Storage
     monitor: noOfVisits
     code: |
@@ -1811,6 +2017,11 @@ slides:
       var result = localStorage.getItem('noOfVisits');
 
     notes: |
+      Say that we can also build purely client-side JS applications.
+      For persistence we can use for instance Local or Session storage.
+
+      Mention that for instance when you write Chrome plugins you have a lot more APIs available (like filesystem etc).
+
       Point out that localStorage
         1. Is persistent (even when you turn off the browser)
         2. Is limited (5MB per domain)
@@ -1821,14 +2032,14 @@ slides:
       Ask how to store complex structures inside localStorage.
 
   - id: task-localStorage
-    name: Task 7
-    title: "Task: Add persistence to your todos application" 
+    name: Task 8
+    title: "Task: Use Local Storage for persistence in your todos application" 
     task:
       duration: 30
       objectives:
-        - List of todos should be automatically saved to <code>localStorage</code>
+        - Change persistence to Local Storage
       extras:
-        - Add button(s) to delete todos.
+        - Make Local Storage / REST Persistence easily interchangable.
 
   # Demo of applications in different implementations
 
