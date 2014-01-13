@@ -16,7 +16,7 @@ slides:
             <img src="http://i39.tinypic.com/oa2mbk.png" alt="Image and video hosting by TinyPic" width="400">
           </a>
         </div>
-    notes:
+
   - id: setup
     name: Environment
     text: |
@@ -45,6 +45,18 @@ slides:
         <h4 class="text-muted">If you are missing something approach me during break</h4>
 
   - id: run
+    name: Run
+    title: Install dependencies
+    text: |
+        <h3>Invoke in console:</h3>
+    code:
+      language: generic
+      content: |
+        $ npm install -g bower
+        $ npm install
+        $ bower install
+
+  - id: run2
     name: Run
     title: Run Forest, Run!
     text: |
@@ -1510,10 +1522,10 @@ slides:
       content: |
         var EventBus = {
           listenTo: function(eventName, func, context) {
-            // TODO
+            // throw Error("TODO");
           },
           trigger: function(eventName /* arguments */) {
-            // TODO
+            // throw Error("TODO");
           }
         };
         var State = {

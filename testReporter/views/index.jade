@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  h1= title
+
+  table.table.table-bordered
+    thead
+        tr
+            th Username
+            for specName in specs
+                th=specName
+            th Passing
+
+    tbody
+        for data,idx in reports
+            tr
+                td: strong.text-warning
+                    | #{idx + 1}. 
+                    = data.user
+                for v in data.data
+                   td(class="#{ v ? 'success' : 'danger' }")
+                td: strong= data.passed
+  script.
+    setTimeout(function() {
+        window.location.reload();
+    }, 5000);
+                
+
