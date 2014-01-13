@@ -27,7 +27,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/report', routes.report);
+app.post('/report', routes.report);
 app.post('/clear', routes.clear);
 
 http.createServer(app).listen(app.get('port'), function() {

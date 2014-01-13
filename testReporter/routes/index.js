@@ -48,16 +48,20 @@ exports.index = function(req, res) {
 };
 
 exports.report = function(req, res) {
-    var name = req.query.name;
+    var name = req.body.name;
     reports[name] = reports[name] || {};
 
     var data = reports[name];
-    for (var k in req.query.data) {
-        data[k] = req.query.data[k] == 'true';
+    for (var k in req.body.data) {
+        data[k] = req.body.data[k] == 'true';
     }
     console.log(data);
 
-    res.send(req.params);
+    var host = req.headers['origin'];
+    if (host === 'http://todr.me:3001' || host === 'http://localhost:9000') {
+        res.setHeader("Access-Control-Allow-Origin", host);
+    }
+    res.send(200);
 };
 
 exports.clear = function(req, res) {
