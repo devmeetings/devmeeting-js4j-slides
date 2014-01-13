@@ -63,7 +63,7 @@ slides:
         <h3>Open <a href="http://localhost:9000" target="page">localhost:9000</a> <span class="glyphicon glyphicon-new-window text-muted"></span> </h3>
 
   - id: basics1
-    name: JS Basics (1)
+    name: JS Basics
     title: Variables and Literals
     code:
       small: true
@@ -88,7 +88,7 @@ slides:
         - Show how to use object inspector
 
   - id: basics2
-    name: JS Basics (2)
+    name: JS Basics
     title: Methods
     code:
       small: true
@@ -116,7 +116,7 @@ slides:
           - Mention about Debugging
 
   - id: basics3
-    name: JS Basics (3)
+    name: JS Basics
     title: Simple loop (C-style)
     code: |
         var todos = [
@@ -135,7 +135,7 @@ slides:
         2. `[]` access operator
 
   - id: basics4
-    name: JS Basics (4)
+    name: JS Basics
     title: Simple loop (Java-style)
     code: |
         var todos = [
@@ -207,7 +207,7 @@ slides:
         Grid systems: Skeleton, HTML5 Boilerplate, LESS Framework
 
   - id: dom2
-    name: Accessing DOM (1)
+    name: Accessing DOM
     title: Hello DOM
     monitor: content
     code:
@@ -224,7 +224,7 @@ slides:
         Encourage ppl to play with content inside slide to see that more "..." is appended each time.
 
   - id: dom3
-    name: Accessing DOM (2)
+    name: Accessing DOM
     title: jQuery style
     text: |
       <h4>
@@ -249,7 +249,7 @@ slides:
 
       Explain why we are using variables with such naming ($h1)
   - id: dom4
-    name: Accessing DOM (3)
+    name: Accessing DOM
     title: Creating DOM elements
     monitor: link
     fiddle: 
@@ -336,7 +336,7 @@ slides:
 
 
   - id: objects1
-    name: Objects (1)
+    name: Objects
     title: Object literal
     monitor: x
     code: |
@@ -352,7 +352,7 @@ slides:
 
 
   - id: objects2
-    name: Objects (2)
+    name: Objects
     title: Accessing properties
     monitor: x
     code: |
@@ -373,7 +373,7 @@ slides:
         Insert new property to `x` using [] notation.
 
   - id: objects3
-    name: Objects (3)
+    name: Objects
     title: Everything is an object
     monitor: todos
     code: |
@@ -470,7 +470,7 @@ slides:
                   </html>
 
   - id: functions1
-    name: Functions (1)
+    name: Functions
     title: Functions basics
     monitor: result
     code: |
@@ -493,7 +493,7 @@ slides:
 
 
   - id: functions2
-    name: Functions (2)
+    name: Functions
     title: Fun with functions
     monitor: result
     code: |
@@ -511,7 +511,7 @@ slides:
       Like assigning pointers to functions in C.
 
   - id: functions3
-    name: Functions (3)
+    name: Functions
     title: Passing functions
     monitor: result
     code: |
@@ -532,7 +532,7 @@ slides:
 
       We can pass functions to other functions.
   - id: functions4
-    name: Functions (4)
+    name: Functions
     title: Invoking anonymous functions
     monitor: sum
     code: |
@@ -548,7 +548,7 @@ slides:
 
 
   - id: functions5
-    name: Functions (5)
+    name: Functions
     title: Scoping
     monitor: result
     code: |
@@ -570,7 +570,7 @@ slides:
       3. At the very top there is special scope called "Global scope".
 
   - id: functions6
-    name: Functions (6)
+    name: Functions
     title: Variables reference resolving
     monitor: result
     code:
@@ -686,7 +686,7 @@ slides:
       4. Explain why it is important to write good, semantic HTML code - keyboard support works out of the box.
 
   - id: morefunctions1
-    name: More Functions (1)
+    name: More Functions
     title: Creating functions in loops is bad
     code:
       big: true
@@ -713,7 +713,7 @@ slides:
       4. Ask for proposed solutions
 
   - id: moreFunctions2
-    name: More Functions (2)
+    name: More Functions
     title: Everything is an object
     code:
       big: true
@@ -769,7 +769,7 @@ slides:
       3. Say that later we will introduce something more flexible.
 
   - id: mvc1
-    name: MV* (1)
+    name: MV*
     title: Model-View-* architecture
     code:
       big: true
@@ -803,7 +803,7 @@ slides:
       3. We can try to decouple a bit by introducing controller.
 
   - id: mvc2
-    name: MV* (2)
+    name: MV*
     title: Model-View-* architecture
     code: 
       big: true
@@ -837,7 +837,7 @@ slides:
       2. It would be good if changes in Model could be automatically reflected in view.
 
   - id: eventDriven1
-    name: Events (1)
+    name: Events
     title: Observer pattern
     code:
       big: true
@@ -867,7 +867,7 @@ slides:
       We can actually use this to decouple Model and View a little bit more.
 
   - id: eventDriven2
-    name: Events (2)
+    name: Events
     title: Event-driven design
     code:
       big: true
@@ -1060,7 +1060,7 @@ slides:
       // Mention that block scope variables comes in ECMAScript6
 
   - id: functional1
-    name: Functional JS (1)
+    name: Functional JS
     title: JS functional-style
     monitor: primes2
     code: |
@@ -1080,7 +1080,7 @@ slides:
       But most important advantage is new scope created for loop.
 
   - id: functional2
-    name: Functional JS (2)
+    name: Functional JS
     title: JS functional-style processing
     monitor: result
     code: |
@@ -1094,7 +1094,7 @@ slides:
       But what if we want to process only completed elements?
 
   - id: functional3
-    name: Functional JS (3)
+    name: Functional JS
     title: JS functional-style processing - chaining
     monitor: result
     code: |
@@ -1109,7 +1109,7 @@ slides:
       We can chain invocations because those functions just returns new arrays
 
   - id: functional4
-    name: Functional JS (4)
+    name: Functional JS
     title: JS functional-style reduce
     monitor: result
     code: |
@@ -1283,7 +1283,7 @@ slides:
               </html>
 
   - id: contexts1
-    name: Contexts (1)
+    name: Contexts
     title: Reusability of methods
     monitor: TodosModel._todos
     code: |
@@ -1304,7 +1304,7 @@ slides:
       Change TodosModel to "this" in this snippet and explain similarity to Java
 
   - id: contexts2
-    name: Contexts (2)
+    name: Contexts
     title: Contexts - caveats
     monitor: results
     code:
@@ -1339,7 +1339,7 @@ slides:
       );
 
   - id: contexts3
-    name: Contexts (3)
+    name: Contexts
     title: Contexts - more caveats
     monitor: result
     code: |
@@ -1362,7 +1362,7 @@ slides:
       // Explain what global scope is and that `this` is set to global scope if none can be found.
 
   - id: contexts4
-    name: Contexts (4)
+    name: Contexts
     title: Contexts - even more caveats
     fiddle:
       hideOutput: true
@@ -1410,7 +1410,7 @@ slides:
       //  2. Use `bind` function
 
   - id: contexts5
-    name: Contexts (5)
+    name: Contexts
     title: Invoking function in specific context
     monitor: result
     code:
@@ -1441,7 +1441,7 @@ slides:
       2. Make sure that everyone notices that after binding context .call (and .apply) doesn't matter
 
   - id: contexts6
-    name: Contexts (6)
+    name: Contexts
     title: Other applications of <code>bind</code>
     monitor: result
     code: |
@@ -1465,7 +1465,7 @@ slides:
       Explain that using `bind` we can create partially applied functions.
 
   - id: context7
-    name: Contexts (7)
+    name: Contexts
     title: Contexts and functional-style
     monitor: TodosView._results
     code: |
@@ -1604,7 +1604,7 @@ slides:
 
       Explain how outputs under code works.
   - id: rest1
-    name: REST (1)
+    name: REST
     title: REST - Representational State Transfer
     text: |
       <h2 class="text-warning">RESTful architecture constraints</h2>
@@ -1650,7 +1650,7 @@ slides:
       REST is architecture vs SOAP is a protocol.
 
   - id: rest2
-    name: REST (2)
+    name: REST
     title: RESTful API Example (URLs)
     text: |
       <h2>
@@ -1666,7 +1666,7 @@ slides:
       <h3>URL representing a single fruit with id <code>apple1</code></h3>
 
   - id: rest3
-    name: REST (3)
+    name: REST
     title: RESTful API Example (Methods on collection)
     text: |
       <h2>
@@ -1701,7 +1701,7 @@ slides:
       These properties might be used by Proxies or clients implementations.
 
   - id: rest4
-    name: REST (4)
+    name: REST
     title: RESTful API Example (Methods on objects)
     text: |
       <h2>
@@ -1725,7 +1725,7 @@ slides:
       POST (Create) operation is rarely used on specific objects.
 
   - id: rest5
-    name: REST (5)
+    name: REST
     title: RESTful JSON API Example
     monitor: result
     code:
@@ -1759,7 +1759,7 @@ slides:
       Second call returns a single user out of collection, with more detailed information (like "name")
 
   - id: ajax1
-    name: AJAX (1)
+    name: AJAX
     title: Asynchronous JavaScript and XML
     monitor: promise
     code:
@@ -1781,7 +1781,7 @@ slides:
       Mention that AJAX calls cannot be made across different domains.
 
   - id: ajax2
-    name: AJAX (2)
+    name: AJAX
     title: Using jQuery to make AJAX calls
     monitor: promise
     code:
@@ -1806,7 +1806,7 @@ slides:
       Say something about promises and how do they work.
 
   - id: play1
-    name: Play! (1)
+    name: Play!
     title: Play! Framework
     text: |
       <h4 class="text-muted">The High Velocity Web Framework For Java and Scala</h4>
@@ -1840,7 +1840,7 @@ slides:
       Netty (nio framework) and Akka (scala concurrency and distributed computing framework) under-the-hood.
 
   - id: play2
-    name: Play! (2)
+    name: Play!
     title: Routes definition
     text: |
       <h4>
@@ -1870,7 +1870,7 @@ slides:
       Tell about link to documentation
 
   - id: play3
-    name: Play! (3)
+    name: Play!
     title: Writing controller and actions
     text: |
       <h4>
@@ -1906,7 +1906,7 @@ slides:
       And about converting object to JSON.
 
   - id: play4
-    name: Play! (4)
+    name: Play!
     title: Ebean ORM
     text: |
       <h4>
@@ -1944,7 +1944,7 @@ slides:
       Tell that configuration is already defined and model is created
 
   - id: play5
-    name: Play! (5)
+    name: Play!
     title: Fetching objects
     text: |
       <h4>
@@ -1974,7 +1974,7 @@ slides:
       Other methods are described in documentation.
 
   - id: play6
-    name: Play! (6)
+    name: Play!
     title: Creating Eclipse project
     text: |
       <h4>
@@ -2526,7 +2526,7 @@ slides:
         </html>
 
   - id: demo-node1
-    name: Demo (Node.js) (1)
+    name: Demo (Node.js)
     title: Node.js + Mongo DB server implementation
     text: |
       <h4>
@@ -2572,7 +2572,7 @@ slides:
       - Reuse code between server and client.
 
   - id: demo-node2
-    name: Demo (Node.js) (2)
+    name: Demo (Node.js)
     title: Node.js + Mongo DB server implementation
     text: |
       <h4>
@@ -2688,7 +2688,7 @@ slides:
       Point out that there is a warning near code.
 
   - id: specialValues1
-    name: Special Values (1)
+    name: Special Values
     title: JS Special values 
     monitor: specialValues
     code: |
@@ -2709,7 +2709,7 @@ slides:
       Explain why you shouldnt use undefined on your own.
 
   - id: specialValues2
-    name: Special Values (2)
+    name: Special Values
     title: Special Values - Comparison
     monitor: results
     code:
@@ -2764,7 +2764,7 @@ slides:
       Tell that there are plenty of such strange behaviour examples on wtfjs
 
   - id: mixins1
-    name: Mixins (1)
+    name: Mixins
     title: "Teaser: Mixins"
     monitor: result
     code: |
@@ -2794,7 +2794,7 @@ slides:
 
       // But ask how to create another rectangle now?
   - id: mixins2
-    name: Mixins (2)
+    name: Mixins
     title: "Teaser: Mixins"
     text: |
       <h4>
@@ -2842,7 +2842,7 @@ slides:
 
 
   - id: inheritance1
-    name: Inheritance (1)
+    name: Inheritance
     title: "Teaser: Inheritance"
     monitor: results
     code:
@@ -2876,7 +2876,7 @@ slides:
       Function with prototype is a class definition - function is a constructor
 
   - id: inheritance2
-    name: Inheritance (2)
+    name: Inheritance
     title: "Teaser: Inheritance"
     monitor: results
     code:
@@ -2905,7 +2905,7 @@ slides:
       When accessing property / invoking method JS is searching for properties in current object and then in it's prototype and so on.
 
   - id: inheritance3
-    name: Inheritance (3)
+    name: Inheritance
     title: "Teaser: Inheritance"
     text: |
       <div>
