@@ -271,12 +271,12 @@ slides:
     title: "Task: Displaying list of todos"
     text:
       >
-      <h3>
+      <h4>
         Your task is to create <code>index.html</code> and <code>main.js</code> in <code>/public</code> directory.
-      </h3>
-      <h3>
+      </h4>
+      <h4>
         You should also display a list of todos in DOM.
-      </h3>
+      </h4>
     code:
       small: true
       hideOutput: true
@@ -397,12 +397,13 @@ slides:
     title: "Task: Add todo state"
     text:
         >
-        <h3>
+        <h4>
           Your task is to add <code>completed</code>
           state to todo and display that using checkbox.
-        </h3>
+        </h4>
     code:
         hideOutput: true
+        small: true
         content: |
           //Creating checkbox
           var $checkbox = document.createElement('input');
