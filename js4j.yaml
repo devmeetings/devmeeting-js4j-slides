@@ -2063,9 +2063,9 @@ slides:
         <span class="glyphicon glyphicon-new-window text-muted"></span>
         <a href="http://vanilla-js.com/" target="js">Vanilla.js</a>
       </h4>
-      <br>
     fiddle:
       pure: true
+      big: true
       js: |
         var FakeStorage = {
           addTodo: function(todo, callback) { callback(todo); },
@@ -2235,6 +2235,8 @@ slides:
             <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
           </body>
         </html>
+    notes: |
+      Tell why there is a fake storage.
 
   - id: demo-backbone
     name: Demo (Backbone)
@@ -2244,8 +2246,152 @@ slides:
         <span class="glyphicon glyphicon-new-window text-muted"></span>
         <a href="http://backbonejs.org" target="js">Backbone.js</a>
       </h4>
-      <br>
-    fiddle: |
+    notes: |
+      Note that there is no Storage implementation cause in Backbone we have it out-of-the box.
+
+      Main advantange over vanilla.js is that every developer will right the code in more-less the same manner.
+      Code is also reusable - we can define other todos list right away.
+
+      Backbone adds skeleton and some wireframe to your projects.
+    fiddle:
+      pure: true
+      big: true
+      js: |
+          var Todo = Backbone.Model.extend({
+              defaults: {
+                  title: "",
+                  completed: false
+              }
+          });
+          var Todos = Backbone.Collection.extend({
+              url: '/todos',
+              model: Todo,
+              _hideCompleted: false,
+              initialize: function() {
+                  this.fetch({
+                      reset: true
+                  });
+              },
+              addTodo: function(title) {
+                  this.create({
+                      title: title,
+                      completed: false
+                  });
+              },
+              getTodos: function() {
+                  if (this._hideCompleted) {
+                      return this.where({completed: false});
+                  }
+                  return this.slice();
+              },
+              setHideCompleted: function(hideCompleted) {
+                  this._hideCompleted = hideCompleted;
+                  this.trigger('change:hideCompleted');
+              }
+          });
+          var TodoView = Backbone.View.extend({
+              tagName: 'label',
+              className: 'list-group-item',
+              events: {
+                  'change input': '_changeCompleted'
+              },
+              template: _.template('&lt;input type="checkbox" <% if (completed) { %> checked <% } %>> <%= title %>'),
+              initialize: function() {
+                  this.listenTo(this.model, 'change', this.render);
+                  this.render();
+              },
+              _changeCompleted: function(ev) {
+                  var completed = ev.currentTarget.checked;
+                  this.model.save({
+                      completed: completed
+                  });
+              },
+              render: function() {
+                  this.$el.empty();
+                  var htmlContent = this.template(this.model.attributes);
+                  this.$el.append(htmlContent);
+                  return this;
+              }
+          });
+          var TodosView = Backbone.View.extend({
+              el: '.main-container',
+              events: {
+                  'submit .todo-add-form': "_addTodo",
+                  'change .todo-hide-completed': '_changeHideCompleted'
+              },
+              initialize: function() {
+                  this.listenTo(this.collection, "reset", this.render);
+                  this.listenTo(this.collection, "add", this._appendOne);
+                  this.listenTo(this.collection, "change:hideCompleted", this.render);
+              },
+              _addTodo: function(ev) {
+                  ev.preventDefault();
+                  var $addTitle = this.$('.todo-add-input');
+                  var title = $addTitle.val();
+                  $addTitle.val("");
+                  this.collection.addTodo(title);
+              },
+              _changeHideCompleted: function(ev) {
+                  var checked = ev.currentTarget.checked;
+                  this.collection.setHideCompleted(checked);
+              },
+              _appendOne: function(todo) {
+                  var todoView = new TodoView({
+                      model: todo
+                  });
+                  this.$('.todos').append(todoView.$el);
+              },
+              render: function() {
+                  this.$('.todos').empty();
+                  this.collection.getTodos().forEach(function(todo){
+                      this._appendOne(todo);
+                  }, this);
+                  return this;
+              }
+          });
+          var todos = new Todos();
+          var view = new TodosView({
+              collection: todos
+          });
+          view.render();
+
+          todos.addTodo("New todo 1");
+          todos.addTodo("New todo 2");
+
+      html: |
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Todos - JS4J @ Devmeetings</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- Bootstrap -->
+            <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+          </head>
+          <body>
+            <div class="container main-container" role="main">
+              <div class="todos list-group"></div>
+              <form class="form-inline">
+                <label>
+                  <input type="checkbox" class="todo-hide-completed">
+                  Hide completed todos
+                </label>
+              </form>
+              <form class="form-inline todo-add-form">
+                <input type="text" class="form-control todo-add-input">
+                <button class="btn btn-default todo-add-button">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  Add todo
+                </button>
+              </div>
+            </div>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+            <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
+          </body>
+        </html>
+
 
   - id: demo-angular
     name: Demo (Angular)
