@@ -8,24 +8,44 @@ slides:
     text:
         >
         <h2>Devmeetings rocks!</h2>
+        <div class="text-center">
+          <a href="http://pl.tinypic.com?ref=oa2mbk" target="_blank">
+            <img src="http://i39.tinypic.com/oa2mbk.png" alt="Image and video hosting by TinyPic" width="400">
+          </a>
+        </div>
     notes:
   - id: setup
     name: Environment
-    text:
-        >
-        <p>By now you should have following software installed.</p>
-        <ul>
-        <li>GIT</li>
-        <li>Sublime Text</li>
-        <li>Node.js</li>
-        <li>Play! Framework</li>
-        </ul>
+    text: |
+        <h2>By now you should have following software installed.</h2>
+        <h3>
+          <span class="glyphicon glyphicon-ok text-success"></span>
+          GIT
+        </h3>
+        <h3>
+          <span class="glyphicon glyphicon-ok text-success"></span>
+          Node.js
+        </h3>
+        <h3>
+          <span class="glyphicon glyphicon-ok text-success"></span>
+          Play! Framework
+        </h3>
+        <h3>
+          <span class="glyphicon glyphicon-ok text-success"></span>
+          Sublime Text
+        </h3>
+        <h3>
+          <span class="glyphicon glyphicon-ok text-success"></span>
+          Eclipse
+        </h3>
+        <br>
+        <h4 class="text-muted">If you are missing something approach me during break</h4>
 
   - id: run
     name: Run
     title: Run Forest, Run!
     text: |
-        <p>Invoke in console:</p>
+        <h3>Invoke in console:</h3>
         <pre><code>$ play run
 
         [info] Loading project definition from /share/public_html/devmeetings/Todos/project
@@ -37,7 +57,7 @@ slides:
 
         (Server started, use Ctrl+D to stop and go back to the console...)
         </code></pre>
-        <p>Open <a href="http://localhost:9000">localhost:9000</a></p>
+        <h3>Open <a href="http://localhost:9000" target="page">localhost:9000</a> <span class="glyphicon glyphicon-new-window text-muted"></span> </h3>
 
   - id: basics1
     name: JS Basics (1)
@@ -147,6 +167,7 @@ slides:
                 <a href="http://watershedcreative.com/naked/html-tree.html" target="dom">
                   http://watershedcreative.com/naked/html-tree.html
                 </a>
+                <span class="glyphicon glyphicon-new-window text-muted"></span>
             </address>
           </figcaption>
           </figure>
@@ -203,7 +224,10 @@ slides:
     name: Accessing DOM (2)
     title: jQuery style
     text: |
-      <h4><a href="http://jquery.com/">What is jQuery?</a></h4>
+      <h4>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="http://jquery.com/" target="jquery">What is jQuery?</a>
+      </h4>
     monitor: content
     code:
       small: true
@@ -1804,7 +1828,10 @@ slides:
       </h2>
 
       <br>
-      <h4><a href="http://www.playframework.com/">http://www.playframework.com/</a></h4>
+      <h4>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="http://www.playframework.com/" target="play">http://www.playframework.com/</a>
+      </h4>
     notes: |
       Inspired by frameworks available in interpreted languages like: python, JS, Ruby etc.
 
@@ -1814,7 +1841,10 @@ slides:
     name: Play! (2)
     title: Routes definition
     text: |
-      <h4><a href="http://www.playframework.com/documentation/2.2.x/JavaRouting">HTTP Routing docs</a></h4>
+      <h4>
+        <span class="glyphicon glyphicon-book text-muted"></span>
+        <a href="http://www.playframework.com/documentation/2.2.x/JavaRouting" target="play">HTTP Routing docs</a>
+      </h4>
       <br>
       <h3>File path: <code>conf/routes</code></h3>
     code:
@@ -1841,7 +1871,10 @@ slides:
     name: Play! (3)
     title: Writing controller and actions
     text: |
-      <h4><a href="http://www.playframework.com/documentation/2.2.x/JavaActions">Controllers & Actions Docs</a></h4>
+      <h4>
+        <span class="glyphicon glyphicon-book text-muted"></span>
+        <a href="http://www.playframework.com/documentation/2.2.x/JavaActions" target="play">Controllers & Actions Docs</a>
+      </h4>
       <br>
       <h3>File path: <code>app/controllers/Application.java</code></h3>
     code:
@@ -1874,7 +1907,10 @@ slides:
     name: Play! (4)
     title: Ebean ORM
     text: |
-      <h4><a href="http://www.playframework.com/documentation/2.2.x/JavaEbean">Using Ebean Docs</a></h4>
+      <h4>
+        <span class="glyphicon glyphicon-book text-muted"></span>
+        <a href="http://www.playframework.com/documentation/2.2.x/JavaEbean" target="play">Using Ebean Docs</a>
+      </h4>
       <br>
       <h3>File path: <code>app/models/Todo.java</code></h3>
     code: 
@@ -1909,7 +1945,10 @@ slides:
     name: Play! (5)
     title: Fetching objects
     text: |
-      <h4><a href="http://www.playframework.com/documentation/2.2.x/JavaEbean">Using Ebean Docs</a></h4>
+      <h4>
+        <span class="glyphicon glyphicon-book text-muted"></span>
+        <a href="http://www.playframework.com/documentation/2.2.x/JavaEbean" target="play">Using Ebean Docs</a>
+      </h4>
       <br>
       <h3>File path: <code>app/controllers/Application.java</code></h3>
     code: 
@@ -1929,6 +1968,27 @@ slides:
                 return ok(Json.toJson(todos)).as("application/json");
             }
         }
+    notes: |
+      Other methods are described in documentation.
+
+  - id: play6
+    name: Play! (6)
+    title: Creating Eclipse project
+    text: |
+      <h4>
+        <span class="glyphicon glyphicon-book text-muted"></span>
+        <a href="http://www.playframework.com/documentation/2.2.x/IDE" target="play">Setting up your preferred IDE</a>
+      </h4>
+      <br>
+      <h3>In console run:</h3>
+    code: 
+      language: generic
+      content: |
+        $ play "eclipse with-source=true"
+
+        // this should generate your Eclipse project that can be imported using:
+        // File -> Import -> General -> Existing project
+
     notes: |
       Other methods are described in documentation.
 
@@ -2040,6 +2100,181 @@ slides:
         - Change persistence to Local Storage
       extras:
         - Make Local Storage / REST Persistence easily interchangable.
+
+  - id: comparison
+    name: Comparison
+    title: JS Comparison operators 
+    monitor: results
+    code: |
+      var results = {
+        "strings are equal using ==": "asd" == "asd",
+        "strings are equal using ===": "asd" === "asd",
+        //
+        "numbers are equal using ==": 5 == "5",
+        "numbers NOT equal using ===": 5 === "5",
+        //
+        "using == is bad": "" == 0,
+        "so always use ===": "" !== 0
+      };
+
+    notes: |
+      Explain the difference between == and === and their counterparts != and !==.
+      Point out that there is a warning near code.
+
+  - id: specialValues1
+    name: Special Values (1)
+    title: JS Special values 
+    monitor: specialValues
+    code: |
+      var specialValues = {
+        "null": null,
+        "undefined": undefined,
+        "Not a number": NaN
+      };
+
+      specialValues["true"] = "undefined" in specialValues;
+      specialValues["false"] = "undefined2" in specialValues;
+
+      specialValues["true again"] = specialValues['undefined'] === specialValues['undefined2'];
+      console.log(specialValues);
+    notes: |
+      Tell the difference between undefined and null.
+
+      Explain why you shouldnt use undefined on your own.
+
+  - id: specialValues2
+    name: Special Values (2)
+    title: Special Values - Comparison
+    monitor: results
+    code:
+      big: true
+      content: |
+        var results = {
+          obvious: {
+            "true !=(=) undefined": true != undefined,
+            "true !=(=) null": true != null
+          },
+          makesSense: {
+           "undefined == null": undefined == null,
+           "isNaN == isNaN": isNaN == (0 + undefined)
+          },
+          stupid: {
+            "false ==(=) undefined": false == undefined,
+            "false ==(=) null": false == null
+          },
+          evenWorse: {
+            "true ==(=) !undefined": true == !undefined,
+            "true ==(=) !null": true == !null
+          }
+        };
+    notes: |
+      Fiddle around with questions
+      tell about isNaN()
+
+  - id: specialComparisons
+    name: Special Comparisons
+    title: Mind-bogglers
+    text: |
+      <h3>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="http://wtfjs.com/" target="ext">WTF JS?</a>
+        &nbsp;
+        <span class="glyphicon glyphicon-film text-muted"></span>
+        <a href="https://www.destroyallsoftware.com/talks/wat" target="ext">WAT!?</a>
+      </h3>
+      <br>
+    monitor: results
+    code:
+      content: |
+        var results = {
+          "[] == ![]": [] == ![],
+          "{} == !{}": {} == !{},
+          "[1,2,3] == [1,2,3]": [1,2,3] == [1,2,3],
+          "[1,2,3] < [1,2,5]": [1,2,3] < [1,2,5],
+          "Math.min() < Math.max()": Math.min() < Math.max()
+        };
+    notes: |
+      Tell that there are plenty of such strange behaviour examples on wtfjs
+
+  - id: mixins1
+    name: Mixins (1)
+    title: "Teaser: Mixins"
+    monitor: result
+    code: |
+      var rect = {
+        a: 5,
+        b: 3
+      };
+      var area = function(rect) {
+        return rect.a * rect.b;
+      };
+
+      var result = area(rect);
+    notes: |
+      // Let's now try to add this behaviour to all rectangles as a method.
+      // How can we do this? In Java we would just create a class.
+      // You may refactor the code to something like this:
+      
+      var rect = {
+        a: 5,
+        b: 3
+        area: function() {
+          return this.a * this.b;
+        }
+      };
+
+      var result = rect.area();
+
+      // But ask how to create another rectangle now?
+  - id: mixins2
+    name: Mixins (2)
+    title: "Teaser: Mixins"
+    monitor: results
+    code:
+      big: true
+      content: |
+        var mixin = function(destination /* args */) {
+          [].slice.call(arguments, 1).forEach(function(source) {
+            for (var k in source) {
+              destination[k] = source[k];
+            }
+          });
+          return destination;
+        };
+        // ✂---------------
+        var rectFunctions = {
+          area: function() {
+            return this.a * this.b;
+          }
+        };
+
+        var rect1 = mixin({a: 5, b: 3}, rectFunctions);
+        var rect2 = mixin({a: 4, b: 4}, rectFunctions);
+
+        var results = {
+          rect1: rect1.area(),
+          rect2: rect2.area()
+        };
+    notes: |
+      // Ask if any1 knows what [].slice.call means. Explain.
+
+      // We can easily add for instance "toString" method
+      var rectFunctions = {
+        area: function() {
+            return this.a * this.b;
+        },
+        toString: function() {
+            return "Rect(" + this.a + ", " + this.b + ")";
+        }
+      };
+
+
+  - id: inheritance
+    name: Inheritance
+    title: "Teaser: Inheritance"
+
+
+
 
   # Demo of applications in different implementations
 
