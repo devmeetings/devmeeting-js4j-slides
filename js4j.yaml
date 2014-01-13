@@ -2401,8 +2401,125 @@ slides:
         <span class="glyphicon glyphicon-new-window text-muted"></span>
         <a href="http://angularjs.org/" target="js">Angular.js</a>
       </h4>
-      <br>
-    fiddle: |
+    notes: |
+      - Less JS code - Better! (without mocking $http it's only 59 lines)
+      - Clear separation between Presentation and Model
+      - Automatic two-way binding between DOM and JS
+      - No DOM in JS (any)
+      - More HTML, but no strange CSS classes need only to reference element in JS
+
+    fiddle:
+      pure: true
+      big: true
+      js: |
+        var todos = angular.module('todos', []);
+
+        // Controller (dom-model binding)
+        todos.controller('TodoCtrl', ['$scope', 'TodosService', function($scope, TodosService) {
+
+            $scope.newTodoTitle = "";
+            $scope.hideCompleted = false;
+
+            var addTodo = function(title) {
+              TodosService.addTodo({
+                  title: title,
+                  completed: false
+              }).then(function(todo) {
+                  $scope.todos.push(todo.data);
+                  console.log("Todo added.");
+              });
+            };
+
+            TodosService.getTodos().then(function(todos) {
+                $scope.todos = todos.data;
+
+                addTodo('New todo 1');
+                addTodo('New todo 2');
+            });
+
+            $scope.addTodo = function() {
+                var title = $scope.newTodoTitle;
+                $scope.newTodoTitle = "";
+                addTodo(title);
+            };
+
+            $scope.updateTodo = function(todo) {
+                TodosService.updateTodo(todo).then(function() {
+                    console.log("Todo updated.");
+                });
+            };
+
+            $scope.getTodosFilter = function() {
+                var filter = {};
+                !$scope.hideCompleted || (filter['completed'] = false);
+                return filter;
+            };
+        }]);
+
+        // Service (abstraction over http)
+        todos.factory('TodosService', ['$http', function($http) {
+            return {
+                addTodo: function(todo) {
+                    return $http.post('/todos', todo);
+                },
+                updateTodo: function(todo) {
+                    return $http.put('/todos/'+todo.id, todo);
+                },
+                getTodos: function() {
+                    return $http.get('/todos');
+                }
+            };
+        }]);
+
+        // We can override services (even internal ones)
+        todos.config(function($provide){
+          $provide.factory('$http', ['$q', function($q) {
+            return {
+                get: function() { return $q.when({data: []}); },
+                post: function(url, object) { return $q.when({data: object}); },
+                put: function(url, object) { return $q.when({data: object}); }
+            };
+          }]);
+        });
+
+      html: |
+        <!DOCTYPE html>
+        <html ng-app="todos" data-framework="angularjs">
+          <head>
+            <meta charset="utf-8">
+            <title>Todos - JS4J @ Devmeetings</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- Bootstrap -->
+            <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+          </head>
+          <body>
+            <div class="container main-container" role="main" ng-controller="TodoCtrl">
+              <div class="list-group">
+                <label class="list-group-item" 
+                  ng-repeat="todo in todos | filter:getTodosFilter()">
+                  <input type="checkbox" ng-model="todo.completed" ng-change="updateTodo(todo)">
+                  {{ todo.title }}
+                </label>
+              </div>
+              <form class="form-inline">
+                <label>
+                  <input type="checkbox" ng-model="hideCompleted">
+                  Hide completed todos
+                </label>
+              </form>
+              <form class="form-inline" ng-submit="addTodo()">
+                <input type="text" class="form-control" ng-model="newTodoTitle">
+                <button class="btn btn-default">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  Add todo
+                </button>
+              </div>
+            </div>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+            <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+          </body>
+        </html>
 
   - id: localStorage
     name: Local Storage
