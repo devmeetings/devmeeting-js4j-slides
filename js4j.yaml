@@ -7,7 +7,10 @@ slides:
     title: JS 4 Java Devs
     text:
         >
-        <h2>Devmeetings rocks!</h2>
+        <h2>
+          <a href="http://devmeetings.pl"><img src="http://devmeetings.pl/site/wp-content/uploads/logo_devmeetings_wordpress2.png"></a>
+          rocks!
+        </h2>
         <div class="text-center">
           <a href="http://pl.tinypic.com?ref=oa2mbk" target="_blank">
             <img src="http://i39.tinypic.com/oa2mbk.png" alt="Image and video hosting by TinyPic" width="400">
