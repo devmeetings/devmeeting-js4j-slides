@@ -2229,6 +2229,11 @@ slides:
   - id: mixins2
     name: Mixins (2)
     title: "Teaser: Mixins"
+    text: |
+      <h4>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="https://github.com/dilvie/stampit">Stampit - library for composing objects</a>
+      </h4>
     monitor: results
     code:
       big: true
@@ -2269,10 +2274,93 @@ slides:
       };
 
 
-  - id: inheritance
-    name: Inheritance
+  - id: inheritance1
+    name: Inheritance (1)
     title: "Teaser: Inheritance"
+    monitor: results
+    code:
+      big: true
+      content: |
+        var Rect = function(a, b) {
+          this.a = a;
+          this.b = b;
+        };
+        Rect.prototype = {
+          area: function() {
+            return this.a * this.b;
+          }
+        };
 
+        var rect1 = new Rect(5, 3);
+        var rect2 = new Rect(4, 4);
+
+        var results = {
+          rect1: rect1.area(),
+          rect2: rect2.area()
+        };
+
+    notes: |
+      JS does have objects in classical sense (with "new" operator),
+      but inheritance is done in different way.
+
+      Actually you can implement class inheritance with prototype mechanism available in JS.
+
+      Analyze this example. And say that prototype is just an object with common properties / methods.
+      Function with prototype is a class definition - function is a constructor
+
+  - id: inheritance2
+    name: Inheritance (2)
+    title: "Teaser: Inheritance"
+    monitor: results
+    code:
+      big: true
+      content: |
+        var Rect = function(a, b) {
+          this.a = a;
+          this.b = b;
+        };
+        Rect.prototype = {
+          area: function() { return this.a * this.b; }
+        };
+
+        var Square = function(a) {
+          this.a = a;
+          this.b = a;
+        };
+        Square.prototype = new Rect(1, 1);
+
+        var results = {
+          sq1: new Square(5).area(),
+          sq2: new Square(4).area()
+        };
+    notes: |
+      We can use existing object as a prototype for newly created ones.
+      When accessing property / invoking method JS is searching for properties in current object and then in it's prototype and so on.
+
+  - id: inheritance3
+    name: Inheritance (3)
+    title: "Teaser: Inheritance"
+    text: |
+      <div>
+        <a href="http://pl.tinypic.com?ref=qzfb00" target="_blank">
+          <img src="http://i41.tinypic.com/qzfb00.png" border="0" alt="Image and video hosting by TinyPic">
+        </a>
+      </div>
+      <br>
+    monitor: square;
+    code: |
+      var square = { //Type: Square
+        a: 4,
+        b: 4,
+        __proto___: { //Type: Rect
+          a: 1,
+          b: 1,
+          __proto___: { //Type: Object
+            area: "function(){ return this.a * this.b; }",
+            __proto___: "// Type: Object.prototype"
+          }
+        }
+      };
 
 
 
