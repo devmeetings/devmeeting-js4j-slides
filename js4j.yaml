@@ -647,7 +647,7 @@ slides:
 
                       $checkbox.addEventListener('change', (function(todo2){
                         return function() {
-                          todo2.completed = !todo2.completed;
+                          todo2.completed = $checkbox.checked;
                           console.table(todos);
                         };
                       }(todo)));
@@ -957,10 +957,10 @@ slides:
                   var $form = document.querySelector('form.todo-add-form');
 
                   $form.addEventListener('submit', function(ev) {
+                      ev.preventDefault();
                       if (!$input.value) { return; }
                       TodosModel.addTodo($input.value);
                       $input.value = '';
-                      ev.preventDefault();
                   });
                 },
 
@@ -974,11 +974,9 @@ slides:
                   $checkbox.type = 'checkbox';
                   $checkbox.checked = todo.completed;
 
-                  $checkbox.addEventListener('change', (function(todo2){
-                    return function() {
-                      todo2.completed = !todo2.completed;
-                    };
-                  }(todo)));
+                  $checkbox.addEventListener('change', function() {
+                      todo.completed = $checkbox.checked;
+                  });
 
                   $todo.appendChild($checkbox);
                   $todo.appendChild(document.createTextNode(" " + todo.title));
@@ -1193,16 +1191,18 @@ slides:
               var TodosView = {
                 initialize: function() {
                   var $input = document.querySelector('input.todo-add-input');
-                  var $btn = document.querySelector('button.todo-add-button');
+                  var $form = document.querySelector('form.todo-add-form');
 
-                  $btn.addEventListener('click', function() {
+                  $form.addEventListener('submit', function(ev) {
+                      ev.preventDefault();
+
                       if (!$input.value) { return; }
                       TodosModel.addTodo($input.value);
                       $input.value = '';
                   });
 
                   var $hideCompleted = document.querySelector('input.todo-hide-completed');
-                  $hideCompleted.addEventListener('click', function() {
+                  $hideCompleted.addEventListener('change', function() {
                     TodosModel.setHideCompleted($hideCompleted.checked);
                   });
                 },
@@ -1217,11 +1217,9 @@ slides:
                   $checkbox.type = 'checkbox';
                   $checkbox.checked = todo.completed;
 
-                  $checkbox.addEventListener('change', (function(todo2){
-                    return function() {
-                      todo2.completed = !todo2.completed;
-                    };
-                  }(todo)));
+                  $checkbox.addEventListener('change', function() {
+                      todo.completed = $checkbox.checked;
+                  });
 
                   $todo.appendChild($checkbox);
                   $todo.appendChild(document.createTextNode(" " + todo.title));
@@ -1268,7 +1266,7 @@ slides:
                       Hide completed todos
                     </label>
                   </form>
-                  <div class="form-inline">
+                  <form class="form-inline todo-add-form">
                     <input type="text" class="form-control todo-add-input">
                     <button class="btn btn-default todo-add-button">
                       <span class="glyphicon glyphicon-plus"></span>
@@ -2056,6 +2054,209 @@ slides:
         Tell that we don't want to allow overriding id. this is why we ensure in updateTodo method that id is the same.
         Instead of using todo.save() we can also use Ebean.save(todo)
 
+  - id: demo-reference
+    name: Demo (Vanilla)
+    title: Vanilla.js implementation
+
+    text: |
+      <h4>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="http://vanilla-js.com/" target="js">Vanilla.js</a>
+      </h4>
+      <br>
+    fiddle:
+      pure: true
+      js: |
+        var FakeStorage = {
+          addTodo: function(todo, callback) { callback(todo); },
+          updateTodo: function(todo, callback) { callback(todo); },
+          getTodos: function(callback) { callback([]); }
+        };
+        var Storage = {
+            addTodo: function(todo, callback) {
+                $.ajax({
+                    method: 'post',
+                    url: '/todos',
+                    data: JSON.stringify(todo),
+                    contentType: 'application/json; charset=utf-8'
+                }).then(callback);
+            },
+            updateTodo: function(todo, callback) {
+                return $.ajax({
+                  method: 'put',
+                  url: '/todos/' + todo.id,
+                  data: JSON.stringify(todo),
+                  contentType: 'application/json; charset=utf-8'
+                }).then(callback);
+            },
+            getTodos: function(callback) {
+                $.get('/todos').then(function(todos) {
+                    callback(todos);
+                });
+            }
+        };
+
+        var TodosModel = {
+          listener: null,
+          _todos: [],
+          _hideCompleted: false,
+          _storage: FakeStorage,
+
+          initialize: function() {
+            this._storage.getTodos(function(todos) {
+              this._todos = todos;
+              this._triggerReset();
+            }.bind(this));
+          },
+          addTodo: function(title) {
+            var todo = {
+              title: title,
+              completed: false
+            };
+            this._storage.addTodo(todo, function() {
+              this._todos.push(todo);
+              this.listener({
+                name: 'add',
+                data: todo
+              });
+            }.bind(this));
+          },
+          toggleCompleted: function(todo, completed) {
+            todo.completed = completed;
+            return this._storage.updateTodo(todo, function() {
+              console.log("Todo updated", todo);
+            });
+          },
+          getTodos: function() {
+            return this._todos.filter(function(todo){
+              return !this._hideCompleted || !todo.completed;
+            }, this);
+          },
+          setHideCompleted: function(hideCompleted) {
+            this._hideCompleted = hideCompleted;
+            this._triggerReset();
+          },
+          _triggerReset: function() {
+            this.listener({
+              name: 'reset',
+              data: this.getTodos()
+            });
+          }
+        };
+
+        var TodosView = {
+          initialize: function() {
+            var $input = document.querySelector('input.todo-add-input');
+            var $form = document.querySelector('form.todo-add-form');
+
+            $form.addEventListener('submit', function(ev) {
+                ev.preventDefault();
+                if (!$input.value) { return; }
+                TodosModel.addTodo($input.value);
+                $input.value = '';
+            });
+
+            var $hideCompleted = document.querySelector('input.todo-hide-completed');
+            $hideCompleted.addEventListener('change', function() {
+              TodosModel.setHideCompleted($hideCompleted.checked);
+            });
+          },
+
+          renderTodo: function(todo) {
+            var $todosContainer = document.querySelector('.todos');
+
+            $todo = document.createElement('label');
+            $todo.className = 'list-group-item';
+
+            $checkbox = document.createElement('input');
+            $checkbox.type = 'checkbox';
+            $checkbox.checked = todo.completed;
+
+            $checkbox.addEventListener('change', function(){
+              TodosModel.toggleCompleted(todo, $checkbox.checked);
+            });
+
+            $todo.appendChild($checkbox);
+            $todo.appendChild(document.createTextNode(" " + todo.title));
+
+            $todosContainer.appendChild($todo);
+          },
+          renderAll: function(todos) {
+            document.querySelector('.todos').innerHTML = '';
+            todos.forEach(function(todo) {
+              this.renderTodo(todo);
+            }, this);
+          },
+          listener: function(ev) {
+            if (ev.name === 'add') {
+              this.renderTodo(ev.data);
+            } else if (ev.name === 'reset') {
+              this.renderAll(ev.data);
+            }
+          }
+        };
+
+        // Assign listener
+        TodosModel.listener = TodosView.listener.bind(TodosView);
+
+        TodosModel.initialize();
+        TodosView.initialize();
+
+        TodosModel.addTodo("New todo 1");
+        TodosModel.addTodo("New todo 2");
+      html: |
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Todos - JS4J @ Devmeetings</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- Bootstrap -->
+            <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+          </head>
+          <body>
+            <div class="container main-container" role="main">
+              <div class="todos list-group"></div>
+              <form class="form-inline">
+                <label>
+                  <input type="checkbox" class="todo-hide-completed">
+                  Hide completed todos
+                </label>
+              </form>
+              <form class="form-inline todo-add-form">
+                <input type="text" class="form-control todo-add-input">
+                <button class="btn btn-default todo-add-button">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  Add todo
+                </button>
+              </div>
+            </div>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+            <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+          </body>
+        </html>
+
+  - id: demo-backbone
+    name: Demo (Backbone)
+    title: Backbone.js implementation
+    text: |
+      <h4>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="http://backbonejs.org" target="js">Backbone.js</a>
+      </h4>
+      <br>
+    fiddle: |
+
+  - id: demo-angular
+    name: Demo (Angular)
+    title: Angular.js implementation
+    text: |
+      <h4>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="http://angularjs.org/" target="js">Angular.js</a>
+      </h4>
+      <br>
+    fiddle: |
 
   - id: localStorage
     name: Local Storage
@@ -2189,6 +2390,7 @@ slides:
         var results = {
           "[] == ![]": [] == ![],
           "{} == !{}": {} == !{},
+          "[1] == '1'": [1] == "1",
           "[1,2,3] == [1,2,3]": [1,2,3] == [1,2,3],
           "[1,2,3] < [1,2,5]": [1,2,3] < [1,2,5],
           "Math.min() < Math.max()": Math.min() < Math.max()
@@ -2371,11 +2573,11 @@ slides:
           <img src="http://i39.tinypic.com/oa2mbk.png" alt="Image and video hosting by TinyPic" width="400">
         </a>
       </div>
-      <h3>
+      <h3 class="text-right">
         <span class="icon-mail text-muted"></span>
         <a href="mailto:tomasz.drwiega@gmail.com">tomasz.drwiega@gmail.com</a>
       </h3>
-      <h3>
+      <h3 class="text-right">
         <span class="icon-github text-muted"></span> <a href="https://github.com/tomusdrw" target="profile">github/tomusdrw</a>
         &nbsp;
         <span class="icon-google-plus text-muted"></span> <a href="https://plus.google.com/+TomaszDrwi%C4%99ga" target="profile">+Tomasz Drwięga</a>
