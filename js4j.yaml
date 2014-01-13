@@ -2521,6 +2521,104 @@ slides:
           </body>
         </html>
 
+  - id: demo-node1
+    name: Demo (Node.js) (1)
+    title: Node.js + Mongo DB server implementation
+    text: |
+      <h4>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="http://expressjs.com/">Express.js - web application framework for node.js</a>
+      </h4>
+      <h4>File <code>app.js</code></h4>
+    code:
+      big: true
+      hideOutput: true
+      content: |
+        var express = require('express');
+        var routes = require('./routes');
+        var http = require('http');
+        var path = require('path');
+
+        var app = express();
+
+        // all environments
+        app.set('port', process.env.PORT || 3000);
+        app.set('views', path.join(__dirname, 'views'));
+        app.set('view engine', 'jade');
+        app.use(express.favicon());
+        app.use(express.logger('dev'));
+        app.use(express.json());
+        app.use(express.urlencoded());
+        app.use(express.methodOverride());
+        app.use(app.router);
+        app.use('/assets', express.static(path.join(__dirname, 'public')));
+
+        app.get ('/', routes.index);
+        app.get ('/todos', routes.getTodos);
+        app.post('/todos', routes.createTodo);
+        app.put ('/todos/:id', routes.updateTodo);
+
+        http.createServer(app).listen(app.get('port'), function(){
+          console.log('Express server listening on port ' + app.get('port'));
+        });
+    notes: |
+      Teaser about Server-Side JS.
+      - You can reuse whole know-how from client side. 
+      - Have the same tooling for Server and Client.
+      - Reuse code between server and client.
+
+  - id: demo-node2
+    name: Demo (Node.js) (2)
+    title: Node.js + Mongo DB server implementation
+    text: |
+      <h4>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="http://expressjs.com/">Express.js - web application framework for node.js</a>
+      </h4>
+      <h4>File <code>routes/index.js</code></h4>
+    code:
+      big: true
+      hideOutput: true
+      content: |
+          var MongoClient = require('mongodb').MongoClient;
+          // Connect to the db
+          var mongoTodos = null;
+          MongoClient.connect("mongodb://localhost:27017/todos", function(err, db) {
+              if (err) { throw err; }
+              mongoTodos = db.collection('todos');
+          });
+
+          exports.index = function(req, res){
+            res.render('index');
+          };
+
+          exports.getTodos = function(req, res) {
+              mongoTodos.find().toArray(function(err, todos){
+                  res.send(todos);
+              });
+          };
+
+          exports.createTodo = function(req, res) {
+              var todo = req.body;
+              mongoTodos.insert(todo, {w:1}, function(err, result) {
+                  res.send(result[0]);
+              });
+          };
+
+          exports.updateTodo = function(req, res) {
+              var todo = req.body;
+              var id = parseInt(req.params.id, 10);
+              todo._id = id;
+              mongoTodos.update({
+                  _id: id
+              }, todo, function(err, updatedTodo){
+                  res.send(updatedTodo[0]);
+              });
+          };
+    notes: |
+      Tell something about Mongo.DB - JSON document store.
+      Make sure that everyone knows that it is Node.js and Express framework.
+
   - id: localStorage
     name: Local Storage
     title: Persistence using Local Storage
