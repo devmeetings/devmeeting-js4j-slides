@@ -29,8 +29,10 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/trainings', routes.getTrainings);
 app.post('/trainings', routes.trainings);
+app['delete']('/trainings', routes.deleteTrainings);
 app.get('/code', routes.getCode);
 app.post('/code', routes.code);
+app['delete']('/code', routes.deleteCode);
 app.post('/report', routes.report);
 app.post('/clear', routes.clear);
 

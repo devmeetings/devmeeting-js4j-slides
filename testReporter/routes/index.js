@@ -108,9 +108,18 @@ var searchCollection = function(collection, req, res) {
         res.send(items);
     });
 };
+var deleteCollection = function(collection, req, res) {
+    this.remove({}, function(err, removed) {
+        res.send({
+            err: err,
+            removed: removed
+        });
+    });
+};
 exports.getTrainings = function(req, res) {
     searchCollection(trainingsCollection, req, res);
 };
+exports.deleteTrainings = deleteCollection.bind(trainingsCollection);
 exports.code = function(req, res) {
     var data = req.body;
     data.date = new Date();
@@ -125,3 +134,4 @@ exports.code = function(req, res) {
 exports.getCode = function(req, res) {
     searchCollection(codeCollection, req, res);
 };
+exports.deleteCode = deleteCollection.bind(codeCollection);
