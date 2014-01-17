@@ -5,17 +5,21 @@ slides:
   - id: opening
     name: Hello World
     title: JS 4 Java Devs
-    text:
-        >
-        <h2>
-          <a href="http://devmeetings.pl"><img src="http://devmeetings.pl/site/wp-content/uploads/logo_devmeetings_wordpress2.png"></a>
-          rocks!
-        </h2>
-        <div class="text-center">
-          <a href="http://pl.tinypic.com?ref=oa2mbk" target="_blank">
-            <img src="http://i39.tinypic.com/oa2mbk.png" alt="Image and video hosting by TinyPic" width="400">
-          </a>
-        </div>
+    left:
+      text:
+          >
+          <h2>
+            <a href="http://devmeetings.pl"><img src="http://blacksoft.eu/files/devmeetings_240.png"></a>
+            rocks!
+          </h2>
+    right:
+      text:
+          >
+          <div class="text-center">
+            <a href="http://pl.tinypic.com?ref=oa2mbk" target="_blank">
+              <img src="http://i39.tinypic.com/oa2mbk.png" alt="Image and video hosting by TinyPic" width="400">
+            </a>
+          </div>
 
   - id: setup
     name: Environment
@@ -61,7 +65,7 @@ slides:
     title: Run Forest, Run!
     text: |
         <h3>Invoke in console:</h3>
-        <pre><code>$ play run
+        <pre class="editor big"><code>$ play run
 
         [info] Loading project definition from /share/public_html/devmeetings/Todos/project
         [info] Set current project to Todos (in build file:/share/public_html/devmeetings/Todos/)
@@ -196,6 +200,7 @@ slides:
     title: Minimal HTML5 webpage
     fiddle:
       active: html
+      big: true
       pure: true
       html: |
           <!DOCTYPE html>
@@ -269,7 +274,8 @@ slides:
         var d = document;
         var $link = d.createElement('a');
         $link.id = 'link';
-        $link.href = 'https://developer.mozilla.org/en-US/docs/Web/API/Element';
+        $link.href = 
+            'https://developer.mozilla.org/en-US/docs/Web/API/Element';
         $link.innerHTML = 'DOM: Element specification';
 
         d.body.appendChild($link);
@@ -881,10 +887,9 @@ slides:
   - id: eventDriven2
     name: Events
     title: Event-driven design
-    code:
+    fiddle:
       big: true
-      hideOutput: true
-      content: |
+      js: |
         var TodosModel = {
           addTodo: function(todo) {
             TodosModel.trigger('add', todo);
@@ -897,11 +902,14 @@ slides:
           }};
         var TodosView = {
           renderTodo: function(todo) {
-            console.log("Rendering", todo);
+            var $h1 = document.createElement('h1');
+            $h1.innerText = todo;
+            document.body.appendChild($h1);
           },
           listener: function(ev) {
             if (ev.name === 'add') TodosView.renderTodo(ev.data);
           }};
+
         TodosModel.listen(TodosView.listener);
 
         // View is automagically notified
