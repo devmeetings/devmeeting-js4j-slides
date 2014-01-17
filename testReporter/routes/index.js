@@ -89,15 +89,34 @@ MongoClient.connect("mongodb://localhost:27017/devmeetings", function(err, db) {
 
 exports.trainings = function(req, res) {
     var data = req.body;
+    data.date = new Date();
 
     trainingsCollection.insert(data);
     allowCrossSiteJson(req, res);
     res.send(data);
 };
+
+var searchCollection = function(collection, req, res) {
+    var search = {};
+    if (req.query.username) {
+        search.user = req.query.username;
+    }
+    collection.find(search).toArray(function(err, items) {
+        res.send(items);
+    });
+};
+exports.getTrainings = function(req, res) {
+    searchCollection(trainingsCollection, req, res);
+};
 exports.code = function(req, res) {
     var data = req.body;
+    data.date = new Date();
+
     codeCollection.insert(data);
 
     allowCrossSiteJson(req, res);
     res.send(data);
+};
+exports.getCode = function(req, res) {
+    searchCollection(codeCollection, req, res);
 };

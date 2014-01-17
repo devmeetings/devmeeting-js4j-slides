@@ -214,20 +214,25 @@ slides:
         </label>
       </h2>
     script: &trainingStats |
+      var $checkbox = $('.training-checkbox');
       var username = localStorage.getItem('name');
-      $('.training-checkbox').bind('change', function(){
+      var training = $checkbox.data('training');
+      $checkbox.bind('change', function(){
         var training = $(this).data('training');
         var state = this.checked;
+        localStorage.setItem('training-'+training, state);
         $.ajax({
           method: 'POST',
           url: 'http://todr.me:3002/tranings',
           data: {
             user: username,
+            currentTraining: 'js4j',
             training: training,
             isGoing: state
           }
         });
       });
+      $checkbox.attr('checked', !!localStorage.getItem('training-'+training));
 
   - id: dom1
     name: HTML5
@@ -256,6 +261,14 @@ slides:
         Talk sth about frameworks like TwitterBootstrap.
         Other examples: Foundation,
         Grid systems: Skeleton, HTML5 Boilerplate, LESS Framework
+    footer: |
+      <h2 class="checkbox">
+        <label>
+          <input type="checkbox" class="training-checkbox" data-training="html5" style="width:25px;height:25px">
+          &nbsp; I would be interested in <span class="text-primary">Semantic HTML5 and CSS</span> training
+        </label>
+      </h2>
+    script: *trainingStats
 
   - id: dom2
     name: Accessing DOM
