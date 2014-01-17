@@ -47,6 +47,13 @@ exports.index = function(req, res) {
     });
 };
 
+var allowCrossSiteJson = function(req, res) {
+    var host = req.headers['origin'];
+    if (host === 'http://todr.me:3001' || host === 'http://localhost:9000' || host === 'http://localhost:3000') {
+        res.setHeader("Access-Control-Allow-Origin", host);
+    }
+};
+
 exports.report = function(req, res) {
     var name = req.body.name;
     reports[name] = reports[name] || {};
@@ -57,14 +64,40 @@ exports.report = function(req, res) {
     }
     console.log(data);
 
-    var host = req.headers['origin'];
-    if (host === 'http://todr.me:3001' || host === 'http://localhost:9000') {
-        res.setHeader("Access-Control-Allow-Origin", host);
-    }
+    allowCrossSiteJson(req, res);
     res.send(200);
 };
 
 exports.clear = function(req, res) {
     reports = {};
     res.send(200);
+};
+
+// Retrieve
+var MongoClient = require('mongodb').MongoClient;
+
+// Connect to the db
+var trainingsCollection = null;
+var codeCollection = null;
+MongoClient.connect("mongodb://localhost:27017/devmeetings", function(err, db) {
+    if (err) {
+        throw err;
+    }
+    trainingsCollection = db.collection('trainings');
+    codeCollection = db.collection('code');
+});
+
+exports.trainings = function(req, res) {
+    var data = req.body;
+
+    trainingsCollection.insert(data);
+    allowCrossSiteJson(req, res);
+    res.send(data);
+};
+exports.code = function(req, res) {
+    var data = req.body;
+    codeCollection.insert(data);
+
+    allowCrossSiteJson(req, res);
+    res.send(data);
 };

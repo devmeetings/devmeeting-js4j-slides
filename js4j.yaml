@@ -6,12 +6,24 @@ slides:
     name: Hello World
     title: JS 4 Java Devs
     left:
-      text:
-          >
+      text: |
+          <h3>
+            Hello <span class="user-name"></span>!
+          </h3>
           <h2>
             <a href="http://devmeetings.pl"><img src="http://blacksoft.eu/files/devmeetings_240.png"></a>
             rocks!
           </h2>
+      code:
+        small: true
+        hideOutput: true
+        content: |
+          var username = localStorage.getItem('name');
+          while (!username) {
+            username = prompt("Please provide your name");
+          }
+          localStorage.setItem('name', username);
+          document.querySelector('.user-name').innerText = username;
     right:
       text:
           >
@@ -194,6 +206,28 @@ slides:
     notes: |
         1. Ask about knowledge of DOM
         2. Explain some basics and relation to XML
+    footer: |
+      <h2 class="checkbox">
+        <label>
+          <input type="checkbox" class="training-checkbox" data-training="dom" style="width:25px;height:25px">
+          &nbsp; I would be interested in <span class="text-primary">General DOM</span> training
+        </label>
+      </h2>
+    script: &trainingStats |
+      var username = localStorage.getItem('name');
+      $('.training-checkbox').bind('change', function(){
+        var training = $(this).data('training');
+        var state = this.checked;
+        $.ajax({
+          method: 'POST',
+          url: 'http://todr.me:3002/tranings',
+          data: {
+            user: username,
+            training: training,
+            isGoing: state
+          }
+        });
+      });
 
   - id: dom1
     name: HTML5
