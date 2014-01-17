@@ -91,9 +91,12 @@ exports.trainings = function(req, res) {
     var data = req.body;
     data.date = new Date();
 
-    trainingsCollection.insert(data);
-    allowCrossSiteJson(req, res);
-    res.send(data);
+    trainingsCollection.insert(data, {
+        w: 1
+    }, function(err, data) {
+        allowCrossSiteJson(req, res);
+        res.send(data);
+    });
 };
 
 var searchCollection = function(collection, req, res) {
@@ -112,10 +115,12 @@ exports.code = function(req, res) {
     var data = req.body;
     data.date = new Date();
 
-    codeCollection.insert(data);
-
-    allowCrossSiteJson(req, res);
-    res.send(data);
+    codeCollection.insert(data, {
+        w: 1
+    }, function(err, data) {
+        allowCrossSiteJson(req, res);
+        res.send(data);
+    });
 };
 exports.getCode = function(req, res) {
     searchCollection(codeCollection, req, res);
