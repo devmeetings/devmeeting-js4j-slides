@@ -109,7 +109,7 @@ var searchCollection = function(collection, req, res) {
     });
 };
 var deleteCollection = function(collection, req, res) {
-    this.remove({}, function(err, removed) {
+    collection.remove({}, function(err, removed) {
         res.send({
             err: err,
             removed: removed
@@ -119,7 +119,7 @@ var deleteCollection = function(collection, req, res) {
 exports.getTrainings = function(req, res) {
     searchCollection(trainingsCollection, req, res);
 };
-exports.deleteTrainings = deleteCollection.bind(trainingsCollection);
+exports.deleteTrainings = deleteCollection.bind(null, trainingsCollection);
 exports.code = function(req, res) {
     var data = req.body;
     data.date = new Date();
@@ -134,4 +134,4 @@ exports.code = function(req, res) {
 exports.getCode = function(req, res) {
     searchCollection(codeCollection, req, res);
 };
-exports.deleteCode = deleteCollection.bind(codeCollection);
+exports.deleteCode = deleteCollection.bind(null, codeCollection);
