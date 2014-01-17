@@ -119,7 +119,9 @@ var deleteCollection = function(collection, req, res) {
 exports.getTrainings = function(req, res) {
     searchCollection(trainingsCollection, req, res);
 };
-exports.deleteTrainings = deleteCollection.bind(null, trainingsCollection);
+exports.deleteTrainings = function(req, res) {
+    deleteCollection(trainingsCollection, req, res);
+};
 exports.code = function(req, res) {
     var data = req.body;
     data.date = new Date();
@@ -134,4 +136,6 @@ exports.code = function(req, res) {
 exports.getCode = function(req, res) {
     searchCollection(codeCollection, req, res);
 };
-exports.deleteCode = deleteCollection.bind(null, codeCollection);
+exports.deleteCode = function(req, res) {
+    deleteCollection(codeCollection, req, res);
+};
