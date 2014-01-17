@@ -49,7 +49,7 @@ exports.index = function(req, res) {
 
 var allowCrossSiteJson = function(req, res) {
     var host = req.headers['origin'];
-    if (host === 'http://todr.me:3001' || host === 'http://localhost:9000' || host === 'http://localhost:3000') {
+    if (host === 'http://todr.me:3000' || host === 'http://todr.me:3001' || host === 'http://localhost:9000' || host === 'http://localhost:3000') {
         res.setHeader("Access-Control-Allow-Origin", host);
     }
 };
@@ -91,10 +91,10 @@ exports.trainings = function(req, res) {
     var data = req.body;
     data.date = new Date();
 
+    allowCrossSiteJson(req, res);
     trainingsCollection.insert(data, {
         w: 1
     }, function(err, data) {
-        allowCrossSiteJson(req, res);
         res.send(data);
     });
 };
@@ -115,10 +115,10 @@ exports.code = function(req, res) {
     var data = req.body;
     data.date = new Date();
 
+    allowCrossSiteJson(req, res);
     codeCollection.insert(data, {
         w: 1
     }, function(err, data) {
-        allowCrossSiteJson(req, res);
         res.send(data);
     });
 };
