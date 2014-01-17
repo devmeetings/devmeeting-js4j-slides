@@ -32,6 +32,16 @@ slides:
               <img src="http://i39.tinypic.com/oa2mbk.png" alt="Image and video hosting by TinyPic" width="400">
             </a>
           </div>
+    notes: |
+      What will we learn today:
+        - Introduction to HTML and CSS
+        - JavaScript basics
+        - Introduction to Play! Framework 
+        - Teasers for other features:
+          - ServerSide JS
+          - JS Frameworks
+          - Advanced JS
+
 
   - id: setup
     name: Environment

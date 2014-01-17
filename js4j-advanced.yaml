@@ -1,0 +1,393 @@
+---
+title: JavaScript For Java Developers (advanced part)
+trainersSecret: asd123
+slides:
+  - id: opening
+    name: Hello World
+    title: JS 4 Java Devs (Advanced edition)
+    left:
+      text: |
+          <h3>
+            Hello <span class="user-name"></span>!
+          </h3>
+          <h2>
+            <a href="http://devmeetings.pl"><img src="http://blacksoft.eu/files/devmeetings_240.png"></a>
+            rocks!
+          </h2>
+      code:
+        small: true
+        hideOutput: true
+        content: |
+          var username = localStorage.getItem('name');
+          while (!username) {
+            username = prompt("Please provide your name");
+          }
+          localStorage.setItem('name', username);
+          document.querySelector('.user-name').innerText = username;
+    right:
+      text:
+          >
+          <div class="text-center">
+            <a href="http://pl.tinypic.com?ref=oa2mbk" target="_blank">
+              <img src="http://i39.tinypic.com/oa2mbk.png" alt="Image and video hosting by TinyPic" width="400">
+            </a>
+          </div>
+  - id: details
+    name: Details
+    title: Advanced workshop details
+    text: |
+      <h3>
+      <span class="glyphicon glyphicon-ok text-success"></span>
+      The sad thing is that you guys a bit on your own:)</h3>
+      <h3>
+      <span class="glyphicon glyphicon-ok text-success"></span>
+      Try to focus on the slides that I'm presenting to others</h3>
+      <h3>
+      <span class="glyphicon glyphicon-ok text-success"></span>
+      However at the same time try to read this slides</h3>
+
+      <h1 class="text-success text-center">Good luck!</h1>
+
+  - id: setup
+    name: Environment
+    text: |
+        <h2>By now you should have following software installed.</h2>
+        <h3>
+          <span class="glyphicon glyphicon-ok text-success"></span>
+          GIT
+        </h3>
+        <h3>
+          <span class="glyphicon glyphicon-ok text-success"></span>
+          Node.js
+        </h3>
+        <h3>
+          <span class="glyphicon glyphicon-ok text-success"></span>
+          Play! Framework
+        </h3>
+        <h3>
+          <span class="glyphicon glyphicon-ok text-success"></span>
+          Sublime Text
+        </h3>
+        <h3>
+          <span class="glyphicon glyphicon-ok text-success"></span>
+          Eclipse
+        </h3>
+        <br>
+        <h4 class="text-muted">If you are missing something approach me during break</h4>
+
+  - id: run
+    name: Run
+    title: Install dependencies
+    text: |
+        <h3>Invoke in console:</h3>
+    code:
+      language: generic
+      content: |
+        $ npm install -g bower
+        $ npm install
+        $ bower install
+
+  - id: run2
+    name: Run
+    title: Run Forest, Run!
+    text: |
+        <h3>Invoke in console:</h3>
+        <pre class="editor big"><code>$ play run
+
+        [info] Loading project definition from /share/public_html/devmeetings/Todos/project
+        [info] Set current project to Todos (in build file:/share/public_html/devmeetings/Todos/)
+
+        --- (Running the application from SBT, auto-reloading is enabled) ---
+
+        [info] play - Listening for HTTP on /0:0:0:0:0:0:0:0:9000
+
+        (Server started, use Ctrl+D to stop and go back to the console...)
+        </code></pre>
+        <h3>Open <a href="http://localhost:9000" target="page">localhost:9000</a> <span class="glyphicon glyphicon-new-window text-muted"></span> </h3>
+
+  - id: tooling
+    name: JS Tooling
+    title: JS Tooling - Grunt
+    text: |
+      <h2>You should already know <code>Grunt</code> one of the JS tools that we use on daily basis.</h2>
+      <br>
+      <h3>In <code>Gruntfile.js</code> I've created basic configuration that includes</h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        JSLint - for static code checking
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Jasmine - for writing and running JS unit tests
+      </h3>
+  - id: tooling2
+    name: JS Tooling
+    title: JS Tooling - Bower
+    text: |
+      <div class="pull-right">
+        <img src="http://bower.io/img/bower-logo.png" title="Bower" width="150"/>
+      </div>
+      <h2>
+        <a href="http://bower.io">Bower</a>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        is a simple package manager for Web Development.
+      </h2>
+      <br>
+      <h3>Instead of downloading packages like <code>Backbone.js</code> or <code>Bootstrap</code> you can just tell bower to download them for you!</h3>
+      <h3>Bower configuration is stored in <code>.bowerrc</code> and packages need by your project are in <code>bower.json</code></h3>
+    code:
+      language: generic
+      content: |
+        # This will install bootstrap and jquery (it's dependency) and save dependency to bower.json
+        $ bower install bootstrap --save
+
+        # You can also search for packages if you don't know the name
+        $ bower search angular
+    notes: |
+      Bower is just downloading github repository to specified directory.
+
+  - id: angular
+    name: Angular.js
+    title: Angular.js - introduction
+    text: |
+      <h3 class="text-muted">
+        <span class="glyphicon glyphicon-new-window"></span>
+        <a href="http://angularjs.org">
+          Angular.js
+        </a>
+        Superheroic JavaScript MVW Framework
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-book text-muted"></span>
+        <a href="http://docs.angularjs.org/">
+          Angular.js docs
+        </a>
+      </h3>
+    fiddle:
+      big: true
+      html: |
+        <!doctype html>
+        <html lang="en" ng-app>
+        <!-- ng-app is custom property from Angular that tells it to start -->
+        <head>
+          <meta charset="utf-8">
+          <title>Hello Angular!</title>
+          <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+        </head>
+        <body>
+          <!-- We can use {{ }} to invoke expressions with JS syntax -->
+          <p>Nothing here {{'yet' + '!'}}</p>
+         
+        </body>
+        </html>
+    footer: |
+      <h4 class="pull-right">
+        <span class="glyphicon glyphicon-bookmark text-muted"></span>
+        <a href="http://docs.angularjs.org/tutorial/step_00">Tutorial - Step 0</a>
+      </h4>
+
+  - id: angular-ctrl
+    name: Angular.js
+    title: Angular.js - Controller
+    text: |
+      <h2><code>Controllers</code> are a place in angular where your logic goes.</h2>
+      <h2><code>$scope</code> is your data model - it's just pure JavaScript!</h2>
+      <br>
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+        Angular is automatically binding value of your variable with DOM!
+        </span>
+      </h2>
+    fiddle:
+      js: |
+        window.MyFirstController = function($scope) {
+          //unfortunatelly we can't use localStorage because of how auto-execution is working
+          $scope.name = "Tomasz"; 
+        };
+      html: |
+        <!doctype html>
+        <html lang="en" ng-app>
+        <!-- ng-app is custom property from Angular that tells it to start -->
+        <head>
+          <meta charset="utf-8">
+          <title>Hello Angular!</title>
+          <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+        </head>
+        <!-- We specified that "body" tag and it's content is handled by MyFirstController -->
+        <body ng-controller="MyFirstController">
+          <!-- We can use {{ }} to print variable assigned to scope -->
+          <p>Hello {{ name }}</p>
+        </body>
+        </html>
+    footer: |
+      <h4 class="pull-right">
+        <span class="glyphicon glyphicon-bookmark text-muted"></span>
+        <a href="http://docs.angularjs.org/tutorial/step_02">Tutorial Step 2</a>
+      </h4>
+
+  - id: angular-ctrltest
+    name: Angular.js
+    title: Angular.js - Controller test
+    text: |
+      <h2>Angular is very testable. We can easily write a test in Jasmine for what we have.</h2>
+      <h4>You can write your tests in <code>test/js/*Spec.js</code> files.</h4>
+    code:
+      language: javascript-norun
+      content: |
+        describe('Todos app', function() {
+         
+          describe('MyFirstController', function(){
+         
+            it('should assign name to scope', function() {
+              var scope = {};
+              MyFirstController(scope);
+         
+              expect(scope.name).toEqual("Tomasz");
+            });
+
+          });
+        });
+  - id: angular-ngrepeat
+    name: Angular.js
+    title: Angular.js - Looping
+    text: |
+      <h2>To iterate over array in Angular.js you can use <code>ng-repeat</code></h2>
+      <h3>The element with attribute <code>ng-repeat</code> will be inserted multiple times</h3>
+    fiddle:
+      big: true
+      active: html
+      js: |
+        window.MyFirstController = function($scope) {
+          $scope.name = "Tomasz";
+        };
+      html: |
+        <!doctype html>
+        <html lang="en" ng-app>
+        <!-- ng-app is custom property from Angular that tells it to start -->
+        <head>
+          <meta charset="utf-8">
+          <title>Hello Angular!</title>
+          <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+        </head>
+        <!-- We specified that "body" tag and it's content is handled by MyFirstController -->
+        <body ng-controller="MyFirstController">
+          <h1>Hello</h1>
+          <h2 ng-repeat="char in name" class="text-warning">
+            {{ char }}
+          </h2>
+        </body>
+        </html>
+  - id: task1
+    name: Task 1
+    title: "Task: Display todos using angular"
+    code: |
+      var todos = [
+        "Checkout project from github",
+        "Invoke 'play run' in your console",
+        "Open your browser and head over to http://localhost:9000",
+        "Learn Angular"
+      ];
+    task:
+      duration: 45
+      objectives:
+        - Download <code>angular</code> using <code>bower</code>
+        - Create <code>index.html</code> and <code>main.js</code>
+        - Display todos using <code>.list-group</code> component
+      extras:
+        - Write test for scope
+        - Introduce <code>Karma</code> and write E2E test.
+  - id: angular-dom
+    name: Angular.js DOM
+    title: Angular.js - DOM binding
+    text: |
+      <h2>Using <code>ng-click</code> allows you to invoke function that is exposed in <code>$scope</code></h2>
+    fiddle:
+      big: true
+      js: |
+        window.MyFirstController = function($scope) {
+          //unfortunatelly we can't use localStorage because of how auto-execution is working
+          $scope.name = "Tomasz";
+
+          var showAlert = function() {
+            alert('Me not called :(');
+          };
+
+          $scope.showAlert = function() {
+            alert($scope.name);
+          };
+        };
+      html: |
+        <!doctype html>
+        <html lang="en" ng-app>
+        <!-- ng-app is custom property from Angular that tells it to start -->
+        <head>
+          <meta charset="utf-8">
+          <title>Hello Angular!</title>
+          <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+        </head>
+        <!-- We specified that "body" tag and it's content is handled by MyFirstController -->
+        <body ng-controller="MyFirstController">
+          <!-- We can use {{ }} to print variable assigned to scope -->
+          <p>Hello {{ name }}</p>
+          <!-- ng-click is a directive that allows you to specify action that will happen when you click a button -->
+          <button ng-click="showAlert()">Alert me!</button>
+        </body>
+        </html>
+  - id: angular-domawesome
+    name: Angular.js DOM
+    title: Angular.js - DOM binding awesomeness!
+    text: |
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+        Angular.js has two-ways binding with DOM!
+        </span>
+      </h2>
+      <h2>Imagine doing that in <code>Backbone</code>!</h2>
+    fiddle:
+      big: true
+      js: |
+        window.MyFirstController = function($scope) {
+          //unfortunatelly we can't use localStorage because of how auto-execution is working
+          $scope.name = "Tomasz";
+
+          $scope.showAlert = function() {
+            alert($scope.name);
+          };
+        };
+      html: |
+        <!doctype html>
+        <html lang="en" ng-app>
+        <head>
+          <meta charset="utf-8">
+          <title>Hello Angular!</title>
+          <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+        </head>
+        <body ng-controller="MyFirstController">
+          <!-- We can use {{ }} to print variable assigned to scope -->
+          <p>Hello {{ name }}</p>
+
+          <!-- We can bind input box with variables inside your model! Awesome! -->
+          <input type="text" class="form-controll" ng-model="name" placeholder="Enter your name">
+
+          <!-- ng-click is a directive that allows you to specify action that will happen when you click a button -->
+          <button ng-click="showAlert()">Alert me!</button>
+        </body>
+        </html>
+    footer:
+      <h4 class="pull-right">
+        <span class="glyphicon glyphicon-bookmark text-muted"></span>
+        <a href="http://docs.angularjs.org/tutorial/step_03">Tutorial Step 3</a>
+      </h4>
+      
+
+
+
+
+
+
+
+
+
+
