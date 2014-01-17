@@ -299,14 +299,13 @@ slides:
         - Introduce <code>Karma</code> and write E2E test.
   - id: angular-dom
     name: Angular.js DOM
-    title: Angular.js - DOM binding
+    title: DOM binding
     text: |
       <h2>Using <code>ng-click</code> allows you to invoke function that is exposed in <code>$scope</code></h2>
     fiddle:
       big: true
       js: |
         window.MyFirstController = function($scope) {
-          //unfortunatelly we can't use localStorage because of how auto-execution is working
           $scope.name = "Tomasz";
 
           var showAlert = function() {
@@ -336,7 +335,7 @@ slides:
         </html>
   - id: angular-domawesome
     name: Angular.js DOM
-    title: Angular.js - DOM binding awesomeness!
+    title: DOM binding awesomeness!
     text: |
       <h2>
         <span class="glyphicon glyphicon-ok"></span>
@@ -349,7 +348,6 @@ slides:
       big: true
       js: |
         window.MyFirstController = function($scope) {
-          //unfortunatelly we can't use localStorage because of how auto-execution is working
           $scope.name = "Tomasz";
 
           $scope.showAlert = function() {
@@ -375,12 +373,101 @@ slides:
           <button ng-click="showAlert()">Alert me!</button>
         </body>
         </html>
-    footer:
+    footer: |
       <h4 class="pull-right">
         <span class="glyphicon glyphicon-bookmark text-muted"></span>
         <a href="http://docs.angularjs.org/tutorial/step_03">Tutorial Step 3</a>
       </h4>
-      
+
+  - id: angular-module
+    name: Angular.js Module
+    title: Code organization
+    text: |
+      <h2>
+        Instead of doing global variables for controllers we can organize the code into <code>modules</code>
+      </h2>
+    fiddle:
+      big: true
+      js: |
+        var app = angular.module('todosApp', []/* other modules dependencies */);
+        app.controller('TodosController', function($scope) {
+
+          $scope.todos = ["Checkout project from github",
+            "Invoke 'play run' in your console",
+            "Open your browser and head over to http://localhost:9000",
+            "Learn Angular"
+          ].join("\n");
+
+        });
+      html: |
+        <!doctype html>
+        <!-- We have to tell which module is an entry-point -->
+        <html lang="en" ng-app="todosApp">
+        <head>
+          <meta charset="utf-8">
+          <title>Hello Angular!</title>
+          <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+        </head>
+        <body ng-controller="TodosController">
+          <textarea ng-model="todos" rows="5" cols="65">
+          </textarea>
+          <div>
+            <h3 ng-repeat="todo in todos.split('\n')">
+              <span class="glyphicon glyphicon-ok text-success"></span>
+              {{ todo }}
+            </h3>
+          </div>
+        </body>
+        </html>
+
+  - id: angular-watch
+    name: Angular.js Watching
+    title: Watching changes
+    text: |
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">You can use <code>$watch</code> to monitor changes of variable value.</span>
+      </h2>
+    fiddle:
+      big: true
+      js: |
+        window.MyFirstController = function($scope) {
+          $scope.isToUpper = false;
+          $scope.name = "Tomasz";
+
+          $scope.$watch('isToUpper', function() {
+            if ($scope.isToUpper) {
+              $scope.name = $scope.name.toUpperCase();
+            } else {
+              $scope.name = $scope.name.toLowerCase();
+            }
+          });
+        };
+      html: |
+        <!doctype html>
+        <html lang="en" ng-app>
+        <head>
+          <meta charset="utf-8">
+          <title>Hello Angular!</title>
+          <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+        </head>
+        <body ng-controller="MyFirstController">
+          <!-- We can use {{ }} to print variable assigned to scope -->
+          <p>Hello {{ name }}</p>
+
+          <!-- We can bind input box with variables inside your model! Awesome! -->
+          <input type="text" class="form-controll" ng-model="name" placeholder="Enter your name">
+          <br />
+          <!-- We just use ng-model:) -->
+          <label class="checkbox">
+            <input type="checkbox"  ng-model="isToUpper">
+            Show in uppercase
+          </label>
+        </body>
+        </html>
+  - id: angular-watchtest
+    name: Angular.js Watching
+    title: Angular.js 
 
 
 
