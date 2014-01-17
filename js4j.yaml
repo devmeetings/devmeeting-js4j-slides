@@ -1167,7 +1167,10 @@ slides:
         }
       };
 
+      var b = document.body;
       var result = TodosModel.getStats();
+      var table = "<h1>{0} completed</h1><h1>{1} uncompleted</h1>";
+      b.innerHTML += table.replace('{0}', result.completed).replace('{1}', result.uncompleted);
 
     task:
       duration: 20
@@ -1386,6 +1389,7 @@ slides:
     title: Contexts - even more caveats
     fiddle:
       hideOutput: true
+      big: true
       js: |
         var $btn = document.querySelector('.increment-btn');
         var $output = document.querySelector('.increment-output');
@@ -1395,7 +1399,7 @@ slides:
           increment: function() {
             this.i++;
             console.log(this.i, State.i);
-            $output.innerHTML = this.i + " " + State.i;
+            $output.innerHTML = "this.i=" + this.i + " | State.i=" + State.i;
           }
         };
         State.increment();
@@ -1464,7 +1468,9 @@ slides:
     name: Contexts
     title: Other applications of <code>bind</code>
     monitor: result
-    code: |
+    code:
+      big: true
+      content: |
         var result = [];
         var add = function(a, b) {
           var sum = a + b;
@@ -1488,22 +1494,24 @@ slides:
     name: Contexts
     title: Contexts and functional-style
     monitor: TodosView._results
-    code: |
-      var TodosView = {
-        _results: [],
-        renderAllTodos: function(todos) {
+    code:
+      big: true
+      content: |
+        var TodosView = {
+          _results: [],
+          renderAllTodos: function(todos) {
 
-          for (var k in todos) {
-            this.renderTodo(todos[k]);
+            for (var k in todos) {
+              this.renderTodo(todos[k]);
+            }
+
+          },
+          renderTodo: function(todo) {
+            this._results.push("Rendering todo " + todo);
           }
+        };
 
-        },
-        renderTodo: function(todo) {
-          this._results.push("Rendering todo " + todo);
-        }
-      };
-
-      TodosView.renderAllTodos(["Todo 1", "Todo 2"]);
+        TodosView.renderAllTodos(["Todo 1", "Todo 2"]);
     notes: |
       // 1. Propose to jointly refactor for-in loop to functional style.
       // 2. Show how easy it is to break context.
@@ -1538,21 +1546,18 @@ slides:
         };
         var State = {
           i: 0,
-          increment: function() {
-            this.i++;
-          }
+          increment: function() { this.i++; }
         };
-
-        EventBus.listenTo('increment', State.increment, State);
+        EventBus.listenTo(
+              'increment', State.increment, State);
 
         EventBus.trigger('increment');
         // This should result in "1"
         console.log(State.i);
-
     task:
       duration: 30
       objectives:
-        - Implement <code>EventBus</code> object that will trigger all listeners for specific <code>eventName</code> in proper context
+        - In file <code>public/javascripts/eventBus.js</code> implement <code>EventBus</code> object that will trigger all listeners for specific <code>eventName</code> in proper context
       extras:
         - Pass additional arguments from <code>trigger</code> method to listeners.
         - Use <code>EventBus</code> in your application to notify View from Model.
@@ -1747,6 +1752,17 @@ slides:
   - id: rest5
     name: REST
     title: RESTful JSON API Example
+    text:
+      <h2>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="https://apigee.com/embed/console/soundcloud">Soundcloud API Console</a>
+        &nbsp;
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm">Postman 4 Chrome</a>
+        &nbsp;
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="https://addons.mozilla.org/pl/firefox/addon/restclient/">REST Client 4 Firefox</a>
+      </h2>
     monitor: result
     code:
       big: true
@@ -1859,7 +1875,8 @@ slides:
 
       Netty (nio framework) and Akka (scala concurrency and distributed computing framework) under-the-hood.
 
-  - id: play2
+  - &playRoutesCode 
+    id: play2
     name: Play!
     title: Routes definition
     text: |
@@ -1869,7 +1886,7 @@ slides:
       </h4>
       <br>
       <h3>File path: <code>conf/routes</code></h3>
-    code:
+    code: 
       language: generic
       content: |
         GET   /                     controllers.Application.index()
@@ -2027,7 +2044,7 @@ slides:
       solution:
         name: REST API - Solution
         title: REST API
-        code:
+        code: &playRestCode
           language: java
           big: true
           content: |
@@ -2090,7 +2107,7 @@ slides:
     fiddle:
       pure: true
       big: true
-      js: |
+      js: &vanillacode |
         var FakeStorage = {
           addTodo: function(todo, callback) { callback(todo); },
           updateTodo: function(todo, callback) { callback(todo); },
@@ -2262,25 +2279,15 @@ slides:
     notes: |
       Tell why there is a fake storage.
 
-  - id: demo-backbone
-    name: Demo (Backbone)
-    title: Backbone.js implementation
-    text: |
-      <h4>
-        <span class="glyphicon glyphicon-new-window text-muted"></span>
-        <a href="http://backbonejs.org" target="js">Backbone.js</a>
-      </h4>
-    notes: |
-      Note that there is no Storage implementation cause in Backbone we have it out-of-the box.
+  - id: demo-vanilla
+    name: Demo (Vanilla)
+    title: Backbone.js vs Vanilla.js
 
-      Main advantange over vanilla.js is that every developer will right the code in more-less the same manner.
-      Code is also reusable - we can define other todos list right away.
-
-      Backbone adds skeleton and some wireframe to your projects.
-    fiddle:
-      pure: true
-      big: true
-      js: |
+    left:
+      code: 
+        big: true
+        language: javascript-norun
+        content: &backbonecode |
           var Todo = Backbone.Model.extend({
               defaults: {
                   title: "",
@@ -2319,7 +2326,8 @@ slides:
               events: {
                   'change input': '_changeCompleted'
               },
-              template: _.template('&lt;input type="checkbox" <% if (completed) { %> checked <% } %>> <%= title %>'),
+              template: _.template(
+                '<input type="checkbox" <% if (completed) { %> checked <% } %>> <%= title %>'),
               initialize: function() {
                   this.listenTo(this.model, 'change', this.render);
                   this.render();
@@ -2382,6 +2390,40 @@ slides:
           todos.addTodo("New todo 1");
           todos.addTodo("New todo 2");
 
+    right:
+      code:
+        big: true
+        language: javascript-norun
+        content: *vanillacode
+
+
+    notes: |
+      Note that there is no Storage implementation cause in Backbone we have it out-of-the box.
+
+      Main advantange over vanilla.js is that every developer will right the code in more-less the same manner.
+      Code is also reusable - we can define other todos list right away.
+
+      Backbone adds skeleton and some wireframe to your projects.
+
+  - id: demo-backbone
+    name: Demo (Backbone)
+    title: Backbone.js implementation
+    text: |
+      <h4>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="http://backbonejs.org" target="js">Backbone.js</a>
+      </h4>
+    notes: |
+      Note that there is no Storage implementation cause in Backbone we have it out-of-the box.
+
+      Main advantange over vanilla.js is that every developer will right the code in more-less the same manner.
+      Code is also reusable - we can define other todos list right away.
+
+      Backbone adds skeleton and some wireframe to your projects.
+    fiddle:
+      pure: true
+      big: true
+      js: *backbonecode
       html: |
         <!DOCTYPE html>
         <html>
@@ -2548,43 +2590,46 @@ slides:
   - id: demo-node1
     name: Demo (Node.js)
     title: Node.js + Mongo DB server implementation
-    text: |
-      <h4>
-        <span class="glyphicon glyphicon-new-window text-muted"></span>
-        <a href="http://expressjs.com/">Express.js - web application framework for node.js</a>
-      </h4>
-      <h4>File <code>app.js</code></h4>
-    code:
-      big: true
-      hideOutput: true
-      content: |
-        var express = require('express');
-        var routes = require('./routes');
-        var http = require('http');
-        var path = require('path');
+    left:
+      text: |
+        <h4>
+          <span class="glyphicon glyphicon-new-window text-muted"></span>
+          <a href="http://expressjs.com/">Express.js - web application framework for node.js</a>
+        </h4>
+        <h4>File <code>app.js</code></h4>
+      code:
+        big: true
+        hideOutput: true
+        language: javascript-norun
+        content: |
+          var express = require('express');
+          var routes = require('./routes');
+          var http = require('http');
+          var path = require('path');
 
-        var app = express();
+          var app = express();
 
-        // all environments
-        app.set('port', process.env.PORT || 3000);
-        app.set('views', path.join(__dirname, 'views'));
-        app.set('view engine', 'jade');
-        app.use(express.favicon());
-        app.use(express.logger('dev'));
-        app.use(express.json());
-        app.use(express.urlencoded());
-        app.use(express.methodOverride());
-        app.use(app.router);
-        app.use('/assets', express.static(path.join(__dirname, 'public')));
+          // all environments
+          app.set('port', process.env.PORT || 3000);
+          app.set('views', path.join(__dirname, 'views'));
+          app.set('view engine', 'jade');
+          app.use(express.favicon());
+          app.use(express.logger('dev'));
+          app.use(express.json());
+          app.use(express.urlencoded());
+          app.use(express.methodOverride());
+          app.use(app.router);
+          app.use('/assets', express.static(path.join(__dirname, 'public')));
 
-        app.get ('/', routes.index);
-        app.get ('/todos', routes.getTodos);
-        app.post('/todos', routes.createTodo);
-        app.put ('/todos/:id', routes.updateTodo);
+          app.get ('/', routes.index);
+          app.get ('/todos', routes.getTodos);
+          app.post('/todos', routes.createTodo);
+          app.put ('/todos/:id', routes.updateTodo);
 
-        http.createServer(app).listen(app.get('port'), function(){
-          console.log('Express server listening on port ' + app.get('port'));
-        });
+          http.createServer(app).listen(app.get('port'), function(){
+            console.log('Express server listening on port ' + app.get('port'));
+          });
+    right: *playRoutesCode
     notes: |
       Teaser about Server-Side JS.
       - You can reuse whole know-how from client side. 
@@ -2594,51 +2639,57 @@ slides:
   - id: demo-node2
     name: Demo (Node.js)
     title: Node.js + Mongo DB server implementation
-    text: |
-      <h4>
-        <span class="glyphicon glyphicon-new-window text-muted"></span>
-        <a href="http://expressjs.com/">Express.js - web application framework for node.js</a>
-      </h4>
-      <h4>File <code>routes/index.js</code></h4>
-    code:
-      big: true
-      hideOutput: true
-      content: |
-          var MongoClient = require('mongodb').MongoClient;
-          // Connect to the db
-          var mongoTodos = null;
-          MongoClient.connect("mongodb://localhost:27017/todos", function(err, db) {
-              if (err) { throw err; }
-              mongoTodos = db.collection('todos');
-          });
+    left:
+      text: |
+        <h4>
+          <span class="glyphicon glyphicon-new-window text-muted"></span>
+          <a href="http://expressjs.com/">Express.js - web application framework for node.js</a>
+        </h4>
+        <h4>File <code>routes/index.js</code></h4>
+      code:
+        big: true
+        hideOutput: true
+        language: javascript-norun
+        content: |
+            var MongoClient = require('mongodb').MongoClient;
+            // Connect to the db
+            var mongoTodos = null;
+            MongoClient.connect("mongodb://localhost:27017/todos", function(err, db) {
+                if (err) { throw err; }
+                mongoTodos = db.collection('todos');
+            });
 
-          exports.index = function(req, res){
-            res.render('index');
-          };
+            exports.index = function(req, res){
+              res.render('index');
+            };
 
-          exports.getTodos = function(req, res) {
-              mongoTodos.find().toArray(function(err, todos){
-                  res.send(todos);
-              });
-          };
+            exports.getTodos = function(req, res) {
+                mongoTodos.find().toArray(function(err, todos){
+                    res.send(todos);
+                });
+            };
 
-          exports.createTodo = function(req, res) {
-              var todo = req.body;
-              mongoTodos.insert(todo, {w:1}, function(err, result) {
-                  res.send(result[0]);
-              });
-          };
+            exports.createTodo = function(req, res) {
+                var todo = req.body;
+                mongoTodos.insert(todo, {w:1}, function(err, result) {
+                    res.send(result[0]);
+                });
+            };
 
-          exports.updateTodo = function(req, res) {
-              var todo = req.body;
-              var id = parseInt(req.params.id, 10);
-              todo._id = id;
-              mongoTodos.update({
-                  _id: id
-              }, todo, function(err, updatedTodo){
-                  res.send(updatedTodo[0]);
-              });
-          };
+            exports.updateTodo = function(req, res) {
+                var todo = req.body;
+                var id = parseInt(req.params.id, 10);
+                todo._id = id;
+                mongoTodos.update({
+                    _id: id
+                }, todo, function(err, updatedTodo){
+                    res.send(updatedTodo[0]);
+                });
+            };
+    right:
+      text: |
+        <h4>&nbsp;</h4><h4>&nbsp;</h4>
+      code: *playRestCode
     notes: |
       Tell something about Mongo.DB - JSON document store.
       Make sure that everyone knows that it is Node.js and Express framework.
@@ -2686,6 +2737,95 @@ slides:
         - Change persistence to Local Storage
       extras:
         - Make Local Storage / REST Persistence easily interchangable.
+      solution:
+          title: LocalStorage
+          left:
+            monitor: result
+            code:
+              big: true
+              content: |
+                var Storage = {
+                  addTodo: function(todo, callback) {
+                     var todos = this._getTodos();
+                     todos.push(todo);
+                     this._saveTodos(todos);
+                     callback && callback(todo);
+                  },
+                  updateTodo: function(todoToUpdate, callback) {
+                      var todos = this._getTodos();
+                      var todoIdx = todos.map(function(todo) {
+                        return todo.id;
+                      }).indexOf(todoToUpdate.id);
+                      todos.splice(todoIdx, 1, todoToUpdate);
+                      this._saveTodos(todos);
+                  },
+                  getTodos: function(callback) {
+                      callback(this._getTodos());
+                  },
+                   _getTodos: function() {
+                    var todosStr = localStorage.getItem('todos');
+                    var todos = [];
+                    if (todosStr) {
+                      todos = JSON.parse(todosStr) || [];
+                    }
+                    return todos;
+                  },
+                  _saveTodos: function(todos) {
+                    localStorage.setItem('todos', JSON.stringify(todos));
+                  },
+                  clear: function() {
+                      this._saveTodos([]);
+                  },
+                };
+
+                Storage.clear();
+                Storage.addTodo({
+                  id: "abc"
+                });
+                Storage.addTodo({
+                  id: "abc2"
+                });
+                Storage.updateTodo({
+                  id: "abc",
+                  title: "2"
+                });
+                Storage.getTodos(function(todos) {
+                    result = todos;
+                });
+          right:
+            code:
+              big: true
+              content: |
+                left:
+            code:
+              big: true
+              language: javascript-norun
+              content: |
+                var Storage = {
+                  addTodo: function(todo, callback) {
+                      $.ajax({
+                          method: 'post',
+                          url: '/todos',
+                          data: JSON.stringify(todo),
+                          contentType: 'application/json; charset=utf-8'
+                      }).then(callback);
+                  },
+                  updateTodo: function(todo, callback) {
+                      return $.ajax({
+                        method: 'put',
+                        url: '/todos/' + todo.id,
+                        data: JSON.stringify(todo),
+                        contentType: 'application/json; charset=utf-8'
+                      }).then(callback);
+                  },
+                  getTodos: function(callback) {
+                      $.get('/todos').then(function(todos) {
+                          callback(todos);
+                      });
+                  }
+                };
+
+
 
   - id: comparison
     name: Comparison
@@ -2782,6 +2922,21 @@ slides:
         };
     notes: |
       Tell that there are plenty of such strange behaviour examples on wtfjs
+  - id: task-survey
+    name: Task 9
+    title: "Task: Complete the survey"
+    text: |
+      <h2>
+        <span class="glyphicon-new-window glyphicon text-muted"></span>
+        <a href="http://google.pl">Training Survey</a>
+      </h2>
+    task:
+      duration: 5
+      objectives:
+        - Complete the survey under link above
+      extras:
+        - Provide very detailed answers to open-ended questions
+
 
   - id: mixins1
     name: Mixins
@@ -2833,7 +2988,14 @@ slides:
           });
           return destination;
         };
+
+
         // ✂---------------
+
+
+
+
+
         var rectFunctions = {
           area: function() {
             return this.a * this.b;
@@ -2847,6 +3009,11 @@ slides:
           rect1: rect1.area(),
           rect2: rect2.area()
         };
+
+
+
+
+        // ---------------
     notes: |
       // Ask if any1 knows what [].slice.call means. Explain.
 
@@ -2901,7 +3068,7 @@ slides:
     monitor: results
     code:
       big: true
-      content: |
+      content: &inheritanceCode |
         var Rect = function(a, b) {
           this.a = a;
           this.b = b;
@@ -2927,27 +3094,35 @@ slides:
   - id: inheritance3
     name: Inheritance
     title: "Teaser: Inheritance"
-    text: |
-      <div>
-        <a href="http://pl.tinypic.com?ref=qzfb00" target="_blank">
-          <img src="http://i41.tinypic.com/qzfb00.png" border="0" alt="Image and video hosting by TinyPic">
-        </a>
-      </div>
-      <br>
-    monitor: square;
-    code: |
-      var square = { //Type: Square
-        a: 4,
-        b: 4,
-        __proto___: { //Type: Rect
-          a: 1,
-          b: 1,
-          __proto___: { //Type: Object
-            area: "function(){ return this.a * this.b; }",
-            __proto___: "// Type: Object.prototype"
-          }
-        }
-      };
+    left:
+      text: |
+        <div>
+          <a href="http://pl.tinypic.com?ref=qzfb00" target="_blank">
+            <img src="http://i41.tinypic.com/qzfb00.png" border="0" alt="Image and video hosting by TinyPic">
+          </a>
+        </div>
+        <br>
+      monitor: square;
+      code:
+        hideOutput: true
+        content: |
+          var square = { //Type: Square
+            a: 4,
+            b: 4,
+            __proto___: { //Type: Rect
+              a: 1,
+              b: 1,
+              __proto___: { //Type: Object
+                area: "function(){ return this.a * this.b; }",
+                __proto___: "// Type: Object.prototype"
+              }
+            }
+          };
+    right: 
+      code: 
+        big: true
+        hideOutput: true
+        content: *inheritanceCode
 
   - id: ending
     name: Ending
