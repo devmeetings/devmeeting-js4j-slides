@@ -223,7 +223,7 @@ slides:
         localStorage.setItem('training-'+training, state);
         $.ajax({
           method: 'POST',
-          url: 'http://todr.me:3002/tranings',
+          url: 'http://todr.me:3002/trainings',
           data: {
             user: username,
             currentTraining: 'js4j',
