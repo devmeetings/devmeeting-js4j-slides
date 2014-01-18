@@ -1075,11 +1075,11 @@ slides:
 
 # Injecting services
 # Creating services
-  - id: task5
-    name: Task 5
+  - id: task6
+    name: Task 6
     title: "Task: Persistence via LocalStorage"
     task:
-      duration: 20
+      duration: 30
       objectives:
         - Use <code>localStorage</code> to add persistence to your application
         - Create <code>Service</code> to hide complexity
@@ -1188,10 +1188,21 @@ slides:
               </form>
             </body>
             </html>
+
+  - id: task7
+    name: Task 7
+    title: "Task: Write REST API in Play! and use it for persistence"
+    task:
+      duration: 60
+      objectives:
+        - Implement REST API for Todos in Play!
+        - Change <code>localStorage</code> persistence to REST API
+      extras:
+        - Write tests and mock <code>$http</code> service (<a href="http://docs.angularjs.org/api/ngMock.$httpBackend">angular-mock</a> <span class="glyphicon-new-window glyphicon"></span>)
 # Writing directives
 # isolated scope, new scopes
-  - id: task6
-    name: Task 6
+  - id: task8
+    name: Task 8
     title: "Task: Close single todo inside directive"
     task:
       duration: 30
@@ -1315,136 +1326,127 @@ slides:
             </body>
             </html>
 
+#  - id: task9
+#    name: Task 9
+#    title: "Task: CoffeeScript rewriting"
+#    task:
+#      duration: 60
+#      objectives:
+#        - Rewrite your application to CoffeeScript
+#      extras:
+#        - Rewrite your tests to CoffeeScript
+#        - Add search for todos
+#      solution:
+- id: coffeescript-teaser
+    name: CoffeeScript
+    title: CoffeeScript - teaser
+    fiddle:
+      big: true
+      coffee: |
+        app = angular.module "todosApp", ['ui.bootstrap']
+        app.directive('todo', ->
+          {
+            restrict: 'E'
+            scope:
+              todo: '='
+            #Normally you should use "templateUrl" to put it to separate file
+            template: '<div class="list-group-item">
+              <input type="text" class="form-control"
+                ng-model="todo.title" ng-show="editing" ng-blur="editing = false" />
+              <label class="checkbox" ng-hide="editing">
+                <a href="" class="pull-right text-muted" ng-click="editing = !editing">
+                  <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <input type="checkbox" ng-model="todo.completed" />
+                {{ todo.title }}
+              </label>
+           </div>'
+          }
+        )
+        app.controller('TodosController',  ['$scope', 'Todos', ($scope, Todos) ->
+          #it could be done in ng-init
+          $scope.editing = {}
 
-  - id: task7
-    name: Task 7
-    title: "Task: Write REST API in Play! and use it for persistence"
-    task:
-      duration: 60
-      objectives:
-        - Implement REST API for Todos in Play!
-        - Change <code>localStorage</code> persistence to REST API
-      extras:
-        - Write tests and mock <code>$http</code> service (<a href="http://docs.angularjs.org/api/ngMock.$httpBackend">angular-mock</a> <span class="glyphicon-new-window glyphicon"></span>)
+          Todos.getTodos()
+            .then (todos) ->
+              $scope.todos = todos
 
-  - id: task8
-    name: Task 8
-    title: "Task: CoffeeScript rewriting"
-    task:
-      duration: 60
-      objectives:
-        - Rewrite your application to CoffeeScript
-      extras:
-        - Rewrite your tests to CoffeeScript
-        - Add search for todos
-      solution:
-        fiddle:
-          big: true
-          coffee: |
-            app = angular.module "todosApp", ['ui.bootstrap']
-            app.directive('todo', ->
-              {
-                restrict: 'E'
-                scope:
-                  todo: '='
-                #Normally you should use "templateUrl" to put it to separate file
-                template: '<div class="list-group-item">
-                  <input type="text" class="form-control"
-                    ng-model="todo.title" ng-show="editing" ng-blur="editing = false" />
-                  <label class="checkbox" ng-hide="editing">
-                    <a href="" class="pull-right text-muted" ng-click="editing = !editing">
-                      <span class="glyphicon glyphicon-pencil"></span>
-                    </a>
-                    <input type="checkbox" ng-model="todo.completed" />
-                    {{ todo.title }}
-                  </label>
-               </div>'
-              }
-            )
-            app.controller('TodosController',  ['$scope', 'Todos', ($scope, Todos) ->
-              #it could be done in ng-init
-              $scope.editing = {}
+          $scope.newTodoTitle = "Buy beer"
+          $scope.hideCompleted = no
 
-              Todos.getTodos()
-                .then (todos) ->
-                  $scope.todos = todos
+          $scope.addTodo = ->
+            return if $scope.newTodoTitle is ''
 
-              $scope.newTodoTitle = "Buy beer"
-              $scope.hideCompleted = no
+            $scope.todos.push
+              title: $scope.newTodoTitle
+              completed: no
 
-              $scope.addTodo = ->
-                return if $scope.newTodoTitle is ''
+            Todos.saveTodos($scope.todos)
+              .then ->
+                console.log "Todos saved"
 
-                $scope.todos.push
-                  title: $scope.newTodoTitle
-                  completed: no
+            $scope.newTodoTitle = ""
 
-                Todos.saveTodos($scope.todos)
-                  .then ->
-                    console.log "Todos saved"
+          $scope.getTodosFilter = ->
+              if $scope.hideCompleted is yes
+                completed: false
+              else
+                {}
+        ])
+        app.factory('Todos', ['$q', '$window', '$timeout', ($q, $window, $timeout) ->
+          #It does not work because of runner in browser. It should work in your case.
+          #var localStorage = $window.localStorage;
 
-                $scope.newTodoTitle = ""
+          localStorage =
+            setItem: ->
+            getItem: ->
 
-              $scope.getTodosFilter = ->
-                  if $scope.hideCompleted is yes
-                    completed: false
-                  else
-                    {}
-            ])
-            app.factory('Todos', ['$q', '$window', '$timeout', ($q, $window, $timeout) ->
-              #It does not work because of runner in browser. It should work in your case.
-              #var localStorage = $window.localStorage;
-
-              localStorage =
-                setItem: ->
-                getItem: ->
-
-              {
-                getTodos: ->
-                  d = $q.defer()
-                  #$timeout is only to show that it works;)
-                  $timeout(->
-                    todos = localStorage.getItem('todos') ? "[]";
-                    d.resolve angular.fromJson(todos)
-                  , 2000)
-                  d.promise
-                saveTodos: (todos) ->
-                  d = $q.defer()
-                  todosStr = angular.toJson todos
-                  localStorage.setItem 'todos', todosStr
-                  d.resolve()
-                  d.promise
-              }
-            ])
-          html: |
-            <!doctype html>
-            <html lang="en" ng-app="todosApp">
-            <head>
-              <meta charset="utf-8">
-              <title>Hello Angular!</title>
-              <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
-              <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.9.0/ui-bootstrap-tpls.js"></script>
-            </head>
-            <body ng-controller="TodosController">
-              <div class="list-group">
-                <todo todo="todo" ng-repeat="todo in todos | filter:getTodosFilter()">
-                </todo>
-              </div>
-              <div>
-                Completed: 
-                {{ (todos | filter:{completed:true}).length }} /
-                {{ todos.length }}
-              </div>
-              <form ng-submit="addTodo()">
-                <label class="checkbox">
-                  <input type="checkbox" ng-model="hideCompleted" />
-                  Hide completed todos
-                </label>
-                <input type="text" ng-model="newTodoTitle" placeholder="Buy beer" class="form-control"/>
-                <button class="btn btn-default">
-                  <span class="glyphicon glyphicon-plus"></span>
-                  Add todo
-                </button>
-              </form>
-            </body>
-            </html>
+          {
+            getTodos: ->
+              d = $q.defer()
+              #$timeout is only to show that it works;)
+              $timeout(->
+                todos = localStorage.getItem('todos') ? "[]";
+                d.resolve angular.fromJson(todos)
+              , 2000)
+              d.promise
+            saveTodos: (todos) ->
+              d = $q.defer()
+              todosStr = angular.toJson todos
+              localStorage.setItem 'todos', todosStr
+              d.resolve()
+              d.promise
+          }
+        ])
+      html: |
+        <!doctype html>
+        <html lang="en" ng-app="todosApp">
+        <head>
+          <meta charset="utf-8">
+          <title>Hello Angular!</title>
+          <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+          <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.9.0/ui-bootstrap-tpls.js"></script>
+        </head>
+        <body ng-controller="TodosController">
+          <div class="list-group">
+            <todo todo="todo" ng-repeat="todo in todos | filter:getTodosFilter()">
+            </todo>
+          </div>
+          <div>
+            Completed: 
+            {{ (todos | filter:{completed:true}).length }} /
+            {{ todos.length }}
+          </div>
+          <form ng-submit="addTodo()">
+            <label class="checkbox">
+              <input type="checkbox" ng-model="hideCompleted" />
+              Hide completed todos
+            </label>
+            <input type="text" ng-model="newTodoTitle" placeholder="Buy beer" class="form-control"/>
+            <button class="btn btn-default">
+              <span class="glyphicon glyphicon-plus"></span>
+              Add todo
+            </button>
+          </form>
+        </body>
+        </html>
