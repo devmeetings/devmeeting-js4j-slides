@@ -120,6 +120,7 @@ slides:
         <span class="glyphicon glyphicon-ok text-success"></span>
         Jasmine - for writing and running JS unit tests
       </h3>
+
   - id: tooling2
     name: JS Tooling
     title: JS Tooling - Bower
@@ -181,7 +182,7 @@ slides:
         </body>
         </html>
     footer: |
-      <h4 class="pull-right">
+      <h4>
         <span class="glyphicon glyphicon-bookmark text-muted"></span>
         <a href="http://docs.angularjs.org/tutorial/step_00">Tutorial - Step 0</a>
       </h4>
@@ -221,7 +222,7 @@ slides:
         </body>
         </html>
     footer: |
-      <h4 class="pull-right">
+      <h4>
         <span class="glyphicon glyphicon-bookmark text-muted"></span>
         <a href="http://docs.angularjs.org/tutorial/step_02">Tutorial Step 2</a>
       </h4>
@@ -248,6 +249,7 @@ slides:
 
           });
         });
+
   - id: angular-ngrepeat
     name: Angular.js
     title: Angular.js - Looping
@@ -278,16 +280,20 @@ slides:
           </h2>
         </body>
         </html>
+
   - id: task1
     name: Task 1
     title: "Task: Display todos using angular"
-    code: |
-      var todos = [
-        "Checkout project from github",
-        "Invoke 'play run' in your console",
-        "Open your browser and head over to http://localhost:9000",
-        "Learn Angular"
-      ];
+    code:
+      small: true
+      hideOutput: true
+      content: |
+        var todos = [
+          "Checkout project from github",
+          "Invoke 'play run' in your console",
+          "Open your browser and head over to http://localhost:9000",
+          "Learn Angular"
+        ];
     task:
       duration: 45
       objectives:
@@ -297,6 +303,34 @@ slides:
       extras:
         - Write test for scope
         - Introduce <code>Karma</code> and write E2E test.
+      solution:
+        fiddle:
+          js: |
+            window.MyFirstController = function($scope) {
+              $scope.todos = [
+                "Checkout project from github",
+                "Invoke 'play run' in your console",
+                "Open your browser and head over to http://localhost:9000",
+                "Learn Angular"
+              ];
+            };
+          html: |
+            <!doctype html>
+            <html lang="en" ng-app>
+            <head>
+              <meta charset="utf-8">
+              <title>Hello Angular!</title>
+              <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+            </head>
+            <body ng-controller="MyFirstController">
+              <h1>Hello</h1>
+              <div class="list-group">
+                <a ng-repeat="todo in todos" class="list-group-item">
+                  {{ todo }}
+                </a>
+              </div>
+            </body>
+            </html>
   - id: angular-dom
     name: Angular.js DOM
     title: DOM binding
@@ -333,6 +367,7 @@ slides:
           <button ng-click="showAlert()">Alert me!</button>
         </body>
         </html>
+
   - id: angular-domawesome
     name: Angular.js DOM
     title: DOM binding awesomeness!
@@ -366,15 +401,17 @@ slides:
           <!-- We can use {{ }} to print variable assigned to scope -->
           <p>Hello {{ name }}</p>
 
-          <!-- We can bind input box with variables inside your model! Awesome! -->
-          <input type="text" class="form-controll" ng-model="name" placeholder="Enter your name">
+          <div class="form-group">
+            <!-- We can bind input box with variables inside your model! Awesome! -->
+            <input type="text" class="form-control" ng-model="name" placeholder="Enter your name">
 
-          <!-- ng-click is a directive that allows you to specify action that will happen when you click a button -->
-          <button ng-click="showAlert()">Alert me!</button>
+            <!-- ng-click is a directive that allows you to specify action that will happen when you click a button -->
+            <button class="btn btn-default" ng-click="showAlert()">Alert me!</button>
+          </div>
         </body>
         </html>
     footer: |
-      <h4 class="pull-right">
+      <h4>
         <span class="glyphicon glyphicon-bookmark text-muted"></span>
         <a href="http://docs.angularjs.org/tutorial/step_03">Tutorial Step 3</a>
       </h4>
@@ -409,8 +446,10 @@ slides:
           <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
         </head>
         <body ng-controller="TodosController">
-          <textarea ng-model="todos" rows="5" cols="65">
-          </textarea>
+          <div class="form-group">
+            <textarea ng-model="todos" rows="5" cols="65" class="form-control">
+            </textarea>
+          </div>
           <div>
             <h3 ng-repeat="todo in todos.split('\n')">
               <span class="glyphicon glyphicon-ok text-success"></span>
@@ -455,26 +494,278 @@ slides:
           <!-- We can use {{ }} to print variable assigned to scope -->
           <p>Hello {{ name }}</p>
 
-          <!-- We can bind input box with variables inside your model! Awesome! -->
-          <input type="text" class="form-controll" ng-model="name" placeholder="Enter your name">
-          <br />
-          <!-- We just use ng-model:) -->
-          <label class="checkbox">
-            <input type="checkbox"  ng-model="isToUpper">
-            Show in uppercase
-          </label>
+          <div class="form-group">
+            <!-- We can bind input box with variables inside your model! Awesome! -->
+            <input type="text" class="form-control" ng-model="name" placeholder="Enter your name">
+            <br />
+            <!-- We just use ng-model:) -->
+            <label class="checkbox">
+              <input type="checkbox" ng-model="isToUpper">
+              Show in uppercase
+            </label>
+          </div>
         </body>
         </html>
   - id: angular-watchtest
     name: Angular.js Watching
     title: Angular.js 
 
+  - id: task2
+    name: Task 2
+    title: "Task: Displaying todos state"
+    task:
+      duration: 30
+      objectives:
+        - Display todos completed state with checkbox
+        - Clicking on todo should change checkbox state
+      extras:
+        - Keyboard support via Tab, Shift+Tab and Space
+        - E2E test
+      solution:
+        fiddle:
+          js: |
+            var app = angular.module("todosApp", []);
+            app.controller('TodosController',  function($scope) {
+              $scope.todos = [
+                {
+                  title: "Checkout project from github",
+                  completed: true
+                }, {
+                  title: "Invoke 'play run' in your console",
+                  completed: true
+                }, {
+                  title: "Open your browser and head over to http://localhost:9000",
+                  completed: false
+                }, {
+                  title: "Learn Angular",
+                  completed: false
+                }
+              ];
+            });
+          html: |
+            <!doctype html>
+            <!-- We have to tell which module is an entry-point -->
+            <html lang="en" ng-app="todosApp">
+            <head>
+              <meta charset="utf-8">
+              <title>Hello Angular!</title>
+              <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+            </head>
+            <body ng-controller="TodosController">
+              <div class="list-group">
+                <label ng-repeat="todo in todos" class="list-group-item">
+                  <div class="checkbox">
+                    <input type="checkbox" ng-model="todo.completed" />
+                    {{ todo.title }}
+                  </div>
+                </label>
+              </div>
+            </body>
+            </html>
 
+  - id: task3
+    name: Task 3
+    title: "Task: Adding new todos"
+    task:
+      duration: 30
+      objectives:
+        - Adding new todos using form with button
+      extras:
+        - Keyboard support - hitting Enter in input box should add todo
+        - Editing todos in-place - Clicking edit icon should change todo to input (<code>ng-show</code>)
+      solution:
+        fiddle:
+          js: |
+            var app = angular.module("todosApp", []);
+            app.controller('TodosController',  function($scope) {
+              //it could be done in ng-init
+              $scope.editing = {};
 
+              $scope.todos = [
+                {
+                  title: "Invoke 'play run' in your console",
+                  completed: true
+                }, {
+                  title: "Learn Angular",
+                  completed: false
+                }
+              ];
+              $scope.newTodoTitle = "Buy beer";
+              $scope.addTodo = function() {
+                var title = $scope.newTodoTitle;
+                if (!title) return;
 
+                $scope.todos.push({
+                  title: title,
+                  completed: false
+                });
+                $scope.newTodoTitle = "";
+              };
+            });
+          html: |
+            <!doctype html>
+            <!-- We have to tell which module is an entry-point -->
+            <html lang="en" ng-app="todosApp">
+            <head>
+              <meta charset="utf-8">
+              <title>Hello Angular!</title>
+              <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+            </head>
+            <body ng-controller="TodosController">
+              <div class="list-group">
+                <div ng-repeat="todo in todos" class="list-group-item">
+                  <input type="text" class="form-control" 
+                    ng-model="todo.title" ng-show="editing[$index]" ng-blur="editing[$index] = false" />
+                  <label class="checkbox" ng-hide="editing[$index]">
+                    <a href="" class="pull-right text-muted" ng-click="editing[$index] = !editing[$index]">
+                      <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <input type="checkbox" ng-model="todo.completed" />
+                    {{ todo.title }}
+                  </label>
+                </div>
+              </div>
+              <form ng-submit="addTodo()">
+                <input type="text" ng-model="newTodoTitle" placeholder="Buy beer" class="form-control"/>
+                <button class="btn btn-default">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  Add todo
+                </button>
+              </form>
+            </body>
+            </html>
+  - id: task4
+    name: Task 4
+    title: "Task: Show / hide completed todos"
+    task:
+      duration: 45
+      objectives:
+        - Add checkbox to show/hide completed todos
+        - Use <code>filter</code> for that
+      extras:
+        - Display summary of completed / uncompleted todos
+        - Display progress bar <a href="http://angular-ui.github.io/bootstrap/">angular-ui</a> <span class="glyphicon glyphicon-new-window"></span>
+      solution:
+        fiddle:
+          js: |
+            var app = angular.module("todosApp", ['ui.bootstrap']);
+            app.controller('TodosController',  function($scope) {
+              //it could be done in ng-init
+              $scope.editing = {};
 
+              $scope.todos = [
+                {
+                  title: "Invoke 'play run' in your console",
+                  completed: true
+                }, {
+                  title: "Learn Angular",
+                  completed: false
+                }
+              ];
 
+              $scope.newTodoTitle = "Buy beer";
+              $scope.hideCompleted = false;
 
+              $scope.addTodo = function() {
+                var title = $scope.newTodoTitle;
+                if (!title) return;
 
+                $scope.todos.push({
+                  title: title,
+                  completed: false
+                });
+                $scope.newTodoTitle = "";
+              };
+              $scope.getTodosFilter = function() {
+                  var filter = {};
+                  !$scope.hideCompleted || (filter['completed'] = false);
+                  return filter;
+              };
+            });
+          html: |
+            <!doctype html>
+            <!-- We have to tell which module is an entry-point -->
+            <html lang="en" ng-app="todosApp">
+            <head>
+              <meta charset="utf-8">
+              <title>Hello Angular!</title>
+              <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+              <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.9.0/ui-bootstrap-tpls.js"></script>
+            </head>
+            <body ng-controller="TodosController">
+              <div class="list-group">
+                <div ng-repeat="todo in todos | filter:getTodosFilter()" class="list-group-item">
+                  <input type="text" class="form-control" 
+                    ng-model="todo.title" ng-show="editing[$index]" ng-blur="editing[$index] = false" />
+                  <label class="checkbox" ng-hide="editing[$index]">
+                    <a href="" class="pull-right text-muted" ng-click="editing[$index] = !editing[$index]">
+                      <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <input type="checkbox" ng-model="todo.completed" />
+                    {{ todo.title }}
+                  </label>
+                </div>
+              </div>
+              <div>
+                Completed: 
+                {{ (todos | filter:{completed:true}).length }} /
+                {{ todos.length }}
+                <!-- Angular is blocking insecure url so below is not working, but it should :)
+                <progressbar max="todos.length" value="(todos | filter:{completed:true}).length">{{ (todos | filter:{completed:false}).length }} left</progressbar>
+                -->
+              </div>
+              <form ng-submit="addTodo()">
+                <label class="checkbox">
+                  <input type="checkbox" ng-model="hideCompleted" />
+                  Hide completed todos
+                </label>
+                <input type="text" ng-model="newTodoTitle" placeholder="Buy beer" class="form-control"/>
+                <button class="btn btn-default">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  Add todo
+                </button>
+              </form>
+            </body>
+            </html>
 
+  - id: task5
+    name: Task 5
+    title: "Task: Persistence via LocalStorage"
+    task:
+      duration: 30
+      objectives:
+        - Use <code>localStorage</code> to add persistence to your application
+        - Create <code>Service</code> to hide complexity
+      extras:
+        - Use <code>$q</code> to return promises from your service
 
+  - id: task6
+    name: Task 6
+    title: "Task: Close single todo inside directive"
+    task:
+      duration: 30
+      objectives:
+        - Create directive <code>&lt;todo&gt;</code> that displays single todo
+      extras:
+        - Editing of todo should be handled inside directive
+
+  - id: task7
+    name: Task 7
+    title: "Task: Write REST API in Play! and use it for persistence"
+    task:
+      duration: 60
+      objectives:
+        - Implement REST API for Todos in Play!
+        - Change <code>localStorage</code> persistence to REST API
+      extras:
+        - Write tests and mock <code>$http</code> service (<a href="http://docs.angularjs.org/api/ngMock.$httpBackend">angular-mock</a> <span class="glyphicon-new-window glyphicon"></span>)
+
+  - id: task8
+    name: Task 8
+    title: "Task: CoffeeScript rewriting"
+    task:
+      duration: 60
+      objectives:
+        - Rewrite your application to CoffeeScript
+      extras:
+        - Rewrite your tests to CoffeeScript
