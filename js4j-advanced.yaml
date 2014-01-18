@@ -332,7 +332,7 @@ slides:
             </body>
             </html>
   - id: angular-dom
-    name: Angular.js DOM
+    name: ng DOM
     title: DOM binding
     text: |
       <h2>Using <code>ng-click</code> allows you to invoke function that is exposed in <code>$scope</code></h2>
@@ -369,7 +369,7 @@ slides:
         </html>
 
   - id: angular-domawesome
-    name: Angular.js DOM
+    name: ng DOM
     title: DOM binding awesomeness!
     text: |
       <h2>
@@ -417,7 +417,7 @@ slides:
       </h4>
 
   - id: angular-module
-    name: Angular.js Module
+    name: ng Module
     title: Code organization
     text: |
       <h2>
@@ -426,7 +426,8 @@ slides:
     fiddle:
       big: true
       js: |
-        var app = angular.module('todosApp', []/* other modules dependencies */);
+        var app = angular.module('todosApp', 
+          [] /* other modules dependencies */);
         app.controller('TodosController', function($scope) {
 
           $scope.todos = ["Checkout project from github",
@@ -460,8 +461,8 @@ slides:
         </html>
 
   - id: angular-watch
-    name: Angular.js Watching
-    title: Watching changes
+    name: ng Watching
+    title: Watching for changes
     text: |
       <h2>
         <span class="glyphicon glyphicon-ok"></span>
@@ -470,7 +471,8 @@ slides:
     fiddle:
       big: true
       js: |
-        window.MyFirstController = function($scope) {
+        var app = angular.module('someApp', []);
+        app.controller('MyFirstController', function($scope) {
           $scope.isToUpper = false;
           $scope.name = "Tomasz";
 
@@ -481,10 +483,10 @@ slides:
               $scope.name = $scope.name.toLowerCase();
             }
           });
-        };
+        });
       html: |
         <!doctype html>
-        <html lang="en" ng-app>
+        <html lang="en" ng-app="someApp">
         <head>
           <meta charset="utf-8">
           <title>Hello Angular!</title>
@@ -508,7 +510,7 @@ slides:
         </html>
 
   - id: task2-3
-    name: Task 2 &amp; 3
+    name: Task 2 & 3
     title: "Task: Displaying todos state"
     task:
       duration: 40
@@ -520,6 +522,7 @@ slides:
         - E2E test
       solution:
         fiddle:
+          big: true
           js: |
             var app = angular.module("todosApp", []);
             app.controller('TodosController',  function($scope) {
@@ -558,7 +561,174 @@ slides:
               </div>
             </body>
             </html>
-# ng-show, ng-hide
+  - id: angular-ngshow
+    name: ng Visibility
+    title: Angular.js - Controlling Visibility
+    text: |
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+          By using <code>ng-show</code> and <code>ng-hide</code> you can controll which elements are displayed.
+        </span>
+      </h2>
+    fiddle:
+      big: true
+      active: html
+      js: |
+        var app = angular.module('someApp', []);
+        app.controller('MyFirstController', function($scope) {
+          $scope.isToUpper = false;
+          $scope.name = "Tomasz";
+
+          $scope.$watch('isToUpper', function() {
+            if ($scope.isToUpper) {
+              $scope.name = $scope.name.toUpperCase();
+            } else {
+              $scope.name = $scope.name.toLowerCase();
+            }
+          });
+        });
+      html: |
+        <!doctype html>
+        <html lang="en" ng-app="someApp">
+        <head>
+          <meta charset="utf-8">
+          <title>Hello Angular!</title>
+          <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+        </head>
+        <body ng-controller="MyFirstController">
+          <p>
+            Hello {{ name }}
+            <span ng-show="isToUpper">in UPPER case</span>
+            <span ng-hide="isToUpper">in lower case</span>
+          </p>
+
+          <div class="form-group">
+            <input type="text" class="form-control" ng-model="name" placeholder="Enter your name">
+            <br />
+            <label class="checkbox">
+              <input type="checkbox" ng-model="isToUpper">
+              Show in uppercase
+            </label>
+          </div>
+        </body>
+        </html>
+  - id: angular-ngif
+    name: ng Visibility
+    title: Angular.js - Switching elements
+    text: |
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+          Using <code>ng-if</code> controlls which elements are actually in DOM.
+        </span>
+      </h2>
+      <h3>
+        <span class="text-warning">Tip:</span>
+        Using <code>ng-show</code> and <code>ng-hide</code> results in better user experience faster GUI
+      </h3>
+      <h3>
+        <span class="text-danger">Tip:</span>
+        Unless you have too much elements in DOM - in this case using <code>ng-if</code> could result in better overall performance of your website.
+      </h3>
+    fiddle:
+      big: true
+      active: html
+      js: |
+        var app = angular.module('someApp', []);
+        app.controller('MyFirstController', function($scope) {
+          $scope.isToUpper = false;
+          $scope.name = "Tomasz";
+
+          $scope.$watch('isToUpper', function() {
+            if ($scope.isToUpper) {
+              $scope.name = $scope.name.toUpperCase();
+            } else {
+              $scope.name = $scope.name.toLowerCase();
+            }
+          });
+        });
+      html: |
+        <!doctype html>
+        <html lang="en" ng-app="someApp">
+        <head>
+          <meta charset="utf-8">
+          <title>Hello Angular!</title>
+          <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+        </head>
+        <body ng-controller="MyFirstController">
+          <p>
+            Hello {{ name }}
+            <span ng-if="isToUpper">in UPPER case</span>
+            <span ng-if="!isToUpper">in lower case</span>
+          </p>
+
+          <div class="form-group">
+            <input type="text" class="form-control" ng-model="name" placeholder="Enter your name">
+            <br />
+            <label class="checkbox">
+              <input type="checkbox" ng-model="isToUpper">
+              Show in uppercase
+            </label>
+          </div>
+        </body>
+        </html>
+  - id: angular-ngswitch
+    name: ng Visibility
+    title: Angular.js - Switching elements via <code>ng-switch</code>
+    text: |
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+          <code>ng-switch</code> is like replacing bunch of if-else statements with switch-case.
+        </span>
+      </h2>
+    fiddle:
+      big: true
+      active: html
+      js: |
+        var app = angular.module('someApp', []);
+        app.controller('MyFirstController', function($scope) {
+          $scope.isToUpper = null;
+          $scope.name = "Tomasz";
+
+          $scope.$watch('isToUpper', function() {
+            if ($scope.isToUpper) {
+              $scope.name = $scope.name.toUpperCase();
+            } else {
+              $scope.name = $scope.name.toLowerCase();
+            }
+          });
+        });
+      html: |
+        <!doctype html>
+        <html lang="en" ng-app="someApp">
+        <head>
+          <meta charset="utf-8">
+          <title>Hello Angular!</title>
+          <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+        </head>
+        <body ng-controller="MyFirstController">
+          <p>
+            Hello {{ name }}
+            <span ng-switch="isToUpper">
+              <span ng-switch-when="true">in UPPER case</span>
+              <span ng-switch-when="false">in lower case</span>
+              <span ng-switch-default>when undefined</span>
+            </span>
+          </p>
+
+          <div class="form-group">
+            <input type="text" class="form-control" ng-model="name" placeholder="Enter your name">
+            <br />
+            <label class="checkbox">
+              <input type="checkbox" ng-model="isToUpper">
+              Show in uppercase
+            </label>
+          </div>
+        </body>
+        </html>
+
   - id: task4
     name: Task 4
     title: "Task: Adding new todos"
@@ -571,6 +741,7 @@ slides:
         - Editing todos in-place - Clicking edit icon should change todo to input (<code>ng-show</code>)
       solution:
         fiddle:
+          big: true
           js: |
             var app = angular.module("todosApp", []);
             app.controller('TodosController',  function($scope) {
@@ -643,6 +814,7 @@ slides:
         - Display progress bar <a href="http://angular-ui.github.io/bootstrap/">angular-ui</a> <span class="glyphicon glyphicon-new-window"></span>
       solution:
         fiddle:
+          big: true
           js: |
             var app = angular.module("todosApp", ['ui.bootstrap']);
             app.controller('TodosController',  function($scope) {
@@ -737,6 +909,7 @@ slides:
         - Use <code>$q</code> to return promises from your service
       solution:
         fiddle:
+          big: true
           js: |
             var app = angular.module("todosApp", ['ui.bootstrap']);
             app.controller('TodosController',  ['$scope', 'Todos', function($scope, Todos) {
@@ -851,6 +1024,7 @@ slides:
         - Write <code>EventBus</code> from JS4J training
       solution:
         fiddle:
+          big: true
           js: |
             var app = angular.module("todosApp", ['ui.bootstrap']);
             app.directive('todo', function(){
@@ -987,6 +1161,7 @@ slides:
         - Add search for todos
       solution:
         fiddle:
+          big: true
           coffee: |
             app = angular.module "todosApp", ['ui.bootstrap']
             app.directive('todo', ->
