@@ -1072,9 +1072,136 @@ slides:
               </form>
             </body>
             </html>
+  - id: angular-injector
+    name: ng Injector
+    title: Angular.js - Where does <code>$scope</code> come from?
+    text: |
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+          Angular is using Dependency Injection pattern
+        </span>
+      </h2>
+      <h3>
+        By parsing <code>toString</code> representation of function of your controller angular.js can determine what dependencies are you using.
+      </h3>
+      <h4>
+        <span class="text-danger">Tip:</span>
+        You can use more explicit injection to support minification and custom names of dependencies
+      </h4>
+    fiddle:
+      big: true
+      js: |
+        angular.module("todosApp", [])
+          .controller("TodosController", 
+          // You can use [] syntax or just set $inject property on function
+            ["$scope", "filterFilter", "$http", function($scope, filter, $http) {
+          $scope.something = [{
+            a: 5,
+            text: "has matching",
+            m: true
+          },{
+            b: 3,
+            text: "no matching",
+            m: false
+          }];
+          $scope.filtered = filter($scope.something, {
+            a: 5
+          });
+          $http.jsonp('https://api.github.com?callback=JSON_CALLBACK').then(function(data){
+            $scope.text = data.data.data.current_user_url;
+          });
+        }]);
+      html: |
+          <!doctype html>
+          <html lang="en" ng-app="todosApp">
+          <head>
+            <meta charset="utf-8">
+            <title>Hello Angular!</title>
+            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+          </head>
+          <body ng-controller="TodosController">
+            <h2>Filtered in Ctrl</h2>
+            <h4 class="text-muted">
+              {{ filtered }}
+            </h4>
+            <h2>Text</h2>
+            <h4 class="text-muted">
+              <a ng-href="text">{{ text }}</a>
+            </h4>
+          </body>
+          </html>
+  - id: angular-services
+    name: ng Services
+    title: Angular.js - Services
+    text: |
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+          Services are like injectable utility classes <span class="text-danger"><span class="glyphicon glyphicon-asterisk"></span></span>
+        </span>
+      </h2>
+      <h4>
+        In last example we have injected <code>$http</code> service that is similar to jQuery <code>$.ajax</code>
+      </h4>
+      <h4>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+          It's easy to mock services in tests and reuse in different controllers
+        </span>
+      </h4>
+    fiddle:
+      big: true
+      js: |
+        angular.module("todosApp", [])
+          .controller("TodosController", 
+            ["$scope", "filterFilter", "DataService", function($scope, filter, Data) {
+          $scope.something = Data.getSomeData();
+          $scope.filtered = filter($scope.something, {
+            a: 5
+          });
+          Data.getGithubApi().then(function(data){
+            $scope.text = data.data.data.current_user_url;
+          });
+        // We create factory of services using app.factory method
+        }]).factory('DataService', ["$http", function($http) {
+          return {
+            getSomeData: function() {
+              return [{
+                a: 5,
+                text: "has matching",
+                m: true
+              },{
+                b: 3,
+                text: "no matching",
+                m: false
+              }];
+            },
+            getGithubApi: function() {
+              return $http.jsonp('https://api.github.com?callback=JSON_CALLBACK');
+            }
+          }
+        }]);
+      html: |
+          <!doctype html>
+          <html lang="en" ng-app="todosApp">
+          <head>
+            <meta charset="utf-8">
+            <title>Hello Angular!</title>
+            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+          </head>
+          <body ng-controller="TodosController">
+            <h2>Filtered in Ctrl</h2>
+            <h4 class="text-muted">
+              {{ filtered }}
+            </h4>
+            <h2>Text</h2>
+            <h4 class="text-muted">
+              <a ng-href="text">{{ text }}</a>
+            </h4>
+          </body>
+          </html>
 
-# Injecting services
-# Creating services
   - id: task6
     name: Task 6
     title: "Task: Persistence via LocalStorage"
@@ -1084,7 +1211,8 @@ slides:
         - Use <code>localStorage</code> to add persistence to your application
         - Create <code>Service</code> to hide complexity
       extras:
-        - Use <code>$q</code> to return promises from your service
+        - Use <code>$window</code> service instead of using <code>localStorage</code>
+        - Use <code>$q</code> service to return promises from your service
       solution:
         fiddle:
           big: true
@@ -1337,7 +1465,7 @@ slides:
 #        - Rewrite your tests to CoffeeScript
 #        - Add search for todos
 #      solution:
-- id: coffeescript-teaser
+  - id: coffeescript-teaser
     name: CoffeeScript
     title: CoffeeScript - teaser
     fiddle:
