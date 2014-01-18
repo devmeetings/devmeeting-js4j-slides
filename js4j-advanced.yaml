@@ -506,15 +506,12 @@ slides:
           </div>
         </body>
         </html>
-  - id: angular-watchtest
-    name: Angular.js Watching
-    title: Angular.js 
 
-  - id: task2
-    name: Task 2
+  - id: task2-3
+    name: Task 2 &amp; 3
     title: "Task: Displaying todos state"
     task:
-      duration: 30
+      duration: 40
       objectives:
         - Display todos completed state with checkbox
         - Clicking on todo should change checkbox state
@@ -562,8 +559,8 @@ slides:
             </body>
             </html>
 # ng-show, ng-hide
-  - id: task3
-    name: Task 3
+  - id: task4
+    name: Task 4
     title: "Task: Adding new todos"
     task:
       duration: 30
@@ -633,11 +630,11 @@ slides:
             </body>
             </html>
 # Filters
-  - id: task4
-    name: Task 4
+  - id: task5
+    name: Task 5
     title: "Task: Show / hide completed todos"
     task:
-      duration: 45
+      duration: 20
       objectives:
         - Add checkbox to show/hide completed todos
         - Use <code>filter</code> for that
@@ -732,7 +729,7 @@ slides:
     name: Task 5
     title: "Task: Persistence via LocalStorage"
     task:
-      duration: 30
+      duration: 20
       objectives:
         - Use <code>localStorage</code> to add persistence to your application
         - Create <code>Service</code> to hide complexity
@@ -851,6 +848,7 @@ slides:
         - Create directive <code>&lt;todo&gt;</code> that displays single todo
       extras:
         - Editing of todo should be handled inside directive
+        - Write <code>EventBus</code> from JS4J training
       solution:
         fiddle:
           js: |
