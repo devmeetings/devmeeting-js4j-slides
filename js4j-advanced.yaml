@@ -149,7 +149,7 @@ slides:
 
   - id: angular
     name: Angular.js
-    title: Angular.js - introduction
+    title: Angular.js - Introduction
     text: |
       <h3 class="text-muted">
         <span class="glyphicon glyphicon-new-window"></span>
@@ -158,12 +158,22 @@ slides:
         </a>
         Superheroic JavaScript MVW Framework
       </h3>
-      <h3>
+      <br>
+      <h2>
         <span class="glyphicon glyphicon-book text-muted"></span>
         <a href="http://docs.angularjs.org/">
           Angular.js docs
         </a>
-      </h3>
+      </h2>
+      <h2>
+        <span class="glyphicon glyphicon-book text-muted"></span>
+        <a href="http://docs.angularjs.org/tutorial/">
+          Angular.js tutorial
+        </a>
+      </h2>
+  - id: angular1
+    name: Angular.js
+    title: Angular.js - Fist app
     fiddle:
       big: true
       html: |
@@ -181,11 +191,6 @@ slides:
          
         </body>
         </html>
-    footer: |
-      <h4>
-        <span class="glyphicon glyphicon-bookmark text-muted"></span>
-        <a href="http://docs.angularjs.org/tutorial/step_00">Tutorial - Step 0</a>
-      </h4>
 
   - id: angular-ctrl
     name: Angular.js
@@ -221,11 +226,6 @@ slides:
           <p>Hello {{ name }}</p>
         </body>
         </html>
-    footer: |
-      <h4>
-        <span class="glyphicon glyphicon-bookmark text-muted"></span>
-        <a href="http://docs.angularjs.org/tutorial/step_02">Tutorial Step 2</a>
-      </h4>
 
   - id: angular-ctrltest
     name: Angular.js
@@ -331,6 +331,7 @@ slides:
               </div>
             </body>
             </html>
+
   - id: angular-dom
     name: ng DOM
     title: DOM binding
@@ -364,7 +365,7 @@ slides:
           <!-- We can use {{ }} to print variable assigned to scope -->
           <p>Hello {{ name }}</p>
           <!-- ng-click is a directive that allows you to specify action that will happen when you click a button -->
-          <button ng-click="showAlert()">Alert me!</button>
+          <button class="btn btn-default" ng-click="showAlert()">Alert me!</button>
         </body>
         </html>
 
@@ -410,11 +411,6 @@ slides:
           </div>
         </body>
         </html>
-    footer: |
-      <h4>
-        <span class="glyphicon glyphicon-bookmark text-muted"></span>
-        <a href="http://docs.angularjs.org/tutorial/step_03">Tutorial Step 3</a>
-      </h4>
 
   - id: angular-module
     name: ng Module
@@ -800,7 +796,189 @@ slides:
               </form>
             </body>
             </html>
-# Filters
+
+  - id: angular-expressions
+    name: ng Expressions
+    title: Angular.js - Expressions
+    text: |
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+          Angular
+          <a href="http://docs.angularjs.org/guide/expression">
+          Expressions
+          </a> <span class="glyphicon glyphicon-book text-muted"></span>
+          are very similar to JS expressions.
+        </span>
+      </h2>
+      <h3>
+        You can reference variables, invoke functions and perform some operations.
+      </h3>
+    fiddle:
+      js: |
+        angular.module("todosApp", [])
+          .controller("TodosController", function($scope) {
+
+          $scope.world = 'Tomasz';
+
+          //Click on checkbox and note
+          // that undefined is not displayed
+          $scope.isUpper = undefined;
+
+          $scope.isUpperLabel = function() {
+            if ($scope.isUpper) {
+              return 'isUPPER';
+            }
+            return 'isLower';
+          };
+        });
+      html: |
+          <!doctype html>
+          <html lang="en" ng-app="todosApp">
+          <head>
+            <meta charset="utf-8">
+            <title>Hello Angular!</title>
+            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+          </head>
+          <body ng-controller="TodosController">
+            <h2>{{ "Hello " + world }}</h2>
+            <h2 class="text-success">3 + 4 = {{ 3 + 4 }}</h2>
+            <h2>isUpper: {{ isUpper }}</h2>
+            <h3>
+              <label class="checkbox">
+                <input type="checkbox" ng-model="isUpper" />
+                {{ isUpperLabel() }}
+                {{ iAmUndefinedYetNoError() }}
+              </label>
+            </h3>
+          </body>
+          </html>
+  - id: angular-filters
+    name: ng Filters
+    title: Angular.js - Filters
+    text: |
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+          In expressions you can use 
+          <a href="http://docs.angularjs.org/guide/filter">
+          Filters 
+          </a> <span class="glyphicon glyphicon-book text-muted"></span>
+          by using pipe operator <code>|</code>
+        </span>
+      </h2>
+    fiddle:
+      big: true
+      js: |
+        angular.module("todosApp", [])
+          .controller("TodosController", function($scope) {
+
+          $scope.world = 'Tomasz';
+
+          //Click on checkbox and note
+          // that undefined is not displayed
+          $scope.isUpper = undefined;
+
+          $scope.isUpperLabel = function() {
+            if ($scope.isUpper) {
+              return {
+                text: 'isUPPER'
+              };
+            }
+            return 'isLower';
+          };
+        });
+      html: |
+          <!doctype html>
+          <html lang="en" ng-app="todosApp">
+          <head>
+            <meta charset="utf-8">
+            <title>Hello Angular!</title>
+            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+          </head>
+          <body ng-controller="TodosController">
+            <h2>{{ "Hello " + world | uppercase }}</h2>
+            <h2 class="text-success">3 + 4 = {{ 3 + 4 | currency }}</h2>
+            <h2>isUpper: {{ isUpper | number }}</h2>
+            <h3>
+              <label class="checkbox">
+                <input type="checkbox" ng-model="isUpper" />
+                {{ isUpperLabel() | json }}
+                {{ iAmUndefinedYetNoError() }}
+              </label>
+            </h3>
+          </body>
+          </html>
+
+  - id: angular-filters-filter
+    name: ng Filters
+    title: Angular.js - "filter" Filter :)
+    text: |
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+          Angular.js gives you very usefull <code>Filter</code> for arrays called 
+          <a href="http://docs.angularjs.org/api/ng.filter:filter">filter</a>
+          <span class="glyphicon glyphicon-book text-muted"></span>
+        </span>
+      </h2>
+      <h4>
+        <span class="text-warning">Tip:</span>
+        You can write your own filters
+      </h4>
+    fiddle:
+      big: true
+      active: html
+      js: |
+        angular.module("todosApp", [])
+          .controller("TodosController", function($scope) {
+
+          $scope.something = [{
+            a: 5,
+            text: "has matching",
+            m: true
+          },{
+            b: 3,
+            text: "no matching",
+            m: false
+          }];
+
+          $scope.matchesFunc = function(e) {
+            return e.m;
+          };
+        }).filter("getPropFromFirst", function(){
+          return function(input, property) {
+            return input[0][property];
+          }
+        });
+      html: |
+          <!doctype html>
+          <html lang="en" ng-app="todosApp">
+          <head>
+            <meta charset="utf-8">
+            <title>Hello Angular!</title>
+            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+          </head>
+          <body ng-controller="TodosController">
+            <h2>Filter by property</h2>
+            <h4 class="text-muted">
+              {{ something | filter:{b:3} }}
+            </h4>
+            <h2>Filter by any text</h2>
+            <h4 class="text-muted">
+              {{ something | filter:"has" }}
+            </h4>
+            <h2>Filter by function</h2>
+            <h4 class="text-muted">
+              {{ something | filter:matchesFunc }}
+            </h4>
+            <h2>Custom filter</h2>
+            <h4 class="text-muted">
+              {{ something | getPropFromFirst:"text" }}
+            </h4>
+          </body>
+          </html>
+
   - id: task5
     name: Task 5
     title: "Task: Show / hide completed todos"
