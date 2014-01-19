@@ -1327,8 +1327,106 @@ slides:
         - Change <code>localStorage</code> persistence to REST API
       extras:
         - Write tests and mock <code>$http</code> service (<a href="http://docs.angularjs.org/api/ngMock.$httpBackend">angular-mock</a> <span class="glyphicon-new-window glyphicon"></span>)
-# Writing directives
-# isolated scope, new scopes
+
+  - id: angular-directives
+    name: ng Directives
+    title: Angular.js - Directives
+    text: |
+      <h3>
+        Have you wondered what all those <code>ng-something</code> attributes are?
+      </h3>
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+          <a href="http://docs.angularjs.org/guide/directive">Directive</a>
+          <span class="glyphicon glyphicon-book text-muted"></span>
+          is a glue between DOM and your models (JS code)
+        </span>
+      </h2>
+    fiddle:
+      big: true
+      js: |
+        angular.module("todosApp", [])
+          .controller("TodosController", 
+            ["$scope", function($scope) {
+              $scope.text = 'Directives are soo cool!';
+        }]).directive('successText', function() {
+          return {
+            // Avoid using "template" use "templateUrl" instead
+            // it allows you to store html in it's own file
+            template: '<span class="glyphicon glyphicon-ok"></span> '+
+                      '<span class="text-success">{{ text }}</span>'
+          };
+        });
+      html: |
+          <!doctype html>
+          <html lang="en" ng-app="todosApp">
+          <head>
+            <meta charset="utf-8">
+            <title>Hello Angular!</title>
+            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+          </head>
+          <body ng-controller="TodosController">
+            <h2 success-text>
+            </h2>
+            <p success-text>
+            </p>
+          </body>
+          </html>
+  - id: angular-directives2
+    name: ng Directives
+    title: Angular.js - Directive with it's own scope
+    text: |
+      <h4 class="text-muted">
+        What happened in Vegas stays in Vegas
+      </h4>
+      <h2>
+        <code>$scope</code> is similar to JS function scope
+      </h2>
+      <h2>
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="text-success">
+        You can isolate directive from context where it is used
+        </span>
+      </h2>
+    fiddle:
+      big: true
+      js: |
+        angular.module("todosApp", [])
+          .controller("TodosController", 
+            ["$scope", function($scope) {
+              $scope.ctrlText = 'Directives are soo cool!';
+        }]).directive('successText', function() {
+          return {
+            // Use as a custom element instead of attribute
+            restrict: 'E', 
+            // Create your own scope and bind "text" attribute
+            // to "text" variable
+            scope: {
+              text: '='
+            },
+            template: '<span class="glyphicon glyphicon-ok"></span> '+
+                      '<span class="text-success">{{ text }}</span>'
+          };
+        });
+      html: |
+          <!doctype html>
+          <html lang="en" ng-app="todosApp">
+          <head>
+            <meta charset="utf-8">
+            <title>Hello Angular!</title>
+            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+          </head>
+          <body ng-controller="TodosController">
+            <h2>
+              <success-text text="ctrlText"></success-text>
+            </h2>
+            <!-- This is expression so we need to use '' -->
+            <success-text text="'Oh yes, they are.'">
+            </success-text>
+          </body>
+          </html>
+
   - id: task8
     name: Task 8
     title: "Task: Close single todo inside directive"
@@ -1453,6 +1551,24 @@ slides:
               </form>
             </body>
             </html>
+  - id: coffeescript-teaser
+    name: CoffeeScript
+    title: CoffeeScript - syntactic sugar for JS
+    monitor: x
+    code:
+      language: coffee
+      content: |
+        class Greeter
+          constructor: (name) ->
+            @setName name
+          setName: (name) ->
+            @name = name
+          greet: ->
+            "Hello " + @name
+
+        g = new Greeter localStorage.getItem("name")
+        x = g.greet()
+
 
 #  - id: task9
 #    name: Task 9
@@ -1465,9 +1581,9 @@ slides:
 #        - Rewrite your tests to CoffeeScript
 #        - Add search for todos
 #      solution:
-  - id: coffeescript-teaser
+  - id: coffeescript-app
     name: CoffeeScript
-    title: CoffeeScript - teaser
+    title: CoffeeScript - application
     fiddle:
       big: true
       coffee: |
