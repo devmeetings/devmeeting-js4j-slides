@@ -281,7 +281,7 @@ slides:
         </body>
         </html>
 
-  - id: task1
+  - id: task-display
     name: Task 1
     title: "Task: Display todos using angular"
     code:
@@ -505,7 +505,7 @@ slides:
         </body>
         </html>
 
-  - id: task2-3
+  - id: task-state
     name: Task 2 & 3
     title: "Task: Displaying todos state"
     task:
@@ -725,7 +725,7 @@ slides:
         </body>
         </html>
 
-  - id: task4
+  - id: task-add
     name: Task 4
     title: "Task: Adding new todos"
     task:
@@ -979,7 +979,7 @@ slides:
           </body>
           </html>
 
-  - id: task5
+  - id: task-showhide
     name: Task 5
     title: "Task: Show / hide completed todos"
     task:
@@ -1202,7 +1202,7 @@ slides:
           </body>
           </html>
 
-  - id: task6
+  - id: task-localStorage
     name: Task 6
     title: "Task: Persistence via LocalStorage"
     task:
@@ -1317,7 +1317,7 @@ slides:
             </body>
             </html>
 
-  - id: task7
+  - id: task-rest
     name: Task 7
     title: "Task: Write REST API in Play! and use it for persistence"
     task:
@@ -1427,7 +1427,7 @@ slides:
           </body>
           </html>
 
-  - id: task8
+  - id: task-directive
     name: Task 8
     title: "Task: Close single todo inside directive"
     task:
@@ -1551,6 +1551,24 @@ slides:
               </form>
             </body>
             </html>
+
+  - id: task-survey
+    name: Task 9
+    title: "Task: Complete the survey"
+    text: |
+      <h2>
+      <span class="glyphicon glyphicon-export text-muted"></span>
+        <a href="http://bit.ly/js4java-nsn">
+          Training Survey
+        </a>
+      </h2>
+    task:
+      duration: 10
+      objectives:
+        - Complete the survey under link above
+      extras:
+        - Provide very detailed answers to open-ended questions
+
   - id: coffeescript-teaser
     name: CoffeeScript
     title: CoffeeScript - syntactic sugar for JS

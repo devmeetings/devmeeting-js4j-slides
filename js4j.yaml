@@ -272,10 +272,11 @@ slides:
         Other examples: Foundation,
         Grid systems: Skeleton, HTML5 Boilerplate, LESS Framework
     footer: |
+      <br>
       <h2 class="checkbox">
         <label>
           <input type="checkbox" class="training-checkbox" data-training="html5" style="width:25px;height:25px">
-          &nbsp; I would be interested in <span class="text-primary">Semantic HTML5 and CSS</span> training
+          &nbsp; I would be interested in <span class="text-primary">Semantic HTML5 and CSS3</span> training
         </label>
       </h2>
     script: *trainingStats
@@ -1850,6 +1851,15 @@ slides:
       Audience can open the link in browser - it should show the content
 
       Second call returns a single user out of collection, with more detailed information (like "name")
+    footer: |
+      <br>
+      <h2 class="checkbox">
+        <label>
+          <input type="checkbox" class="training-checkbox" data-training="rest" style="width:25px;height:25px">
+          &nbsp; I would be interested in <span class="text-primary">Designing and implementing professional REST webservices</span> training
+        </label>
+      </h2>
+    script: *trainingStats
 
   - id: ajax1
     name: AJAX
@@ -2087,6 +2097,15 @@ slides:
 
     notes: |
       Other methods are described in documentation.
+    footer: |
+      <br>
+      <h2 class="checkbox">
+        <label>
+          <input type="checkbox" class="training-checkbox" data-training="play" style="width:25px;height:25px">
+          &nbsp; I would be interested in <span class="text-primary">Building Java Applications with Play! Framework</span> training
+        </label>
+      </h2>
+    script: *trainingStats
 
   - id: task-rest
     name: Task 7
@@ -2514,6 +2533,15 @@ slides:
             <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
           </body>
         </html>
+    footer: |
+      <br>
+      <h2 class="checkbox">
+        <label>
+          <input type="checkbox" class="training-checkbox" data-training="backbone" style="width:25px;height:25px">
+          &nbsp; I would be interested in <span class="text-primary">Building JavaScript Apps with Backbone.js</span> training
+        </label>
+      </h2>
+    script: *trainingStats
 
 
   - id: demo-angular
@@ -2530,7 +2558,15 @@ slides:
       - Automatic two-way binding between DOM and JS
       - No DOM in JS (any)
       - More HTML, but no strange CSS classes need only to reference element in JS
-
+    footer: |
+      <br>
+      <h2 class="checkbox">
+        <label>
+          <input type="checkbox" class="training-checkbox" data-training="angular" style="width:25px;height:25px">
+          &nbsp; I would be interested in <span class="text-primary">Building JavaScript Apps with Angular.js</span> training
+        </label>
+      </h2>
+    script: *trainingStats
     fiddle:
       pure: true
       big: true
@@ -2696,6 +2732,21 @@ slides:
   - id: demo-node2
     name: Demo (Node.js)
     title: Node.js + Mongo DB server implementation
+    footer: |
+        <br>
+        <h2 class="checkbox">
+          <label>
+            <input type="checkbox" class="training-checkbox" data-training="node" style="width:25px;height:25px">
+            &nbsp; I would be interested in <span class="text-primary">Building fullstack JavaScript Apps with Node.js</span> training
+          </label>
+        </h2>
+        <h2 class="checkbox">
+          <label>
+            <input type="checkbox" class="training-checkbox" data-training="nosql" style="width:25px;height:25px">
+            &nbsp; I would be interested in <span class="text-primary">Implementing persistence with NoSQL Databases</span> training
+          </label>
+        </h2>
+    script: *trainingStats
     left:
       text: |
         <h4>
@@ -2784,6 +2835,15 @@ slides:
         5. Is synchronous :(
 
       Ask how to store complex structures inside localStorage.
+    footer: |
+        <br>
+        <h2 class="checkbox">
+          <label>
+            <input type="checkbox" class="training-checkbox" data-training="html5" style="width:25px;height:25px">
+            &nbsp; I would be interested in <span class="text-primary">Building Webapps with HTML5 APIs</span> training
+          </label>
+        </h2>
+    script: *trainingStats
 
   - id: task-localStorage
     name: Task 8
@@ -2979,21 +3039,23 @@ slides:
         };
     notes: |
       Tell that there are plenty of such strange behaviour examples on wtfjs
+
   - id: task-survey
     name: Task 9
     title: "Task: Complete the survey"
     text: |
       <h2>
-        <span class="glyphicon-new-window glyphicon text-muted"></span>
-        <a href="http://google.pl">Training Survey</a>
+      <span class="glyphicon glyphicon-export text-muted"></span>
+        <a href="http://bit.ly/js4java-nsn">
+          Training Survey
+        </a>
       </h2>
     task:
-      duration: 5
+      duration: 10
       objectives:
         - Complete the survey under link above
       extras:
         - Provide very detailed answers to open-ended questions
-
 
   - id: mixins1
     name: Mixins
@@ -3180,6 +3242,15 @@ slides:
         big: true
         hideOutput: true
         content: *inheritanceCode
+    footer: |
+      <br>
+      <h2 class="checkbox">
+        <label>
+          <input type="checkbox" class="training-checkbox" data-training="oojs" style="width:25px;height:25px">
+          &nbsp; I would be interested in <span class="text-primary">Object Oriented JavaScript</span> training
+        </label>
+      </h2>
+    script: *trainingStats
 
   - id: ending
     name: Ending
