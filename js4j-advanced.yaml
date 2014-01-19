@@ -1694,3 +1694,23 @@ slides:
           </form>
         </body>
         </html>
+  - id: ending
+    name: Ending
+    title: How do you like Angular.js?
+    text: |
+      <div class="text-center">
+        <a href="http://pl.tinypic.com?ref=oa2mbk" target="_blank">
+          <img src="http://i39.tinypic.com/oa2mbk.png" alt="Image and video hosting by TinyPic" width="400">
+        </a>
+      </div>
+      <h3 class="text-right">
+        <span class="icon-mail text-muted"></span>
+        <a href="mailto:tomasz.drwiega@gmail.com">tomasz.drwiega@gmail.com</a>
+      </h3>
+      <h3 class="text-right">
+        <span class="icon-github text-muted"></span> <a href="https://github.com/tomusdrw" target="profile">github/tomusdrw</a>
+        &nbsp;
+        <span class="icon-google-plus text-muted"></span> <a href="https://plus.google.com/+TomaszDrwi%C4%99ga" target="profile">+Tomasz Drwięga</a>
+        &nbsp;
+        <span class="icon-linkedin text-muted"></span> <a href="http://www.linkedin.com/in/tomaszdrwiega" target="profile">in/Tomasz Drwięga</a>
+      </h3>
