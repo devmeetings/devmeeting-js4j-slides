@@ -77,12 +77,21 @@ slides:
 
   - id: run
     name: Run
-    title: Install dependencies
+    title: Clone project & install dependencies
     text: |
         <h3>Invoke in console:</h3>
+        <h5>
+          <span class="glyphicon glyphicon-saved text-muted"></span>
+          <a href="http://todr.me/files/devmeetings-js4j.zip">Download ZIP file with project</a>
+        </h5>
     code:
       language: generic
       content: |
+        $ svn co https://svne1.access.nsn.com/isource/svnroot/NetEngDevCommons/javascript/devmeetings-js4j
+        # OR 
+        $ git svn clone https://svne1.access.nsn.com/isource/svnroot/NetEngDevCommons/javascript/devmeetings-js4j
+
+        # AND THEN invoke when you are in project directory
         $ npm install -g bower
         $ npm install
         $ bower install
