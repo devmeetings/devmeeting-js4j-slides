@@ -582,7 +582,7 @@ slides:
         DOM Events - Reacting to User Actions
       </h3>
       <h3>
-        <span class="glyphicon glyphicon-ok text-success"></span>
+        <span class="glyphicon glyphicon-ok text-warning"></span>
         JS Code organization patterns (Event-Driven Design, MV*, Require.js)
       </h3>
       <h3>
@@ -624,7 +624,11 @@ slides:
       </h3>
       <h3>
         <span class="glyphicon glyphicon-ok text-success"></span>
-        JavaScripts caveats - <a href="//wtfjs.com">WTF JS?</a>, <a href="https://www.destroyallsoftware.com/talks/wat">WAT!?</a>
+        JavaScripts caveats - 
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a target="ext" href="//wtfjs.com">WTF JS?</a>, 
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a target="ext" href="https://www.destroyallsoftware.com/talks/wat">WAT!?</a>
       </h3>
 
   - id: ending
