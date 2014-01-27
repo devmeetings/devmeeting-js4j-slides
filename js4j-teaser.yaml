@@ -56,15 +56,16 @@ slides:
 
   - id: basics1
     name: JS Basics
-    title: Variables and Literals
+    title: JS Essentials in 5 minutes
     code:
       content: |
-        var todos = [
-            "Checkout project from github",
-            "Invoke 'play run' in your console",
-            "Open your browser and head over to http://localhost:9000",
-            "Learn JS essentials"
-        ];
+        var todos = [{
+          title: "Checkout project from github",
+          completed: true
+        }, {
+          title: "Learn JS essentials",
+          completed: false
+        }];
 
         for (var k in todos) {
           console.log(todos[k]);
@@ -422,48 +423,51 @@ slides:
         </label>
       </h2>
     script: *trainingStats
+
   - id: dom2
     name: Accessing DOM
     title: Hello DOM
-    monitor: content
-    code:
-      small: true
-      content: |
-        var h1 = document.querySelector(".main-content h1");
-        h1.innerText += "...";
+    left:
+      text: <h4>&nbsp;</h4>
+      monitor: content
+      code:
+        small: true
+        content: |
+          var h1 = document.querySelector(".main-content h1");
+          h1.innerText += ".Vanilla.";
 
-        var content = h1.innerHTML;
+          var content = h1.innerHTML;
+    right:
+      text: |
+        <h4>
+          <span class="glyphicon glyphicon-new-window text-muted"></span>
+          <a href="http://jquery.com/" target="jquery">What is jQuery?</a>
+        </h4>
+      monitor: content
+      code:
+        small: true
+        content: |
+          var $h1 = $('.main-content h1');
+          $h1.text($h1.text() + ".jQuery.");
+
+          var content = $h1.html();
 
     notes: |
         Say about accessing DOM and JavaScript representation of DOM
 
         Encourage ppl to play with content inside slide to see that more "..." is appended each time.
 
-  - id: dom3
-    name: Accessing DOM
-    title: jQuery style
-    text: |
-      <h4>
-        <span class="glyphicon glyphicon-new-window text-muted"></span>
-        <a href="http://jquery.com/" target="jquery">What is jQuery?</a>
-      </h4>
-    monitor: content
-    code:
-      small: true
-      content: |
-        var $h1 = $('.main-content h1');
-        $h1.text($h1.text() + "...");
 
-        var content = $h1.html();
-    notes: |
-      Mention that this way might be more familiar to some developers.
-      Explain that jQuery is great library to manipulate DOM,
-      and it makes perfect sense to use it because it hides differences 
-      between old web browsers.
+        -------
+        Mention that this way might be more familiar to some developers.
+        Explain that jQuery is great library to manipulate DOM,
+        and it makes perfect sense to use it because it hides differences
+        between old web browsers.
 
-      However rest of slides will be using vanilla JS to simplify syntax.
+        However rest of slides will be using vanilla JS to simplify syntax.
 
-      Explain why we are using variables with such naming ($h1)
+        Explain why we are using variables with such naming ($h1)
+
   - id: dom4
     name: Accessing DOM
     title: Creating DOM elements
@@ -489,48 +493,58 @@ slides:
     text:
       >
       <h4>
-        Your task is to create <code>index.html</code> and <code>main.js</code> in <code>/public</code> directory.
+        Drag and drop <code>public/index.html</code> to your browser.
       </h4>
       <h4>
-        You should also display a list of todos in DOM.
+        Write some JavaScript in <code>public/main.js</code> to display a list of todos.
       </h4>
     code:
       small: true
       hideOutput: true
       content: |
-        var todos = [
-              "Checkout project from github",
-              "Invoke 'play run' in your console",
-              "Open your browser and head over to http://localhost:9000",
-              "Learn JS essentials"
-        ];
+        var todos = [{
+          title: "Checkout project from github",
+          completed: true
+        }, {
+          title: "Learn JS essentials",
+          completed: false
+        }];
 
-        //for each todo in todos do
-        // domNode = createDomNodeForTodo()
-        //  displayDomNode()
     task:
-        duration: 45
-        objectives: Iterate over an array of todos and create DOM elements to display them.
+        duration: 30
+        objectives: Iterate over an array of todos and create DOM elements to display them as text.
         extras:
+              - Display <code>completed</code> state of todo using disabled <code>&lt;input type="checkbox"&gt;</code>
               - Use Bootstrap <code>.list-group</code> component.
-              - Don't use <code>.innerHTML</code>, <code>.textContent</code>, etc.
         solution:
             name: Displaying list of todos - Solution
             title: Displaying list of todos
             fiddle:
               big: true
+              active: html
               js: |
-                var todos= ["a", "b", "c"];
+                var todos = [{
+                  title: "Checkout project from github", completed: true
+                }, {
+                  title: "Learn JS essentials", completed: false
+                }];
                 var $todosContainer = document.querySelector('.todos');
                 $todosContainer.className = 'list-group';
 
-                var k, todo, $todo;
+                var k, todo, $todo, $checkbox;
                 for (k in todos) {
                     todo = todos[k];
 
+                    $checkbox = document.createElement('input');
+                    $checkbox.type = 'checkbox';
+                    $checkbox.disabled = true;
+                    $checkbox.checked = todo.completed;
+
                     $todo = document.createElement('a');
                     $todo.className = 'list-group-item';
-                    $todo.appendChild(document.createTextNode(todo));
+
+                    $todo.appendChild($checkbox);
+                    $todo.appendChild(document.createTextNode(todo.title));
 
                     $todosContainer.appendChild($todo);
                 }
@@ -551,1141 +565,67 @@ slides:
                   </body>
                 </html>
 
-
-  - id: objects1
-    name: Objects
-    title: Object literal
-    monitor: x
-    code: |
-      var x = {
-          key: 'value',
-          array: ['has', 3, 'values'],
-          object: {
-              0: 'First'
-          }
-      };
-    notes: |
-      - Similarities to Java Map<String, Object>
-
-
-  - id: objects2
-    name: Objects
-    title: Accessing properties
-    monitor: x
-    code: |
-      var x = {
-          key: 'value',
-          array: ['has', 3, 'values'],
-          object: {
-              0: 'First'
-          }
-      };
-      console.log(x.key, x.array[0]);
-
-      // Setting value
-      x.object.something = 5;
-    notes: |
-        Ask audience how to reference x.object[0] and show life example.
-
-        Insert new property to `x` using [] notation.
-
-  - id: objects3
-    name: Objects
-    title: Everything is an object
-    monitor: todos
-    code: |
-      var todos = ["Todo 1", "Todo 2"];
-      todos.noOfTodos = 2;
-
-      console.log("Length", todos['length']);
-      console.log("Property", todos['noOfTodos']);
-
-      console.log("Todos", todos.toString());
-      console.log("Todo", todos['0'].toString());
-    notes: |
-        Same as in Java everything is an Object, but in Javascript
-        objects are open so we can modify properties dynamically.
-
-        Notice interchangable notation of "." and "[]"
-        Point out that we can invoke todo.toString() method like on every object.
-
-  - id: task-objects
-    name: Task 2
-    title: "Task: Add todo state"
-    text:
-        >
-        <h4>
-          Your task is to add <code>completed</code>
-          state to todo and display that using checkbox.
-        </h4>
-    code:
-        hideOutput: true
-        small: true
-        content: |
-          //Creating checkbox
-          var $checkbox = document.createElement('input');
-          $checkbox.type = 'checkbox';
-          $checkbox.checked = true;
-
-          console.log($checkbox);
-    task:
-        duration: 20
-        objectives:
-            - Todos should have a read-only checkbox that displays if they are completed or not.
-        extras:
-            - Add tags to todos.
-            - Display them using Bootstrap <code>.badge</code>.
-        solution:
-            name: Todo state - Solution
-            title: Displaying if todo is completed
-            fiddle:
-                big: true
-                js: |
-                    var todos= [{ title: "a", completed: true, tags: ["a", "b"] },
-                                { title: "b", completed: false, tags: [] }];
-
-                    var $todosContainer = document.querySelector('.todos');
-
-                    var k, j, todo, $todo, $checkbox, $tag;
-                    for (k in todos) {
-                        todo = todos[k];
-                        $todo = document.createElement('a');
-                        $todo.className = 'list-group-item';
-
-                        $checkbox = document.createElement('input');
-                        $checkbox.type = 'checkbox';
-                        $checkbox.disabled = true;
-                        $checkbox.checked = todo.completed;
-
-                        for (j in todo.tags) {
-                          $tag = document.createElement('span');
-                          $tag.className = 'badge pull-right';
-                          $tag.innerHTML = todo.tags[j];
-                          $todo.appendChild($tag);
-                        }
-
-                        $todo.appendChild($checkbox);
-                        $todo.appendChild(document.createTextNode(todo.title));
-
-                        $todosContainer.appendChild($todo);
-                    }
-                html: |
-                  <!DOCTYPE html>
-                  <html lang="en">
-                    <head>
-                      <meta charset="utf-8">
-                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                      <title>Todos</title>
-                      <link rel="stylesheet" href="css/bootstrap.css">
-                    </head>
-                    <body>
-                      <!-- page content -->
-                      <div class="todos list-group"></div>
-                      <script src="//code.jquery.com/jquery.js"></script>
-                      <script src="js/bootstrap.js"></script>
-                    </body>
-                  </html>
-
-  - id: functions1
-    name: Functions
-    title: Functions basics
-    monitor: result
-    code: |
-      function add(a, b) {
-        var sum = a + b;
-        console.log(a, " + ", b, " = ", sum);
-        return sum;
-      }
-      var sum1 = add(4, 5);
-      var sum2 = add(sum1, 5);
-
-      var result = {
-        sum1: sum1,
-        sum2: sum2
-      };
-    notes: |
-      Naked functions that exists outside of object.
-      Similarity to Java staticly imported static function (where object just defines namespace)
-      This notation is called function declaration.
-
-
-  - id: functions2
-    name: Functions
-    title: Fun with functions
-    monitor: result
-    code: |
-      function add(a, b) {
-        var sum = a + b;
-        console.log(a, " + ", b, " = ", sum);
-        return sum;
-      }
-      var sum = add;
-
-      var result = sum(2, 2);
-    notes: |
-      Functions are first-class citizens in JS.
-      So you can just change name by assigning to different variable.
-      Like assigning pointers to functions in C.
-
-  - id: functions3
-    name: Functions
-    title: Passing functions
-    monitor: result
-    code: |
-      var add = function(a, b) { return a + b; };
-      var sub = function(a, b) { return a - b; };
-
-      var make = function(operation, a, b) {
-        return operation(a, b);
-      };
-
-      var result = {
-        add: make(add, 5, 4),
-        sub: make(sub, 5, 4)
-      };
-    notes: |
-      By using `function expression` notation we are treating functions
-      the same as other variable values.
-
-      We can pass functions to other functions.
-  - id: functions4
-    name: Functions
-    title: Invoking anonymous functions
-    monitor: sum
-    code: |
-      (function(a, b) {
-        console.log(a + b);
-      })(4, 5);
-
-      var sum = (function(a, b) {
-        return a + b;
-      }(4, 5));
-    notes: |
-      We can even invoke function right away after creating it.
-
-
-  - id: functions5
-    name: Functions
-    title: Scoping
-    monitor: result
-    code: |
-      var CONST = 5;
-      var createAdder = function(name) {
-
-        return function(a) {
-          console.log("Adder " + name, "using", a, CONST);
-          return a + CONST;
-        };
-      };
-
-      var add5to = createAdder("of five");
-      var result = add5to(3);
-    notes: |
-      1. Explain that when we create function it creates it's own scope.
-      2. Function has also access to all parent scopes, so you
-         can access variables defined in upper scope.
-      3. At the very top there is special scope called "Global scope".
-
-  - id: functions6
-    name: Functions
-    title: Variables reference resolving
-    monitor: result
-    code:
-      big: true
-      content: |
-        var CONST = 5;
-        var createAdder = function(name) {
-          return function(a) { console.log("Adder " + name, "using", a, CONST); return a + CONST; };
-        };
-
-        var result = {};
-        var add5to = createAdder("of five");
-        result.add5to3 = add5to(3);
-
-        // now we are modifying CONST
-        CONST = 3;
-        var add3to = createAdder("of three");
-        result.add3to6 = add3to(6);
-
-        // But what happens now?
-        result.add5to10 = add5to(10);
-    notes: |
-      1. When we are creating function the value of variables in scope is not resolved yet.
-      2. Unlike Java (where you have to declare variables as final) you can modify variables in upper scopes.
-      3. So variables values are resolved when function is being executed.
-
-  - id: domEvents1
-    name: DOM Events
-    title: Handling of User Actions
-    fiddle:
-      js: |
-        // Create new button
-        var $btn = document.createElement('button');
-        $btn.className = 'btn btn-default my-btn';
-        $btn.innerHTML = 'Click me!';
-        document.body.appendChild($btn);
-
-
-        $btn.addEventListener('click', function(ev) {
-          console.log(ev);
-          alert("Good job");
-        });
-    notes: |
-      1. Tell audience to check out event in Chrome console and the properties that it has.
-      2. If someone asks explain "b && b.remove()" syntax
-
-  - id: task-events
-    name: Task 3
-    title: Changing todo state by user
-    task:
-        duration: 20
-        objectives:
-            - Clicking on todo should change completeness state.
-        extras:
-            - Add listener inline (inside loop)
-            - Keyboard support - Change completeness of focused todo by pressing "space".
-            - Keyboard support - Change todos by "tab" or arrows.
-        solution:
-            name: Todo state - Solution
-            title: Changing todo state by user
-            fiddle:
-              big: true
-              js: |
-                  var todos= [{ title: "a", completed: true }, { title: "b", completed: false }];
-
-                  var $todosContainer = document.querySelector('.todos');
-
-                  var k,j,todo,$todo, $checkbox, $tag;
-                  for (k in todos) {
-                      todo = todos[k];
-
-                      $todo = document.createElement('label');
-                      $todo.className = 'list-group-item';
-
-                      $checkbox = document.createElement('input');
-                      $checkbox.type = 'checkbox';
-                      $checkbox.checked = todo.completed;
-
-                      $checkbox.addEventListener('change', (function(todo2){
-                        return function() {
-                          todo2.completed = $checkbox.checked;
-                          console.table(todos);
-                        };
-                      }(todo)));
-
-                      $todo.appendChild($checkbox);
-                      $todo.appendChild(document.createTextNode(todo.title));
-
-                      $todosContainer.appendChild($todo);
-                  }
-              html: |
-                  <!DOCTYPE html>
-                  <html lang="en">
-                    <head>
-                      <meta charset="utf-8">
-                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                      <title>Todos</title>
-                      <link rel="stylesheet" href="css/bootstrap.css">
-                    </head>
-                    <body>
-                      <!-- page content -->
-                      <div class="todos list-group"></div>
-                      <script src="//code.jquery.com/jquery.js"></script>
-                      <script src="js/bootstrap.js"></script>
-                    </body>
-                  </html>
-
-    notes: |
-      1. Ask about difficulties
-      2. Ask why in solution there is another anonymous function returned.
-      3. Tell about other solution -> refactoring to function and why it works.
-      3. Tell about `console.table`.
-      4. Explain why it is important to write good, semantic HTML code - keyboard support works out of the box.
-
-  - id: morefunctions1
-    name: More Functions
-    title: Creating functions in loops is bad
-    code:
-      big: true
-      hideOutput: true
-      content: |
-        var todos = ["todo 1", "todo 2"],
-            functions = [],
-            k, printTodo;
-
-        for (var k in todos) {
-          printTodo = function() {
-            console.log(todos[k]);
-          };
-          functions[k] = printTodo;
-        }
-
-        for (var j in functions) {
-          functions[j]();
-        }
-    notes: |
-      1. Notice the warning sign that comes from jslint.
-      2. Ask why it doesn't work
-      3. Suggest checking in SlowMo
-      4. Ask for proposed solutions
-
-  - id: moreFunctions2
-    name: More Functions
-    title: Everything is an object
-    code:
-      big: true
-      hideOutput: true
-      content: |
-        var todos = ["todo 1", "todo 2"],
-            functions = [], printTodo;
-
-        for (var k in todos) {
-          printTodo = function printTodoFunction() {
-            console.log(printTodoFunction.todo);
-          };
-          printTodo.todo = todos[k];
-          functions[k] = printTodo;
-        }
-
-        for (var j in functions) {
-          functions[j]();
-        }
-    notes: |
-      1. Remind about saying that "Everything is an object"
-      2. Function expression & declaration as solution to referencing itself
-         For instance for recursion
-      3. Say about browser differences supports
-
-  - id: codeOrganization
-    name: Singletons
-    title: Objects and methods
-    monitor: Todos._todos
-    code:
-      big: true
-      content: |
-        var Todos = {
-          _todos: [],
-
-          getTodos: function() {
-            return Todos._todos;
-          },
-
-          addTodo: function(title) {
-            Todos._todos.push({
-              title: title,
-              completed: false
-            });
-          }
-        };
-
-        Todos.addTodo("New todo");
-    notes: |
-      1. Notice that we use Todos._todos notation.
-      2. Mention that it might be inconvienient because of tight bounding.
-         What happens if you change name?
-      3. Say that later we will introduce something more flexible.
-
-  - id: mvc1
-    name: MV*
-    title: Model-View-* architecture
-    code:
-      big: true
-      hideOutput: true
-      content: |
-        var TodosModel = {
-          getTodos: function() {
-            // ✂---
-          },
-          addTodo: function(title) {
-            // ✂---
-          }
-        };
-
-        var TodosView = {
-          renderAllTodos: function() {
-            // Clear todos
-            var todos = TodosModel.getTodos();
-            for (var k in todos) {
-              TodosView.renderTodo(todos[k]);
-            }
-          },
-          renderTodo: function(todo) {
-            // ✂---
-          }
-        };
-
-    notes: |
-      1. We have clear separation of responsibilities.
-      2. But Model and View is tightly bound.
-      3. We can try to decouple a bit by introducing controller.
-
-  - id: mvc2
-    name: MV*
-    title: Model-View-* architecture
-    code: 
-      big: true
-      hideOutput: true
-      content: |
-        var TodosModel = {
-          getTodos: function() {},
-          // Adds new todo to model and returns them
-          addTodo: function(title) { return title; }
-        };
-        var TodosView = {
-          renderAllTodos: function(todos) {
-            for (var k in todos) {
-              TodosView.renderTodo(todos[k]);
-            }
-          },
-          renderTodo: function(todo) {
-            // creates DOM elements and appends them
-            console.log("Rendering", todo);
-          }};
-
-        // Controller
-        TodosView.renderAllTodos(TodosModel.getTodos());
-
-        // Adding new todo
-        var todo = TodosModel.addTodo("New todo");
-        TodosView.renderTodo(todo); // We have to remember about rendering
-
-    notes: |
-      1. Model and view is decoupled, but Controller has to care about synchronizing model and view.
-      2. It would be good if changes in Model could be automatically reflected in view.
-
-  - id: eventDriven1
-    name: Events
-    title: Observer pattern
-    code:
-      big: true
-      language: java
-      hideOutput: true
-      content: |
-        public interface Observer {
-            void update(Observable obj, Object data); 
-        }
-
-        public class Observable {
-            private Collection<Observer> observers = new LinkedHashSet<>();
-
-            public void addObserver(Observer o) {
-                observers.add(o);
-            }
-
-            public void notifyObservers(Object data) {
-               for (Observer observer : observers) {
-                    observer.update(this, data);
-               }
-            }
-        }
-    notes: |
-      Observable object (subject) takes care about list of listeners and notifies them about changes.
-
-      We can actually use this to decouple Model and View a little bit more.
-
-  - id: eventDriven2
-    name: Events
-    title: Event-driven design
-    fiddle:
-      big: true
-      js: |
-        var TodosModel = {
-          addTodo: function(todo) {
-            TodosModel.trigger('add', todo);
-          },
-          trigger: function(name, data) {
-            TodosModel._listener({ name: name, data: data });
-          },
-          listen: function(listener) {
-            TodosModel._listener = listener;
-          }};
-        var TodosView = {
-          renderTodo: function(todo) {
-            var $h1 = document.createElement('h1');
-            $h1.innerText = todo;
-            document.body.appendChild($h1);
-          },
-          listener: function(ev) {
-            if (ev.name === 'add') TodosView.renderTodo(ev.data);
-          }};
-
-        TodosModel.listen(TodosView.listener);
-
-        // View is automagically notified
-        TodosModel.addTodo("New todo");
-
-    notes: |
-      Motivation - how to ensure that when we modify model view will be refreshed?
-      Why view have to be tied to only one model (or vice-versa)? How can we decouple them?
-      We want to operate only on models and views should be refreshed automatically.
-
-      Describe similarities to DOM. Talk about reactive design.
-      Maybe mention something about one-thread(ness?) of JS.
-
-      Java Observer pattern.
-
-  - id: task-mvc-adding
-    name: Task 4
-    title: "Task: Adding new todo"
-    code:
-      hideOutput: true
-      small: true
-      content: |
-        var todos = [];
-
-        todos.push("append");
-        todos.unshift("at the beginning");
-
-        todos.push("at the end");
-        todos.reverse();
-        console.log(todos);
-    task:
-        duration: 60
-        objectives:
-            - It should be possible to add new todo.
-            - Code should be organized in MV* manner.
-        extras:
-            - Use Bootstrap inline form
-            - Adding by pressing "Enter"
-            - Adding tags
-        notes: |
-          In solution point out that there is no need to handle keypress.
-          It's better to just listen for $form.submit event.
-        solution:
-          name: Adding new todo - Solution
-          title: Adding new todo
-          fiddle:
-            big: true
-            js: |
-              var TodosModel = {
-                _todos: [],
-                listener: null,
-                addTodo: function(title) {
-                  var todo = {
-                    title: title,
-                    completed: false
-                  };
-
-                  TodosModel._todos.push(todo);
-                  TodosModel.listener({
-                    name: 'add',
-                    data: todo
-                  });
-                }
-              };
-
-              var TodosView = {
-                initialize: function() {
-                  var $input = document.querySelector('input.todo-add-input');
-                  var $form = document.querySelector('form.todo-add-form');
-
-                  $form.addEventListener('submit', function(ev) {
-                      ev.preventDefault();
-                      if (!$input.value) { return; }
-                      TodosModel.addTodo($input.value);
-                      $input.value = '';
-                  });
-                },
-
-                renderTodo: function(todo) {
-                  var $todosContainer = document.querySelector('.todos');
-
-                  $todo = document.createElement('label');
-                  $todo.className = 'list-group-item';
-
-                  $checkbox = document.createElement('input');
-                  $checkbox.type = 'checkbox';
-                  $checkbox.checked = todo.completed;
-
-                  $checkbox.addEventListener('change', function() {
-                      todo.completed = $checkbox.checked;
-                  });
-
-                  $todo.appendChild($checkbox);
-                  $todo.appendChild(document.createTextNode(" " + todo.title));
-
-                  $todosContainer.appendChild($todo);
-                },
-
-                listener: function(ev) {
-                  if (ev.name === 'add') {
-                    TodosView.renderTodo(ev.data);
-                  }
-                }
-              };
-
-              // Assign listener
-              TodosModel.listener = TodosView.listener;
-
-              TodosView.initialize();
-
-              TodosModel.addTodo("New todo 1");
-              TodosModel.addTodo("New todo 2");
-
-            html: |
-              <!DOCTYPE html>
-              <html lang="en">
-                <head>
-                  <meta charset="utf-8">
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <title>Todos</title>
-                  <link rel="stylesheet" href="css/bootstrap.css">
-                </head>
-                <body>
-                  <!-- page content -->
-                  <div class="todos list-group"></div>
-                  <form class="form-inline todo-add-form">
-                    <input type="text" class="form-control todo-add-input">
-                    <button class="btn btn-default todo-add-button">
-                      <span class="glyphicon glyphicon-plus"></span>
-                      Add todo
-                    </button>
-                  </div>
-                  <script src="//code.jquery.com/jquery.js"></script>
-                  <script src="js/bootstrap.js"></script>
-                </body>
-              </html>
-
-  - id: hoisting
-    name: Hoisting
-    title: Function scope in javascript
-    monitor: k
-    code: |
-      var todos = ["First todo", "Second todo"];
-      for (var k in todos) {
-        // do nothing
-      }
-
-      // Whoops?
-      console.log(k);
-    notes: |
-      // Say about hoisting and scopes.
-      // Do live demo of how the code is interpreted
-      (function() {
-        var todos;
-        var k;
-
-        todos = ["First todo", "Second todo"];
-        for (k in todos) {
-          // do nothing
-        }
-
-        // Whoops?
-        console.log(k);
-
-      }())
-
-      // Explain that in JS there is no "block scope", we have only "function scope"
-      // Mention that block scope variables comes in ECMAScript6
-
-  - id: functional1
-    name: Functional JS
-    title: JS functional-style
-    monitor: primes2
-    code: |
-      var primes = [2, 3, 5, 7, 11, 13];
-
-      var primes2 = [];
-      for (var k in primes) {
-         primes2.push(primes[k]);
-      }
-
-      primes.forEach(function(prime, k) {
-        primes2.push(prime);
-      });
-
-    notes: |
-      This is example is not impressive yet.
-      But most important advantage is new scope created for loop.
-
-  - id: functional2
-    name: Functional JS
-    title: JS functional-style processing
-    monitor: result
-    code: |
-      var primes = [2, 3, 5, 7, 11, 13];
-
-      var result = primes.map(function(prime) {
-        return prime * prime;
-      });
-    notes: |
-      `map` will return new array with every item converted by given function
-      But what if we want to process only completed elements?
-
-  - id: functional3
-    name: Functional JS
-    title: JS functional-style processing - chaining
-    monitor: result
-    code: |
-      var primes = [2, 3, 5, 7, 11, 13];
-
-      var result = primes.filter(function(prime) {
-        return prime > 7;
-      }).map(function(prime) {
-        return prime * prime;
-      });
-    notes: |
-      We can chain invocations because those functions just returns new arrays
-
-  - id: functional4
-    name: Functional JS
-    title: JS functional-style reduce
-    monitor: result
-    code: |
-      var primes = [2, 3, 5, 7, 11, 13];
-
-      var result = primes.reduce(function(sum, prime) {
-        return sum + prime;
-      }, 0);
-
-    notes: |
-      Using `reduce` we can process arrays in more advanced ways.
-
-  - id: task-functional
-    name: Task 5
-    title: "Task: Add button to hide completed todos"
-    notes: |
-      // Solution to finding count of `reduce`
-      var TodosModel = {
-        _todos: [
-          { title: "Buy beer", completed: true },
-          { title: "Buy bread", completed: false },
-        ],
-        getStats: function() {
-          return TodosModel._todos.reduce(function(memo, todo) {
-            if (todo.completed) {
-              memo.completed++;
-            } else {
-              memo.uncompleted++;
-            }
-            return memo;
-          }, {
-            completed: 0,
-            uncompleted: 0
-          });
-        }
-      };
-
-      var b = document.body;
-      var result = TodosModel.getStats();
-      var table = "<h1>{0} completed</h1><h1>{1} uncompleted</h1>";
-      b.innerHTML += table.replace('{0}', result.completed).replace('{1}', result.uncompleted);
-
-    task:
-      duration: 20
-      objectives:
-        - Add button or checkbox to show / hide completed todos
-        - Do it using <code>filter</code> function
-      extras:
-        - Count both completed and uncompleted todos using <code>reduce</code>
-      solution:
-        name: Add button to hide completed todos - Solution
-        title: Add button to hide completed todos
-        fiddle:
-          big: true
-          js: |
-              var TodosModel = {
-                listener: null,
-                _todos: [],
-                _hideCompleted: false,
-                addTodo: function(title) {
-                  var todo = {
-                    title: title,
-                    completed: false
-                  };
-
-                  TodosModel._todos.push(todo);
-                  TodosModel.listener({
-                    name: 'add',
-                    data: todo
-                  });
-                },
-                getTodos: function() {
-                  return TodosModel._todos.filter(function(todo){
-                    return !TodosModel._hideCompleted || !todo.completed;
-                  });
-                },
-                setHideCompleted: function(hideCompleted) {
-                  TodosModel._hideCompleted = hideCompleted;
-                  TodosModel.listener({
-                    name: 'reset',
-                    data: TodosModel.getTodos()
-                  });
-                }
-              };
-
-              var TodosView = {
-                initialize: function() {
-                  var $input = document.querySelector('input.todo-add-input');
-                  var $form = document.querySelector('form.todo-add-form');
-
-                  $form.addEventListener('submit', function(ev) {
-                      ev.preventDefault();
-
-                      if (!$input.value) { return; }
-                      TodosModel.addTodo($input.value);
-                      $input.value = '';
-                  });
-
-                  var $hideCompleted = document.querySelector('input.todo-hide-completed');
-                  $hideCompleted.addEventListener('change', function() {
-                    TodosModel.setHideCompleted($hideCompleted.checked);
-                  });
-                },
-
-                renderTodo: function(todo) {
-                  var $todosContainer = document.querySelector('.todos');
-
-                  $todo = document.createElement('label');
-                  $todo.className = 'list-group-item';
-
-                  $checkbox = document.createElement('input');
-                  $checkbox.type = 'checkbox';
-                  $checkbox.checked = todo.completed;
-
-                  $checkbox.addEventListener('change', function() {
-                      todo.completed = $checkbox.checked;
-                  });
-
-                  $todo.appendChild($checkbox);
-                  $todo.appendChild(document.createTextNode(" " + todo.title));
-
-                  $todosContainer.appendChild($todo);
-                },
-                renderAll: function(todos) {
-                  document.querySelector('.todos').innerHTML = '';
-                  todos.forEach(function(todo) {
-                    TodosView.renderTodo(todo);
-                  });
-                },
-                listener: function(ev) {
-                  if (ev.name === 'add') {
-                    TodosView.renderTodo(ev.data);
-                  } else if (ev.name === 'reset') {
-                    TodosView.renderAll(ev.data);
-                  }
-                }
-              };
-
-              // Assign listener
-              TodosModel.listener = TodosView.listener;
-
-              TodosView.initialize();
-
-              TodosModel.addTodo("New todo 1");
-              TodosModel.addTodo("New todo 2");
-          html: |
-              <!DOCTYPE html>
-              <html lang="en">
-                <head>
-                  <meta charset="utf-8">
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <title>Todos</title>
-                  <link rel="stylesheet" href="css/bootstrap.css">
-                </head>
-                <body>
-                  <!-- page content -->
-                  <div class="todos list-group"></div>
-                  <form class="form-inline">
-                    <label>
-                      <input type="checkbox" class="todo-hide-completed">
-                      Hide completed todos
-                    </label>
-                  </form>
-                  <form class="form-inline todo-add-form">
-                    <input type="text" class="form-control todo-add-input">
-                    <button class="btn btn-default todo-add-button">
-                      <span class="glyphicon glyphicon-plus"></span>
-                      Add todo
-                    </button>
-                  </div>
-                  <script src="//code.jquery.com/jquery.js"></script>
-                  <script src="js/bootstrap.js"></script>
-                </body>
-              </html>
-
-  - id: json
-    name: JSON
-    title: JavaScript Object Notation
-    monitor: json
-    code: |
-      var o = {
-        array: [1, 2, 3, 4],
-        string: "xyz",
-        date: new Date(),
-        empty: undefined
-      };
-
-      // serialize to JSON
-      var json = JSON.stringify(o);
-
-      // deserialize
-      console.log(JSON.parse(json));
-    notes: |
-      Lightweight, human readable exchange format.
-      Supports only objects, arrays, strings and numbers.
-      Builtin support for serializing and deserializing
-
-      More strict then JS object literals (quotes are required)
-
-      Explain how outputs under code works.
-
-  - id: localStorage
-    name: Local Storage
-    title: Persistence using Local Storage
-    monitor: noOfVisits
-    code: |
-      // retrieve something from localStorage
-      var noOfVisits = window.localStorage['noOfVisits'];
-
-      noOfVisits = parseInt(noOfVisits, 10);
-      if (isNaN(noOfVisits)) {
-        noOfVisits = 0;
-      }
-
-      // put something to localStorage
-      localStorage.setItem('noOfVisits', noOfVisits + 1);
-
-      // You can also use method instead of []
-      var result = localStorage.getItem('noOfVisits');
-
-    notes: |
-      Say that we can also build purely client-side JS applications.
-      For persistence we can use for instance Local or Session storage.
-
-      Mention that for instance when you write Chrome plugins you have a lot more APIs available (like filesystem etc).
-
-      Point out that localStorage
-        1. Is persistent (even when you turn off the browser)
-        2. Is limited (5MB per domain)
-        3. Is only readable by your domain
-        4. Can only store strings
-        5. Is synchronous :(
-
-      Ask how to store complex structures inside localStorage.
-    footer: |
-        <br>
-        <h2 class="checkbox">
-          <label>
-            <input type="checkbox" class="training-checkbox" data-training="html5" style="width:25px;height:25px">
-            &nbsp; I would be interested in <span class="text-primary">Building Webapps with HTML5 APIs</span> training
-          </label>
-        </h2>
-    script: *trainingStats
-
-  - id: task-localStorage
-    name: Task 8
-    title: "Task: Use Local Storage for persistence in your todos application" 
-    task:
-      duration: 30
-      objectives:
-        - Change persistence to Local Storage
-      extras:
-        - Make Local Storage / REST Persistence easily interchangable.
-      solution:
-          title: LocalStorage
-          left:
-            monitor: result
-            code:
-              big: true
-              content: |
-                var Storage = {
-                  addTodo: function(todo, callback) {
-                     var todos = this._getTodos();
-                     todos.push(todo);
-                     this._saveTodos(todos);
-                     callback && callback(todo);
-                  },
-                  updateTodo: function(todoToUpdate, callback) {
-                      var todos = this._getTodos();
-                      var todoIdx = todos.map(function(todo) {
-                        return todo.id;
-                      }).indexOf(todoToUpdate.id);
-                      todos.splice(todoIdx, 1, todoToUpdate);
-                      this._saveTodos(todos);
-                  },
-                  getTodos: function(callback) {
-                      callback(this._getTodos());
-                  },
-                   _getTodos: function() {
-                    var todosStr = localStorage.getItem('todos');
-                    var todos = [];
-                    if (todosStr) {
-                      todos = JSON.parse(todosStr) || [];
-                    }
-                    return todos;
-                  },
-                  _saveTodos: function(todos) {
-                    localStorage.setItem('todos', JSON.stringify(todos));
-                  },
-                  clear: function() {
-                      this._saveTodos([]);
-                  },
-                };
-
-                Storage.clear();
-                Storage.addTodo({
-                  id: "abc"
-                });
-                Storage.addTodo({
-                  id: "abc2"
-                });
-                Storage.updateTodo({
-                  id: "abc",
-                  title: "2"
-                });
-                Storage.getTodos(function(todos) {
-                    result = todos;
-                });
-          right:
-            code:
-              big: true
-              content: |
-                left:
-            code:
-              big: true
-              language: javascript-norun
-              content: |
-                var Storage = {
-                  addTodo: function(todo, callback) {
-                      $.ajax({
-                          method: 'post',
-                          url: '/todos',
-                          data: JSON.stringify(todo),
-                          contentType: 'application/json; charset=utf-8'
-                      }).then(callback);
-                  },
-                  updateTodo: function(todo, callback) {
-                      return $.ajax({
-                        method: 'put',
-                        url: '/todos/' + todo.id,
-                        data: JSON.stringify(todo),
-                        contentType: 'application/json; charset=utf-8'
-                      }).then(callback);
-                  },
-                  getTodos: function(callback) {
-                      $.get('/todos').then(function(todos) {
-                          callback(todos);
-                      });
-                  }
-                };
-
-  - id: task-survey
-    name: Task 9
-    title: "Task: Complete the survey"
+  - id: whatsmore
+    name: What's more
+    title: What's more? Day 1
     text: |
-      <h2>
-      <span class="glyphicon glyphicon-export text-muted"></span>
-        <a href="http://bit.ly/js4java-nsn">
-          Training Survey
-        </a>
-      </h2>
-    task:
-      duration: 10
-      objectives:
-        - Complete the survey under link above
-      extras:
-        - Provide very detailed answers to open-ended questions
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        JS Objects - how do they work?
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Functions, Lambdas, Contexts and Scopes
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        DOM Events - Reacting to User Actions
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        JS Code organization patterns (Event-Driven Design, MV*, Require.js)
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Functional JavaScript
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        LocalStorage - persistence for ClientSide applications
+      </h3>
+
+  - id: whatsmore2
+    name: What's more
+    title: What's more? Day 2
+    text: |
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        JSON - lightweight exchange format
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        REST - creating RESTful JSON API
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        AJAX - JS meets RESTful API
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Play! Framework - The High Velocity Web Framework For Java and Scala
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Object-oriented JS, JS MV* Frameworks
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        Node.js + MongoDB - JS meets Server Side
+      </h3>
+      <h3>
+        <span class="glyphicon glyphicon-ok text-success"></span>
+        JavaScripts caveats - <a href="//wtfjs.com">WTF JS?</a>, <a href="https://www.destroyallsoftware.com/talks/wat">WAT!?</a>
+      </h3>
 
   - id: ending
     name: Ending
@@ -1707,10 +647,3 @@ slides:
         &nbsp;
         <span class="icon-linkedin text-muted"></span> <a href="http://www.linkedin.com/in/tomaszdrwiega" target="profile">in/Tomasz Drwięga</a>
       </h3>
-     
-
-
-
-  # Demo of applications in different implementations
-
-  # Teaser about mixins, prototype inheritance etc
