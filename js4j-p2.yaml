@@ -4,7 +4,7 @@ trainersSecret: 123asd2
 slides:
   - id: opening
     name: Hello World
-    title: JS 4 Java Devs
+    title: JavaScript 4 Java Devs - part 2
     left:
       text: |
           <h3>
