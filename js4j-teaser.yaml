@@ -41,17 +41,15 @@ slides:
     name: Run
     title: Clone project & install dependencies
     text: |
-        <h3>Invoke in console:</h3>
-        <h5>
+        <br>
+        <br><br>
+        <h1 class="text-center">
           <span class="glyphicon glyphicon-saved text-muted"></span>
-          <a href="http://todr.me/files/devmeetings-js4j.zip">Download ZIP file with project</a>
-        </h5>
-    code:
-      language: generic
-      content: |
-        $ svn co https://svne1.access.nsn.com/isource/svnroot/NetEngDevCommons/javascript/devmeetings-js4j
-        # OR 
-        $ git svn clone https://svne1.access.nsn.com/isource/svnroot/NetEngDevCommons/javascript/devmeetings-js4j
+          <a href="http://todr.me/files/devmeetings-js4j-teaser.zip">Download ZIP file with project</a>
+        </h1>
+        <h2 class="text-muted text-center">
+        Unpack to your workspace directory
+        </h2>
 
 
   - id: basics1
@@ -575,15 +573,11 @@ slides:
       </h3>
       <h3>
         <span class="glyphicon glyphicon-ok text-success"></span>
-        Functions, Lambdas, Contexts and Scopes
+        Functions, Contexts and Scopes
       </h3>
       <h3>
         <span class="glyphicon glyphicon-ok text-success"></span>
         DOM Events - Reacting to User Actions
-      </h3>
-      <h3>
-        <span class="glyphicon glyphicon-ok text-warning"></span>
-        JS Code organization patterns (Event-Driven Design, MV*, Require.js)
       </h3>
       <h3>
         <span class="glyphicon glyphicon-ok text-success"></span>

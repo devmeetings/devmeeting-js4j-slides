@@ -49,7 +49,8 @@ exports.index = function(req, res) {
 
 var allowCrossSiteJson = function(req, res) {
     var host = req.headers['origin'];
-    if (host === 'http://todr.me:3000' || host === 'http://todr.me:3001' || host === 'http://localhost:9000' || host === 'http://localhost:3000') {
+    var allowedHosts = ['http://slides.todr.me', 'http://todr.me:3000', 'http://todr.me:3001', 'http://localhost:9000', 'http://localhost:3000'];
+    if (allowedHosts.indexOf(host) !== -1) {
         res.setHeader("Access-Control-Allow-Origin", host);
     }
 };
