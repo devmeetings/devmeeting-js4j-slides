@@ -50,11 +50,24 @@ slides:
         <h2 class="text-muted text-center">
         Unpack to your workspace directory
         </h2>
+    monitor: iam
+    code:
+      hideOutput: true
+      small: true
+      content: |
+        var ready = false;
+    microtasks:
+      - description: Change <code>ready</code> value to <code>true</code>
+        hint: Write <code>ready=true</code> inside code editor.
+        js_assert: |
+          ready === true
+
 
 
   - id: basics1
     name: JS Basics
     title: JS Essentials in 5 minutes
+    monitor: todos
     code:
       content: |
         var todos = [{
@@ -68,8 +81,16 @@ slides:
         for (var k in todos) {
           console.log(todos[k]);
         }
+    microtasks:
+      - description: Change <code>completed</code> state of second todo
+        hint: Change false to true in second todos in array
+        js_assert: |
+          todos[1].completed
+      - description: Add another todo to "todos" variable
+        hint: Just copy the object and paste after a comma
+        js_assert: |
+          todos[2].title && todos[2].completed !== undefined
 
-    monitor: todos
     notes: |
         0. JS is:
           * interpreted
