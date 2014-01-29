@@ -111,6 +111,13 @@ slides:
     title: HTML - old style
     notes: |
       Point out problems with this approach
+    microtasks:
+      - description: Change page title to <code>HTML5 Rocks</code>
+        hint: Locate tag <code>&lt;title&gt;</code> and change it's value
+        html: "<TITLE>HTML5 Rocks</TITLE>"
+      - description: Add <code>deprecated</code> class to HTML element.
+        hint: Change tag &lt;html&gt; at top to &lt;html class="deprecated"&gt;
+        html: <HTML class="deprecated">
     fiddle:
       pure: true
       big: true
