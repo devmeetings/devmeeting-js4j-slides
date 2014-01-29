@@ -50,7 +50,6 @@ slides:
         <h2 class="text-muted text-center">
         Unpack to your workspace directory
         </h2>
-    monitor: iam
     code:
       hideOutput: true
       small: true
