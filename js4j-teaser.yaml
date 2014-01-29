@@ -403,11 +403,10 @@ slides:
       </h2>
     script: &trainingStats |
       var $checkbox = $('.training-checkbox');
-      var username = localStorage.getItem('name');
       var training = $checkbox.data('training');
+      var username = localStorage.getItem('name');
       var current = 'js4j-teaser';
       $checkbox.bind('change', function(){
-        var training = $(this).data('training');
         var state = this.checked;
         localStorage.setItem(current+'-'+training, state);
         $.ajax({
@@ -421,7 +420,7 @@ slides:
           }
         });
       });
-      $checkbox.attr('checked', !!localStorage.getItem(current+'-'+training));
+      $checkbox.prop('checked', !!localStorage.getItem(current+'-'+training));
 
 
   - id: dom0

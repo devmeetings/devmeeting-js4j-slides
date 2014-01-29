@@ -186,7 +186,7 @@ slides:
       var $checkbox = $('.training-checkbox');
       var username = localStorage.getItem('name');
       var training = $checkbox.data('training');
-      $checkbox.bind('change', function(){
+      $checkbox.on('change', function(){
         var training = $(this).data('training');
         var state = this.checked;
         localStorage.setItem('training-'+training, state);
@@ -201,7 +201,7 @@ slides:
           }
         });
       });
-      $checkbox.attr('checked', !!localStorage.getItem('training-'+training));
+      $checkbox.prop('checked', !!localStorage.getItem('training-'+training));
 
   - id: dom1
     name: HTML5
