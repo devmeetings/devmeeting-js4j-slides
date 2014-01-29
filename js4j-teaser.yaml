@@ -376,6 +376,13 @@ slides:
   - id: dom1
     name: HTML
     title: HTML5 webpage
+    microtasks:
+      - description: Change color of header using <code>class="text-success"</code>
+        hint: Locate &lt;h1&gt; header in HTML code and add class to it.
+        html: <h1 \s*class="text-success">.*?</h1>
+      - description: Change <code>opacity</code> of <code>slide-controls</code> to <code>0.1</code>
+        hint: Go to CSS tab, locate .slide-controls and change opacity to 0.1
+        css: \.slide\-controls\s*{[^}]*?opacity:\s*0\.1;
     fiddle:
       big: true
       active: html
@@ -452,6 +459,16 @@ slides:
   - id: dom2
     name: Accessing DOM
     title: Hello DOM
+    microtasks:
+      - description: Change header text to <code>Accessing DOM - Vanilla.js</code> using Vanilla JS
+        hint: Try to assign text to <code>h1.innerText</code>
+        js: |
+          h1.inner(Text|HTML)\s*=\s*["']Accessing DOM \- Vanilla\.js["'];
+      - description: In <code>querySelector</code> find just <code>h1</code> instead of <code>h1 inside .main-content</code>
+        hint: Change querySelector to <code>h1</code> instead of <code>.main-content h1</code>
+        js: |
+          querySelector\(['"]h1['"]\);
+
     left:
       text: <h4>&nbsp;</h4>
       monitor: content
@@ -466,16 +483,16 @@ slides:
       text: |
         <h4>
           <span class="glyphicon glyphicon-new-window text-muted"></span>
-          <a href="http://jquery.com/" target="jquery">What is jQuery?</a>
+          <a class="jquery-link" href="http://jquery.com/" target="jquery">What is jQuery?</a>
         </h4>
-      monitor: content
+      monitor: jqueryContent
       code:
         small: true
         content: |
           var $h1 = $('.main-content h1');
           $h1.text($h1.text() + ".jQuery.");
 
-          var content = $h1.html();
+          var jqueryContent = $h1.html();
 
     notes: |
         Say about accessing DOM and JavaScript representation of DOM
@@ -497,6 +514,15 @@ slides:
     name: Accessing DOM
     title: Creating DOM elements
     monitor: link
+    microtasks:
+      - description: Add class <code>btn</code> and <code>btn-default</code> to <code>$link</code>
+        hint: Use <code>className</code> property
+        js: |
+          \$link\.className\s*=\s*["']btn\s+btn\-default["'];
+      - description: Create <code>&lt;button&gt;</code> element instead of anchor <code>&lt;a&gt;</code>
+        hint: Change invocation of <code>d.createElement('a')</code>
+        js: |
+          d(ocument)?\.createElement\(["']button["']\)
     fiddle: 
       js: |
         var d = document;
