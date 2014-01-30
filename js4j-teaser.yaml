@@ -546,7 +546,7 @@ slides:
         Drag and drop <code>public/index.html</code> to your browser.
       </h4>
       <h4>
-        Write some JavaScript in <code>public/main.js</code> to display a list of todos.
+        Write some JavaScript in <code>public/javascripts/main.js</code> to display a list of todos.
       </h4>
     code:
       small: true
@@ -676,6 +676,23 @@ slides:
         <span class="glyphicon glyphicon-new-window text-muted"></span>
         <a target="ext" href="https://www.destroyallsoftware.com/talks/wat">WAT!?</a>
       </h3>
+
+  - id: task-survey
+    name: Task 2
+    title: "Task: Complete the survey"
+    text: |
+      <h2>
+      <span class="glyphicon glyphicon-export text-muted"></span>
+        <a href="http://bit.ly/js4java-cohesiva">
+          Training Survey
+        </a>
+      </h2>
+    task:
+      duration: 5
+      objectives:
+        - Complete the survey under link above
+      extras:
+        - Provide very detailed answers to open-ended questions
 
   - id: ending
     name: Ending
