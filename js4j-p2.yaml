@@ -89,7 +89,7 @@ slides:
     name: Run
     title: Clone project
     text: |
-        <h3>Invoke in console:</h3>
+        <h3>Download or checkout project</h3>
         <h5>
           <span class="glyphicon glyphicon-saved text-muted"></span>
           <a href="http://todr.me/files/devmeetings-js4j.zip">Download ZIP file with project</a>
@@ -105,21 +105,89 @@ slides:
     name: Run
     title: Run Forest, Run!
     text: |
-        <h3>Invoke in console:</h3>
-        <pre class="editor big"><code>$ play run
-
+        <h3>Invoke in console (in project directory):</h3>
+        <pre class="editor"><code>$ play run
         [info] Loading project definition from /share/public_html/devmeetings/Todos/project
         [info] Set current project to Todos (in build file:/share/public_html/devmeetings/Todos/)
 
         --- (Running the application from SBT, auto-reloading is enabled) ---
-
         [info] play - Listening for HTTP on /0:0:0:0:0:0:0:0:9000
 
         (Server started, use Ctrl+D to stop and go back to the console...)
         </code></pre>
         <h3>Open <a href="http://localhost:9000" target="page">localhost:9000</a> <span class="glyphicon glyphicon-new-window text-muted"></span> </h3>
+    microtasks:
+      - description: Say that you are ready!
+        hint: Change value of <code>ready</code> to <code>true</code>
+        js_assert:
+          ready === true
+    code:
+      small: true
+      hideOutput: true
+      content: |
+        var ready = false;
 
  # TODO: small reminder about JS
+  - id: js-remainder
+    name: JS Remainder
+    title: JavaScript - Quick reminder
+    microtasks:
+      - description: Change selector of <code>$todosContainer</code> to it's <code>id</code> attribute
+        hint: Change <code>.todos</code> selector to id selector <code>#todos</code>
+        js: |
+          querySelector\(['"]#todos-id['"]\);
+      - description: Add <code>h1</code> header with <code>text-success</code> class
+        hint: Add <code>&lt;h1 class="text-success"&gt;</code> somewhere in HTML
+        html: |
+          h1\s+class="text-success"
+
+    fiddle:
+      big: true
+      js: |
+          var todos= [
+            { title: "Completed first part of JS4J", completed: true }, 
+            { title: "Completed second part of JS4J", completed: false }
+          ];
+
+          var $todos = todos.map(function(todo) {
+
+              var $todo = document.createElement('label');
+              $todo.className = 'list-group-item';
+
+              var $checkbox = document.createElement('input');
+              $checkbox.type = 'checkbox';
+              $checkbox.checked = todo.completed;
+
+              $checkbox.addEventListener('change', function() {
+                  todo.completed = $checkbox.checked;
+                  console.table(todos);
+              });
+
+              $todo.appendChild($checkbox);
+              $todo.appendChild(document.createTextNode(todo.title));
+
+              return $todo;
+
+          });
+
+          var $todosContainer = document.querySelector('.todos');
+          $todos.map($todosContainer.appendChild.bind($todosContainer));
+      html: |
+          <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Todos</title>
+              <link rel="stylesheet" href="css/bootstrap.css">
+            </head>
+            <body>
+              <!-- page content -->
+              <div class="todos list-group" id="todos-id"></div>
+              <script src="//code.jquery.com/jquery.js"></script>
+              <script src="js/bootstrap.js"></script>
+            </body>
+          </html>
 
   - id: contexts1
     name: Contexts
@@ -138,6 +206,11 @@ slides:
       };
 
       TodosModel.addTodo("New todo");
+    microtasks:
+      - description: Change access to <code>_todos</code> using <code>this</code>
+        hint: Substitute <code>TodosModel._todos</code> with <code>this</code>
+        js: |
+          this\._todos.push
     notes: |
       Remind about reusability matter that we have been talking about earlier.
       Change TodosModel to "this" in this snippet and explain similarity to Java
@@ -145,6 +218,15 @@ slides:
   - id: contexts2
     name: Contexts
     title: Contexts - caveats
+    microtasks:
+      - description: <code>adder1</code> should add <code>3</code> instead of <code>5</code>
+        hint: Change <code>b:3</code> in <code>adder1</code>
+        js_assert: |
+          adder1.b === 3
+      - description: Borrow <code>add</code> function from <code>adder1</code> to <code>adder2</code>
+        hint: Assign <code>adder1.add</code> to <code>adder2.add</code>
+        js_assert: |
+          adder1.add === adder2.add
     monitor: results
     code:
       big: true
@@ -180,6 +262,11 @@ slides:
   - id: contexts3
     name: Contexts
     title: Contexts - more caveats
+    microtasks:
+      - description: Assign <code>7</code> to global variable <code>b</code>
+        hint: <code>window.b = 7</code>
+        js_assert: |
+          window.b === 7
     monitor: result
     code: |
       var adder1 = {
@@ -203,6 +290,11 @@ slides:
   - id: contexts4
     name: Contexts
     title: Contexts - even more caveats
+    microtasks:
+      - description: Bind context of increment using <code>bind</code> method
+        hint: <code>State.increment.bind(State)</code>
+        js: |
+          State\.increment\.bind\(State\)
     fiddle:
       hideOutput: true
       big: true
@@ -252,6 +344,15 @@ slides:
   - id: contexts5
     name: Contexts
     title: Invoking function in specific context
+    microtasks:
+      - description: Invoke <code>increment</code> function in context of <code>result</code> with argument <code>"test"</code>
+        hint: <code>increment.call(ctx, arg)</code> where <code>ctx === result</code> and <code>arg === "test"</code>
+        js: |
+          increment\.call\(result\s*,\s*['"]test['"]\)
+      - description: Fix context of <code>increment</code> to itself.
+        hint: <code>increment.bind(increment)</code>
+        js: |
+          increment\.bind\(increment\)
     monitor: result
     code:
       big: true
@@ -283,6 +384,15 @@ slides:
   - id: contexts6
     name: Contexts
     title: Other applications of <code>bind</code>
+    microtasks:
+      - description: Create adder of 6 and name it <code>add6</code>
+        hint: use <code>add.bind("add6", 6)</code>
+        js_assert: |
+          add6(5) === 11
+      - description: Create function that always returns result of <code>3+2</code> and call it <code>five</code>
+        hint: You can bind both arguments like <code>add.bind("five", 3, 3)</code>
+        js_assert: |
+          five() === 5
     monitor: result
     code:
       big: true
@@ -309,6 +419,11 @@ slides:
   - id: context7
     name: Contexts
     title: Contexts and functional-style
+    microtasks:
+      - description: Refactor the code to use <code>forEach</code>
+        hint: Invoke <code>todos.forEach</code>
+        js: |
+          todos\.forEach\(
     monitor: TodosView._results
     code:
       big: true
@@ -597,6 +712,11 @@ slides:
   - id: ajax1
     name: AJAX
     title: Asynchronous JavaScript and XML
+    microtasks:
+      - description: Console.log only first property of <code>data</code> object
+        hint: Try with <code>data['Hello!']</code>
+        js: |
+          console\.log\(data\[['"]Hello!['"]\]\)
     monitor: promise
     code:
       small: true
@@ -619,6 +739,15 @@ slides:
   - id: ajax2
     name: AJAX
     title: Using jQuery to make AJAX calls
+    microtasks:
+      - description: From first promise pass login instead of <code>data</code> in <code>user</code> property.
+        hint: "Try out with <code>user: data.login</code>"
+        js: |
+          user:\s*data\.login
+      - description: Fetch data about user <code>purplecode</code> instead of <code>tomusdrw</code>
+        hint: Change URL passed to ajax function
+        js: |
+          url:.+?users/purplecode
     monitor: promise
     code:
       async: true
