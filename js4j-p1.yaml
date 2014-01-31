@@ -53,11 +53,14 @@ slides:
           <a href="http://todr.me/files/devmeetings-js4j.zip">Download ZIP file with project</a>
         </h5>
     code:
-      language: generic
+      small: true
+      hideOutput: true
       content: |
-        $ svn co https://svne1.access.nsn.com/isource/svnroot/NetEngDevCommons/javascript/devmeetings-js4j
-        # OR 
-        $ git svn clone https://svne1.access.nsn.com/isource/svnroot/NetEngDevCommons/javascript/devmeetings-js4j
+        var ready = false;
+    microtasks:
+      - description: Indicate that you are ready
+        hint: Change value of <code>ready</code> variable to <code>true</code>
+        js_assert: ready === true
 
   - id: basics1
     name: JS Basics
@@ -72,6 +75,13 @@ slides:
             "Learn JS essentials"
         ];
     monitor: todos
+    microtasks:
+      - description: Add one more todo to array
+        hint: Use string literal <code>"imma string"</code> and paste it after comma
+        js_assert: todos.length === 5
+      - description: Clear the whole <code>todos</code> array
+        hint: Assign empty array <code>[]</code> to <code>todos</code> variable
+        js_assert: todos.length === 0
     notes: |
         0. JS is:
           * interpreted
@@ -99,6 +109,10 @@ slides:
 
         console.log(todos);
     monitor: todos
+    microtasks:
+      - description: Create variable <code>x</code> with value <code>2014</code>
+        hint: Use <code>var</code> keyword to create variable and assign <code>2014</code>
+        js: var x\s*=\s*2014
     notes: |
         0. Invoking method
         1. Say about some global variables that are out there
@@ -127,6 +141,10 @@ slides:
           console.log(i, todos[i]);
         }
     monitor: todos
+    microtasks:
+      - description: Skip first element in loop
+        hint: Change initial value of <code>i</code> to <code>1</code>
+        js: for\s*\(var i\s*=\s*1\s*;
     notes: |
         1. Getting property of object `todos.length`
         2. `[]` access operator
@@ -240,7 +258,8 @@ slides:
       </h2>
     script: *trainingStats
 
-  - id: dom2
+  - &dom2 
+    id: dom2
     name: Accessing DOM
     title: Hello DOM
     monitor: content
@@ -260,19 +279,21 @@ slides:
   - id: dom3
     name: Accessing DOM
     title: jQuery style
-    text: |
-      <h4>
-        <span class="glyphicon glyphicon-new-window text-muted"></span>
-        <a href="http://jquery.com/" target="jquery">What is jQuery?</a>
-      </h4>
-    monitor: content
-    code:
-      small: true
-      content: |
-        var $h1 = $('.main-content h1');
-        $h1.text($h1.text() + "...");
+    left:
+      text: |
+        <h4>
+          <span class="glyphicon glyphicon-new-window text-muted"></span>
+          <a href="http://jquery.com/" target="jquery">What is jQuery?</a>
+        </h4>
+      monitor: content
+      code:
+        small: true
+        content: |
+          var $h1 = $('.main-content h1');
+          $h1.text($h1.text() + "...");
 
-        var content = $h1.html();
+          var content = $h1.html();
+    right: *dom2
     notes: |
       Mention that this way might be more familiar to some developers.
       Explain that jQuery is great library to manipulate DOM,
