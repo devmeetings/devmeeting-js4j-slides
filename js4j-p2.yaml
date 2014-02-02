@@ -825,7 +825,15 @@ slides:
 
         # Map static resources from the /public folder to the /assets URL path
         GET   /assets/*file         controllers.Assets.at(path="/public", file)
-
+    microtasks:
+      - description: Change url of <code>Clients.list()</code> action to <code>/users</code>
+        hint: Change route from <code>/clients</code> to <code>/users</code>
+        output: |
+          GET\s*\/users\s*controllers\.Clients\.list
+      - description: "Add UPDATE method for <code>/clients/:id</code> and call <code>Clients.update(id: java.lang.Long)</code> method."
+        hint: Updating entity is done by invoking <code>PUT /clients/:id</code> this should call specific action. Create new line in routes file.
+        output: |
+          PUT\s*\/clients\/:id\s*controllers.Clients.update\(id:\s+java\.lang.Long\)
 
     notes: |
       In conf/routes file you define what resources are available:
@@ -867,6 +875,11 @@ slides:
             }
 
         }
+    microtasks:
+      - description: Change <code>apiCall</code> to return JSON representation of string <code>"Hello Play! Framework"</code>
+        hint: Change <code>list</code> variable to <code>ok(Json.toJson("string"))</code>
+        output: |
+          String\s*[a-zA-Z0-9]+\s*=\s*\"Hello Play! Framework\";
     notes: |
       Tell about simple action that just returns a string.
       And about converting object to JSON.
@@ -956,7 +969,10 @@ slides:
 
         // this should generate your Eclipse project that can be imported using:
         // File -> Import -> General -> Existing project
-
+    microtasks:
+      - description: Write <code>ready</code> in editor when you are finished
+        hint: Just write it!
+        output: ready
     notes: |
       Other methods are described in documentation.
     footer: |
