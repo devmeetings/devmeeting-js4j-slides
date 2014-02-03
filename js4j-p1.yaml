@@ -169,6 +169,11 @@ slides:
         1. Notice a difference in naming
         2. `[]` access operator
         3. Mention something about going through **object** properties
+    microtasks:
+      - description: Assign value of <code>todos[k]</code> to variable named <code>todo</code>
+        hint: Use <code>var todo = todos[k];</code> syntax to create new variable inside a loop
+        js: |
+          var\s+todo\s*=\s*todos\[k\];
 
   - id: dom0
     name: DOM
@@ -213,7 +218,7 @@ slides:
           url: 'http://todr.me:3002/trainings',
           data: {
             user: username,
-            currentTraining: 'js4j',
+            currentTraining: 'js4j-p1',
             training: training,
             isGoing: state
           }
@@ -235,13 +240,15 @@ slides:
               <meta charset="utf-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <title>Hello World</title>
-              <link rel="stylesheet" href="css/bootstrap.css">
+              <link rel="stylesheet" 
+                  href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
             </head>
             <body>
               <h1>Hello world</h1>
               <!-- page content -->
-              <script src="//code.jquery.com/jquery.js"></script>
-              <script src="js/bootstrap.js"></script>
+              <script src="http://code.jquery.com/jquery.js"></script>
+              <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js">
+              </script>
             </body>
           </html>
     notes: |
@@ -257,12 +264,23 @@ slides:
         </label>
       </h2>
     script: *trainingStats
+    microtasks:
+      - description: Add <code>text-success</code> class to header
+        hint: Use <code>class="text-success"</code> attribute to <code>h1</code> tag
+        html: |
+          <h1\s+class=\"text-success\"\s*>
+      - description: Add subheader <code>h2</code> with id <code>subheader</code>
+        hint: Insert <code>&lt;h2 id="subheader"&gt;</code> somewhere under <code>h1</code>
+        html: |
+          <h2\s+id=\"subheader\"\s*>
 
   - &dom2 
     id: dom2
     name: Accessing DOM
     title: Hello DOM
     monitor: content
+    text: |
+      <h4 class="text-muted" id="subheader">We can query DOM! <span class="glyphicon glyphicon-heart-empty"></span></h4>
     code:
       small: true
       content: |
@@ -275,13 +293,22 @@ slides:
         Say about accessing DOM and JavaScript representation of DOM
 
         Encourage ppl to play with content inside slide to see that more "..." is appended each time.
+    microtasks:
+      - description: Change content of header to <code>"JavaScript rocks!"</code>
+        hint: Use <code>innerHTML</code> or <code>innerText</code> property to assign string to it.
+        js_assert: |
+          h1.innerText === "JavaScript rocks!"
+      - description: Change selector to find sub-header by id.
+        hint: Change argument to <code>querySelector</code> to <code>#subheader</code>
+        js: |
+          querySelector\(["']#subheader["']\);
 
   - id: dom3
     name: Accessing DOM
     title: jQuery style
     left:
       text: |
-        <h4>
+        <h4 class="jquery-link">
           <span class="glyphicon glyphicon-new-window text-muted"></span>
           <a href="http://jquery.com/" target="jquery">What is jQuery?</a>
         </h4>
@@ -303,6 +330,15 @@ slides:
       However rest of slides will be using vanilla JS to simplify syntax.
 
       Explain why we are using variables with such naming ($h1)
+    microtasks:
+      - description: Use DevTools (Firebug) to find jQuery link class and change selector in code.
+        hint: Use <code>jquery-link</code> class to find element
+        js: |
+          \$\(['"].jquery-link['"]\);
+      - description: Remove link to jQuery from DOM
+        hint: Use <code>.remove()</code> method from jQuery
+        js_assert: |
+          document.querySelector('.jquery-link') === null
   - id: dom4
     name: Accessing DOM
     title: Creating DOM elements
