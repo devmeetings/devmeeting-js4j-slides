@@ -357,6 +357,11 @@ slides:
     notes: |
         1. Talk about difference between `querySelector` and `querySelectorAll`
         2. Maybe someone will notice that strings are created via `'` not `"`.
+    microtasks:
+      - description: Programmatically change class of element to <code>btn btn-default</code>
+        hint: Use <code>className</code> property to assign <code>"btn btn-default"</code>
+        js_assert:
+          $link.className === 'btn btn-default'
 
   - id: task-dom
     name: Task 1
@@ -364,10 +369,10 @@ slides:
     text:
       >
       <h4>
-        Your task is to create <code>index.html</code> and <code>main.js</code> in <code>/public</code> directory.
+        Your task is to create <code>index.html</code> and <code>main.js</code> in any directory on your disk.
       </h4>
       <h4>
-        You should also display a list of todos in DOM.
+        You should also display a list of todos using methods to create and manipulate DOM elements that you have learned.
       </h4>
     code:
       small: true
@@ -379,10 +384,6 @@ slides:
               "Open your browser and head over to http://localhost:9000",
               "Learn JS essentials"
         ];
-
-        //for each todo in todos do
-        // domNode = createDomNodeForTodo()
-        //  displayDomNode()
     task:
         duration: 45
         objectives: Iterate over an array of todos and create DOM elements to display them.
@@ -441,6 +442,15 @@ slides:
       };
     notes: |
       - Similarities to Java Map<String, Object>
+    microtasks:
+      - description: Add an empty object to Array under property <code>array</code>
+        hint: Use <code>{}</code> to create empty object and type it after comma
+        js_assert: |
+          typeof(x.array[3]) === 'object'
+      - description: Add property <code>number</code> with value <code>5</code> to object <code>x</code>
+        hint: "Just write another property <code>number: 5,</code>. Remember about comma at the end."
+        js_assert: |
+          x.number === 5
 
 
   - id: objects2
@@ -463,6 +473,20 @@ slides:
         Ask audience how to reference x.object[0] and show life example.
 
         Insert new property to `x` using [] notation.
+    microtasks:
+      - description: Assign value of second element from property <code>array</code> of <code>x</code> to variable <code>three</code>
+        hint: Use <code>x.array[1]</code> notation to retrieve property
+        js_assert: |
+          three === 3
+        js: |
+          three\s*=\s*x
+      - description: Access property <code>0</code> of <code>x.object</code> and assign to variable <code>first</code>
+        hint: <code>var first = x.object[?]</code>
+        js_assert: |
+          first === 'First'
+        js: |
+          first\s*=\s*x
+
 
   - id: objects3
     name: Objects
@@ -483,6 +507,11 @@ slides:
 
         Notice interchangable notation of "." and "[]"
         Point out that we can invoke todo.toString() method like on every object.
+    microtasks:
+      - description: Create an object with properties <code>0</code>, <code>1</code> and <code>length</code> and assign it to variable <code>x</code>
+        hint: Use object literal or just create array.
+        js_assert: |
+          x[0] !== undefined && x[1] !== undefined && x.length !== undefined
 
   - id: task-objects
     name: Task 2
