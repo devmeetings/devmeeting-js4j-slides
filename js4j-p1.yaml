@@ -611,6 +611,11 @@ slides:
       Naked functions that exists outside of object.
       Similarity to Java staticly imported static function (where object just defines namespace)
       This notation is called function declaration.
+    microtasks:
+      - description: Create function that subtracts two numbers. Call it <code>sub</code>
+        hint: Use function declaration syntax <code>function sub(a, b) {}</code> and return difference.
+        js_assert: |
+          sub(4, 5) === -1
 
 
   - id: functions2
@@ -630,6 +635,11 @@ slides:
       Functions are first-class citizens in JS.
       So you can just change name by assigning to different variable.
       Like assigning pointers to functions in C.
+    microtasks:
+      - description: Assign function sum to new variable named <code>plus</code>
+        hint: Create new variable <code>var plus</code> and assign function to it
+        js_assert: |
+          sum === plus && sum === add
 
   - id: functions3
     name: Functions
@@ -652,6 +662,11 @@ slides:
       the same as other variable values.
 
       We can pass functions to other functions.
+    microtasks:
+      - description: "Create function <code>invoke</code> that accepts a function, invokes it and returns it's value."
+        hint: <code>var invoke = function(funcToInvoke) { /* Invokation */ };</code>
+        js_assert: |
+          invoke(function() { window.invoked = true; return true; }) === true && window.invoked === true
   - id: functions4
     name: Functions
     title: Invoking anonymous functions
@@ -666,6 +681,13 @@ slides:
       }(4, 5));
     notes: |
       We can even invoke function right away after creating it.
+    microtasks:
+      - description: Add third argument to function that returns a sum. Assign to <code>sum</code> result of adding <code>4+5+7</code>
+        hint: <code>(function(a, b, c) { }(4, 5, 7))</code>
+        js: | 
+          \(\s*4,\s*5,\s*7\s*\)
+        js_assert: |
+          sum === 4+5+7
 
 
   - id: functions5
@@ -689,6 +711,11 @@ slides:
       2. Function has also access to all parent scopes, so you
          can access variables defined in upper scope.
       3. At the very top there is special scope called "Global scope".
+    microtasks:
+      - description: Write function that creates a multiplier by <code>CONST</code>. Name it <code>createMultiplier</code>.
+        hint: <code>var createMultiplier = function() { return function(a) { /* Multiplication */ }; }</code>
+        js_assert: |
+          createMultiplier()(15) === 5*15
 
   - id: functions6
     name: Functions
@@ -736,7 +763,11 @@ slides:
         });
     notes: |
       1. Tell audience to check out event in Chrome console and the properties that it has.
-      2. If someone asks explain "b && b.remove()" syntax
+    microtasks:
+      - description: In alert display if <code>SHIFT</code> key has been pressed while clicking.
+        hint: Use <code>shiftKey</code> property of <code>ev</code> object.
+        js: | 
+          ev\.shiftKey
 
   - id: task-events
     name: Task 3
@@ -832,6 +863,11 @@ slides:
       2. Ask why it doesn't work
       3. Suggest checking in SlowMo
       4. Ask for proposed solutions
+    microtasks:
+      - description: See what happens if you change second loop index from <code>var j</code> to <code>var k</code>
+        hint: Notice what is logged on console. Can you explain why it works?
+        js: | 
+          var\s+k\s+in\s+functions\)
 
   - id: moreFunctions2
     name: More Functions
@@ -858,7 +894,13 @@ slides:
       1. Remind about saying that "Everything is an object"
       2. Function expression & declaration as solution to referencing itself
          For instance for recursion
-      3. Say about browser differences supports
+      3. Say about browser differences support
+    microtasks:
+      - description: Add property <code>index</code> to each created function with value of <code>k</code>
+        hint: Try with <code>printTodo.index = 0</code> in first loop
+        js_assert: |
+          functions[0].index == 0 && functions[1].index == 1
+
 
   - id: codeOrganization
     name: Singletons
@@ -888,6 +930,11 @@ slides:
       2. Mention that it might be inconvienient because of tight bounding.
          What happens if you change name?
       3. Say that later we will introduce something more flexible.
+    microtasks:
+      - description: Add function <code>clear</code> to <code>Todos</code> that empties todos array.
+        hint: Add new property to object that is a function. Instead of clearing table just assign new one <code>Todos._todos = [];</code>
+        js_assert:
+          (function(){ Todos.addTodo("asd"); Todos.clear(); return Todos._todos.length === 0; }())
 
   - id: mvc1
     name: MV*
@@ -995,13 +1042,13 @@ slides:
       js: |
         var TodosModel = {
           addTodo: function(todo) {
-            TodosModel.trigger('add', todo);
+            TodosModel.notifyObservers(todo);
           },
-          trigger: function(name, data) {
-            TodosModel._listener({ name: name, data: data });
+          notifyObservers: function(data) {
+            TodosModel._observer.update(data);
           },
-          listen: function(listener) {
-            TodosModel._listener = listener;
+          addObserver: function(observer) {
+            TodosModel._observer = observer;
           }};
         var TodosView = {
           renderTodo: function(todo) {
@@ -1009,11 +1056,11 @@ slides:
             $h1.innerText = todo;
             document.body.appendChild($h1);
           },
-          listener: function(ev) {
-            if (ev.name === 'add') TodosView.renderTodo(ev.data);
+          update: function(data) {
+            TodosView.renderTodo(data);
           }};
 
-        TodosModel.listen(TodosView.listener);
+        TodosModel.addObserver(TodosView);
 
         // View is automagically notified
         TodosModel.addTodo("New todo");
@@ -1027,6 +1074,13 @@ slides:
       Maybe mention something about one-thread(ness?) of JS.
 
       Java Observer pattern.
+
+      Tell about JS nomenclature - trigger and listen, say that you can just add single function as a listener
+    microtasks:
+      - description: Add new todo with title <code>"Hello world"</code> to model and observe the output.
+        hint: Invoke method <code>TodosModel.addTodo()</code> with value <code>"Hello world"</code>
+        js: |
+          TodosModel\.addTodo\s*\(\s*['"]Hello world['"]\s*\)
 
   - id: task-mvc-adding
     name: Task 4
@@ -1181,6 +1235,13 @@ slides:
 
       // Explain that in JS there is no "block scope", we have only "function scope"
       // Mention that block scope variables comes in ECMAScript6
+    microtasks:
+      - description: Inside loop create new variable <code>todo</code> with value of <code>todos[k]</code>.
+        hint: Write <code>var todo = todos[k];</code> inside a loop. What value does it have after loop?
+        js: |
+          var\s+todo\s*=\s*todos\s*\[\s*k\s*\]\s*
+        js_assert: |
+          todo === todos[todos.length - 1]
 
   - id: functional1
     name: Functional JS
@@ -1215,6 +1276,11 @@ slides:
     notes: |
       `map` will return new array with every item converted by given function
       But what if we want to process only completed elements?
+    microtasks:
+      - description: <code>result</code> array should contain all elements in power of <code>3</code>
+        hint: <code>prime * prime * prime</code>
+        js_assert: |
+          result[0] === 8 && result[2] === 125
 
   - id: functional3
     name: Functional JS
@@ -1230,6 +1296,11 @@ slides:
       });
     notes: |
       We can chain invocations because those functions just returns new arrays
+    microtasks:
+      - description: Chain result one more time and remove every number lesser than <code>150</code>
+        hint: Use <code>filter</code> method and <code>prime2 &lt; 15</code> return value.
+        js_assert: |
+          result.length === 1 && result[0] === 121
 
   - id: functional4
     name: Functional JS
@@ -1244,6 +1315,11 @@ slides:
 
     notes: |
       Using `reduce` we can process arrays in more advanced ways.
+    microtasks:
+      - description: In <code>result</code> store multiplication of all elements using reduce.
+        hint: Change default value at the end to <code>1</code> and change operation inside function.
+        js_assert: |
+          result === primes.reduce(function(m, p) { return m * p; }, 1)
 
   - id: task-functional
     name: Task 5
@@ -1414,17 +1490,19 @@ slides:
     monitor: json
     code: |
       var o = {
-        array: [1, 2, 3, 4],
+        array: [1, 2],
         string: "xyz",
         date: new Date(),
         empty: undefined
       };
 
       // serialize to JSON
-      var json = JSON.stringify(o);
+      var serialized = JSON.stringify(o);
+      console.log(serialized);
 
       // deserialize
-      console.log(JSON.parse(json));
+      var json = JSON.parse(serialized);
+
     notes: |
       Lightweight, human readable exchange format.
       Supports only objects, arrays, strings and numbers.
@@ -1433,6 +1511,11 @@ slides:
       More strict then JS object literals (quotes are required)
 
       Explain how outputs under code works.
+    microtasks:
+      - description: Add property named <code>Null</code> to store <code>null</code> value
+        hint: "Add <code>Null: null</code> in <code>o</code> object literal"
+        js_assert: |
+          o.Null === null
 
   - id: localStorage
     name: Local Storage
@@ -1452,6 +1535,11 @@ slides:
 
       // You can also use method instead of []
       var result = localStorage.getItem('noOfVisits');
+    microtasks:
+      - description: Use <code>[]</code> notation to set <code>noOfVisits</code> to Local Storage
+        hint: Change invocation of <code>setItem</code> to  <code>localStorage['noOfVisits'] = noOfVisits + 1</code>
+        js: |
+          localStorage\[["']noOfVisits["']\]\s*=\s*noOfVisits
 
     notes: |
       Say that we can also build purely client-side JS applications.
@@ -1478,14 +1566,15 @@ slides:
     script: *trainingStats
 
   - id: task-localStorage
-    name: Task 8
+    name: Task 6
     title: "Task: Use Local Storage for persistence in your todos application" 
     task:
       duration: 30
       objectives:
-        - Change persistence to Local Storage
+        - Add persistence to your application using Local Storage
       extras:
-        - Make Local Storage / REST Persistence easily interchangable.
+        - Extract storage logic into separate singleton
+        - Don't assume that Local Storage is synchronous. Add asynchronous callbacks to your storage API.
       solution:
           title: LocalStorage
           left:
@@ -1500,18 +1589,10 @@ slides:
                      this._saveTodos(todos);
                      callback && callback(todo);
                   },
-                  updateTodo: function(todoToUpdate, callback) {
-                      var todos = this._getTodos();
-                      var todoIdx = todos.map(function(todo) {
-                        return todo.id;
-                      }).indexOf(todoToUpdate.id);
-                      todos.splice(todoIdx, 1, todoToUpdate);
-                      this._saveTodos(todos);
-                  },
                   getTodos: function(callback) {
                       callback(this._getTodos());
                   },
-                   _getTodos: function() {
+                  _getTodos: function() {
                     var todosStr = localStorage.getItem('todos');
                     var todos = [];
                     if (todosStr) {
@@ -1533,10 +1614,6 @@ slides:
                 });
                 Storage.addTodo({
                   id: "abc2"
-                });
-                Storage.updateTodo({
-                  id: "abc",
-                  title: "2"
                 });
                 Storage.getTodos(function(todos) {
                     result = todos;
@@ -1575,7 +1652,7 @@ slides:
                 };
 
   - id: task-survey
-    name: Task 9
+    name: Task 7
     title: "Task: Complete the survey"
     text: |
       <h2>
@@ -1611,10 +1688,3 @@ slides:
         &nbsp;
         <span class="icon-linkedin text-muted"></span> <a href="http://www.linkedin.com/in/tomaszdrwiega" target="profile">in/Tomasz Drwięga</a>
       </h3>
-     
-
-
-
-  # Demo of applications in different implementations
-
-  # Teaser about mixins, prototype inheritance etc
