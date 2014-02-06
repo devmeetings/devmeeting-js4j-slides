@@ -45,20 +45,16 @@ slides:
 
   - id: run
     name: Run
-    title: Clone project & install dependencies
+    title: Ready for an adventure?
     text: |
-        <h3>Invoke in console:</h3>
-        <h5>
-          <span class="glyphicon glyphicon-saved text-muted"></span>
-          <a href="http://todr.me/files/devmeetings-js4j.zip">Download ZIP file with project</a>
-        </h5>
+      <h3 class="text-muted">JavaScript will hurt your feelings</h3>
     code:
       small: true
       hideOutput: true
       content: |
         var ready = false;
     microtasks:
-      - description: Indicate that you are ready
+      - description: Indicate that you are ready for new sensations
         hint: Change value of <code>ready</code> variable to <code>true</code>
         js_assert: ready === true
 
@@ -1657,7 +1653,7 @@ slides:
     text: |
       <h2>
       <span class="glyphicon glyphicon-export text-muted"></span>
-        <a href="http://bit.ly/js4java-nsn">
+        <a href="https://docs.google.com/forms/d/1XZQGOlMVqDQlLpMmmKurPCESzXpe3QPH9y3oHNR5AMo/viewform">
           Training Survey
         </a>
       </h2>
