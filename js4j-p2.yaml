@@ -817,223 +817,18 @@ slides:
 
       Say something about promises and how do they work.
 
-  - id: play1
-    name: Play!
-    title: Play! Framework
-    text: |
-      <h4 class="text-muted">The High Velocity Web Framework For Java and Scala</h4>
-      <br>
-      <h2>Modern framework for writing Web Servers in Java</h2>
-      <h3>
-        <span class="glyphicon glyphicon-ok text-success"></span>
-        RESTful and Stateless by default
-      </h3>
-      <h3>
-        <span class="glyphicon glyphicon-ok text-success"></span>
-        JSON is a first class citizen
-      </h3>
-      <h3>
-        <span class="glyphicon glyphicon-ok text-success"></span>
-        Non-blocking I/O
-      </h3>
-      <h2>
-        <span class="glyphicon glyphicon-ok text-success"></span>
-        <span class="text-warning">Hot reload - just hit refresh in browser!</span>
-      </h2>
-
-      <br>
-      <h4>
-        <span class="glyphicon glyphicon-new-window text-muted"></span>
-        <a href="http://www.playframework.com/" target="play">http://www.playframework.com/</a>
-      </h4>
-    notes: |
-      Inspired by frameworks available in interpreted languages like: python, JS, Ruby etc.
-
-      Netty (nio framework) and Akka (scala concurrency and distributed computing framework) under-the-hood.
-
-  - &playRoutesCode 
-    id: play2
-    name: Play!
-    title: Routes definition
-    text: |
-      <h4>
-        <span class="glyphicon glyphicon-book text-muted"></span>
-        <a href="http://www.playframework.com/documentation/2.2.x/JavaRouting" target="play">HTTP Routing docs</a>
-      </h4>
-      <br>
-      <h3>File path: <code>conf/routes</code></h3>
-    code: 
-      language: generic
-      content: |
-        GET   /                     controllers.Application.index()
-
-        GET   /clients              controllers.Clients.list()
-        GET   /clients/:id          controllers.Clients.show(id: java.lang.Long)
-
-        # Map static resources from the /public folder to the /assets URL path
-        GET   /assets/*file         controllers.Assets.at(path="/public", file)
-    microtasks:
-      - description: Change url of <code>Clients.list()</code> action to <code>/users</code>
-        hint: Change route from <code>/clients</code> to <code>/users</code>
-        output: |
-          GET\s*\/users\s*controllers\.Clients\.list
-      - description: "Add UPDATE method for <code>/clients/:id</code> and call <code>Clients.update(id: java.lang.Long)</code> method."
-        hint: Updating entity is done by invoking <code>PUT /clients/:id</code> this should call specific action. Create new line in routes file.
-        output: |
-          PUT\s*\/clients\/:id\s*controllers.Clients.update\(id:\s+java\.lang.Long\)
-
-    notes: |
-      In conf/routes file you define what resources are available:
-        It can be either JSON API
-        or just HTML webpages or static files
-      Explain what :id means and *file
-
-      Tell about link to documentation
-
-  - id: play3
-    name: Play!
-    title: Writing controller and actions
-    text: |
-      <h4>
-        <span class="glyphicon glyphicon-book text-muted"></span>
-        <a href="http://www.playframework.com/documentation/2.2.x/JavaActions" target="play">Controllers & Actions Docs</a>
-      </h4>
-      <br>
-      <h3>File path: <code>app/controllers/Application.java</code></h3>
-    code:
-      language: java
-      big: true
-      content: |
-        package controllers;
-
-        import play.*;
-        import play.libs.Json;
-        import play.mvc.*;
-
-        public class Application extends Controller {
-
-            public static Result index() {
-                return ok("It works!");
-            }
-
-            public static Result apiCall() {
-                List<String> list = Arrays.asList("Hello", "World", "!");
-                return ok(Json.toJson(list)).as("application/json");
-            }
-
-        }
-    microtasks:
-      - description: Change <code>apiCall</code> to return JSON representation of string <code>"Hello Play! Framework"</code>
-        hint: Change <code>list</code> variable to <code>ok(Json.toJson("string"))</code>
-        output: |
-          String\s*[a-zA-Z0-9]+\s*=\s*\"Hello Play! Framework\";
-    notes: |
-      Tell about simple action that just returns a string.
-      And about converting object to JSON.
-
-  - id: play4
-    name: Play!
-    title: Ebean ORM
-    text: |
-      <h4>
-        <span class="glyphicon glyphicon-book text-muted"></span>
-        <a href="http://www.playframework.com/documentation/2.2.x/JavaEbean" target="play">Using Ebean Docs</a>
-      </h4>
-      <br>
-      <h3>File path: <code>app/models/Todo.java</code></h3>
-    code: 
-      language: java
-      big: true
-      content: |
-        package models;
-
-        import javax.persistence.Entity;
-        import javax.persistence.Id;
-
-        import play.db.ebean.Model;
-        import play.db.ebean.Model.Finder;
-
-        @Entity
-        public class Todo extends Model {
-
-          @Id
-          public long id;
-
-          public String title;
-
-          public boolean completed;
-
-
-          public static final Finder<Long, Todo> find = new Finder<>(Long.class, Todo.class);
-        }
-    notes: |
-      Tell that configuration is already defined and model is created
-
-  - id: play5
-    name: Play!
-    title: Fetching objects
-    text: |
-      <h4>
-        <span class="glyphicon glyphicon-book text-muted"></span>
-        <a href="http://www.playframework.com/documentation/2.2.x/JavaEbean" target="play">Using Ebean Docs</a>
-      </h4>
-      <br>
-      <h3>File path: <code>app/controllers/Application.java</code></h3>
-    code: 
-      language: java
-      big: true
-      content: |
-        package controllers;
-
-        import play.*;
-        import play.libs.Json;
-        import play.mvc.*;
-
-        public class Application extends Controller {
-
-            public static Result getTodos() {
-                List<models.Todo> todos = models.Todo.find.findList();
-                return ok(Json.toJson(todos)).as("application/json");
-            }
-        }
-    notes: |
-      Other methods are described in documentation.
-
-  - id: play6
-    name: Play!
-    title: Creating Eclipse project
-    text: |
-      <h4>
-        <span class="glyphicon glyphicon-book text-muted"></span>
-        <a href="http://www.playframework.com/documentation/2.2.x/IDE" target="play">Setting up your preferred IDE</a>
-      </h4>
-      <br>
-      <h3>In console run:</h3>
-    code: 
-      language: generic
-      content: |
-        $ play "eclipse with-source=true"
-
-        // this should generate your Eclipse project that can be imported using:
-        // File -> Import -> General -> Existing project
-    microtasks:
-      - description: Write <code>ready</code> in editor when you are finished
-        hint: Just write it!
-        output: ready
-    notes: |
-      Other methods are described in documentation.
-    footer: |
-      <br>
-      <h2 class="checkbox">
-        <label>
-          <input type="checkbox" class="training-checkbox" data-training="play" style="width:25px;height:25px">
-          &nbsp; I would be interested in <span class="text-primary">Building Java Applications with Play! Framework</span> training
-        </label>
-      </h2>
-    script: *trainingStats
+  - id: connectjs
+    name: Connect.js
+    title: Connect.js
+  - id: expressjs
+    name: Express.js
+    title: Express.js
+  - id: expressjs2
+    name: Express.js
+    title: Express.js - API
 
   - id: task-rest
-    name: Task 7
+    name: Task 3
     title: "Task: Implement REST API in Java and use it for persistence"
     task:
       duration: 60
@@ -1095,7 +890,17 @@ slides:
       notes: |
         Tell that we don't want to allow overriding id. this is why we ensure in updateTodo method that id is the same.
         Instead of using todo.save() we can also use Ebean.save(todo)
-
+  - id: mongodb
+    name: MongoDB
+    title: MongoDB
+  - id: mongodb2
+    name: MongoDB
+    title: MongoDB and Express.js
+    
+  - id: task-mongo
+    name: Task 4
+    title: "Task: MongoDB and Express"
+    
   - id: demo-reference
     name: Demo (Vanilla)
     title: Vanilla.js implementation
@@ -1608,14 +1413,13 @@ slides:
   - id: demo-node1
     name: Demo (Node.js)
     title: Node.js + Mongo DB server implementation
-    left:
-      text: |
+    text: |
         <h4>
           <span class="glyphicon glyphicon-new-window text-muted"></span>
           <a href="http://expressjs.com/">Express.js - web application framework for node.js</a>
         </h4>
         <h4>File <code>app.js</code></h4>
-      code:
+    code:
         big: true
         hideOutput: true
         language: javascript-norun
@@ -1624,9 +1428,9 @@ slides:
           var routes = require('./routes');
           var http = require('http');
           var path = require('path');
-
+    
           var app = express();
-
+    
           // all environments
           app.set('port', process.env.PORT || 3000);
           app.set('views', path.join(__dirname, 'views'));
@@ -1638,16 +1442,15 @@ slides:
           app.use(express.methodOverride());
           app.use(app.router);
           app.use('/assets', express.static(path.join(__dirname, 'public')));
-
+    
           app.get ('/', routes.index);
           app.get ('/todos', routes.getTodos);
           app.post('/todos', routes.createTodo);
           app.put ('/todos/:id', routes.updateTodo);
-
+    
           http.createServer(app).listen(app.get('port'), function(){
             console.log('Express server listening on port ' + app.get('port'));
           });
-    right: *playRoutesCode
     notes: |
       Teaser about Server-Side JS.
       - You can reuse whole know-how from client side. 
@@ -1727,7 +1530,20 @@ slides:
       Tell something about Mongo.DB - JSON document store.
       Make sure that everyone knows that it is Node.js and Express framework.
 
-    # TASK: some task here?
+  - id: websockets
+    name: WebSockets
+    title: WebSockets
+    
+  - id: websockets2
+    name: WebSockets
+    title: Socket.io
+    
+  - id: task-sockets
+    name: Task 5
+    title: "Task: Socket.io integration"
+    task:
+        duration: 10
+    
 
   - id: comparison
     name: Comparison
@@ -1826,7 +1642,7 @@ slides:
       Tell that there are plenty of such strange behaviour examples on wtfjs
 
   - id: task-survey
-    name: Task 9
+    name: Task 6
     title: "Task: Complete the survey"
     text: |
       <h2>
