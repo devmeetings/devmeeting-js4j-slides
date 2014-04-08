@@ -11,7 +11,7 @@ slides:
             Hello <span class="user-name"></span>!
           </h3>
           <h2>
-            <a href="http://devmeetings.pl"><img src="http://blacksoft.eu/files/devmeetings_240.png"></a>
+            <a href="http://devmeetings.pl"><img src="http://devmeetings.pl/assets/logo-18db74aab9d40e85fddffe7608edd756.jpg"></a>
             rocks!
           </h2>
       code:
@@ -35,9 +35,8 @@ slides:
     notes: |
       What will we learn today:
         - Advanced JS
-        - Introduction to Play! Framework 
+        - Introduction to Express.js
         - Teasers for other features:
-          - ServerSide JS
           - JS Frameworks
           - Even more advanced JS
     script: &trainingStats |
@@ -53,37 +52,13 @@ slides:
           url: 'http://todr.me:3002/trainings',
           data: {
             user: username,
-            currentTraining: 'js4j',
+            currentTraining: 'js4j-p2',
             training: training,
             isGoing: state
           }
         });
       });
       $checkbox.attr('checked', !!localStorage.getItem('training-'+training));
-
-
-  - id: setup
-    name: Environment
-    text: |
-        <h2>By now you should have following software installed.</h2>
-        <h3>
-          <span class="glyphicon glyphicon-ok text-success"></span>
-          GIT
-        </h3>
-        <h3>
-          <span class="glyphicon glyphicon-ok text-success"></span>
-          Play! Framework
-        </h3>
-        <h3>
-          <span class="glyphicon glyphicon-ok text-success"></span>
-          Sublime Text
-        </h3>
-        <h3>
-          <span class="glyphicon glyphicon-ok text-success"></span>
-          Eclipse
-        </h3>
-        <br>
-        <h4 class="text-muted">If you are missing something approach me during break</h4>
 
   - id: run
     name: Run
@@ -128,8 +103,8 @@ slides:
         var ready = false;
 
  # TODO: small reminder about JS
-  - id: js-remainder
-    name: JS Remainder
+  - id: js-reminder
+    name: JS Reminder
     title: JavaScript - Quick reminder
     microtasks:
       - description: Change selector of <code>$todosContainer</code> to it's <code>id</code> attribute
@@ -172,7 +147,7 @@ slides:
 
           var $todosContainer = document.querySelector('.todos');
           $todos.map($todosContainer.appendChild.bind($todosContainer));
-      html: |
+      html: &htmlTodos |
           <!DOCTYPE html>
           <html lang="en">
             <head>
@@ -188,7 +163,79 @@ slides:
               <script src="js/bootstrap.js"></script>
             </body>
           </html>
-
+  - id: task-js
+    name: Task 1
+    title: Task - Facebook stream
+    task:
+        duration: 40
+        objectives:
+            - Display stream of posts using DOM elements
+            - Add <span class="glyphicon glyphicon-thumbs-up"></span> Like support
+        extras:
+            - Adding new posts
+            - Comments support
+        solution:
+            fiddle:
+                big: true
+                active: js
+                html: *htmlTodos
+                js: |
+                    var element = function(tag) {
+                      var data = tag.split('.');
+                      var e = document.createElement(data[0]);
+                      e.className = data.slice(1).join(' ');
+                      return e;
+                    };
+                    var text = function(t) {
+                        return document.createTextNode(t);
+                    };
+                    var appendTo = function($to) {
+                        return function(/* args */) {
+                            [].slice.call(arguments).filter(function(el){
+                                return el instanceof Node;
+                            }).map($to.appendChild.bind($to));
+                            return $to;
+                        };
+                    };
+                    
+                    var todos= [
+                      { title: "Completed first part of JS4J", likes: 0, comments: [{
+                             title: "First comment",
+                             likes: 10
+                      }]}, 
+                      { title: "Completed second part of JS4J", likes: 20, comments: [] }
+                    ];
+                    
+                    var $todos = todos.map(function createPost(post) {
+                        var $todo = element('div.well');
+                    
+                        var $like = element('a.pull-right');
+                        $like.href = "#";
+                        $like.addEventListener('click', function() {
+                           post.likes++;
+                           $value.innerHTML = post.likes;
+                        });
+                        
+                        var $value = element('span.badge');
+                        $value.innerHTML = post.likes;
+                        
+                        var $icon = element('span.glyphicon.glyphicon-thumbs-up');
+                        
+                        appendTo($like)($icon, text(' '), $value);
+                        appendTo($todo)($like, text(post.title));
+                        
+                        if (post.comments && post.comments.length) {
+                            var $subcomments = element('div');
+                            appendTo($todo)(element('hr'), $subcomments);
+                        
+                            post.comments.map(createPost).map(appendTo($subcomments));
+                        }
+                        return $todo;
+                    });
+                    
+                    var $todosContainer = document.querySelector('.todos');
+                    $todos.map(appendTo($todosContainer));
+    
   - id: contexts1
     name: Contexts
     title: Reusability of methods
@@ -461,7 +508,7 @@ slides:
       // And show that we break two different contexts.
 
   - id: task-contexts
-    name: Task 6
+    name: Task 2
     title: "Task: Event Bus"
     code:
       hideOutput: true
