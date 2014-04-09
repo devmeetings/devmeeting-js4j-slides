@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Jasmine Spec Runner</title>
+
+  <link rel="shortcut icon" type="image/png" href="components/jasmine/images/jasmine_favicon.png">
+  <link rel="stylesheet" type="text/css" href="components/jasmine/lib/jasmine-core/jasmine.css">
+
+  <script type="text/javascript" src="components/jasmine/lib/jasmine-core/jasmine.js"></script>
+  <script type="text/javascript" src="components/jasmine/lib/jasmine-core/jasmine-html.js"></script>
+  <script type="text/javascript" src="components/jasmine/lib/jasmine-core/boot.js"></script>
+  <script type="text/javascript" src="components/jquery/jquery.js"></script>
+  <script type="text/javascript">
+        var UploadingReporter = function() {
+            this.suites = {};
+        };
+        UploadingReporter.prototype = {
+            specDone: function(report) {
+                if (report.status !== 'disabled') {
+                    this.suites[report.id] = report.status === "passed";
+                }
+            },
+            jasmineDone: function() {
+                var name = window.localStorage.getItem('runnerName');
+                $.ajax({
+                    method: 'post',
+                    url: 'http://todr.me:3002/report',
+                    data: {
+                        name: name,
+                        data: this.suites
+                    }
+                });
+            }
+        };
+        jasmine.getEnv().addReporter(new UploadingReporter());
+  </script>
+  
+
+  <!-- include source files here... -->
+  <script type="text/javascript" src="eventBus.js"></script>
+</head>
+<body>
+
+    <script type="text/javascript">
+        (function(){
+            var isEmpty = function(e) {
+                return e === null || e === '';
+            };
+            if (isEmpty(window.localStorage.getItem('runnerName'))) {
+                var runnerName = null;
+                while (isEmpty(runnerName)) {
+                    runnerName = window.prompt("Please enter your name.");
+                }
+                window.localStorage.setItem('runnerName', runnerName);
+            }
+        }());
+
+        describe("EventBus", function() {
+            describe("Basics", function() {
+                it('should export "EventBus" variable', function() {
+                    expect(EventBus).toEqual(jasmine.any(Object));
+                })
+                it('should have methods "listenTo" and "trigger"', function() {
+                    expect(EventBus.listenTo).toEqual(jasmine.any(Function));
+                    expect(EventBus.trigger).toEqual(jasmine.any(Function));
+                });
+            });
+            describe("Events", function() {
+                var spy = null;
+                var spy2 = null;
+
+                beforeEach(function() {
+                    spy = jasmine.createSpy('listener1');
+                    spy2 = jasmine.createSpy('listener2');
+                });
+
+                describe("Edge Cases", function() {
+                    it('should not accept empty listener', function() {
+                        // given
+                        
+                        // when
+
+                        // then
+                        expect(function(){
+                            EventBus.listenTo('something');
+                        }).toThrow();
+                    });
+
+                    it('should not accept empty eventName', function() {
+                        // given
+                        
+                        // when
+
+                        // then
+                        expect(function(){
+                            EventBus.listenTo();
+                        }).toThrow();
+                    });
+                });
+
+                describe("Triggering", function() {
+                    it('should trigger registered listener for specified eventName', function() {
+                        // given
+                        EventBus.listenTo('something', spy);
+                        EventBus.listenTo('s2', spy2);
+
+                        // when
+                        EventBus.trigger('something');
+
+                        // then
+                        expect(spy).toHaveBeenCalled();
+                        expect(spy.calls.count()).toEqual(1);
+                        expect(spy2).not.toHaveBeenCalled();
+                    });
+
+                    it('should trigger multiple listeners for eventName', function() {
+                        // given
+                        EventBus.listenTo('something', spy);
+                        EventBus.listenTo('something', spy2);
+
+                        // when
+                        EventBus.trigger('something');
+
+                        // then
+                        expect(spy).toHaveBeenCalled();
+                        expect(spy.calls.count()).toEqual(1);
+                        expect(spy2).toHaveBeenCalled();
+                        expect(spy2.calls.count()).toEqual(1);
+                    });
+
+                    it('should trigger in specified context', function() {
+                        // given
+                        var ctx = {};
+                        EventBus.listenTo('something', spy);
+                        EventBus.listenTo('something', spy2, ctx);
+
+                        // when
+                        EventBus.trigger('something');
+
+                        // then
+                        expect(spy).toHaveBeenCalled();
+                        expect(spy2).toHaveBeenCalled();
+
+                        expect(spy.calls.first().object).toBe(window);
+                        expect(spy2.calls.first().object).toBe(ctx);
+                    });
+                });
+
+                describe("Triggering with Arguments", function() {
+                    var spy = null;
+
+                    beforeEach(function() {
+                        spy = jasmine.createSpy("argumentListener");
+                    });
+
+                    it('should pass first argument to listener', function() {
+                        // given
+                        var obj = "asdfasdf";
+                        EventBus.listenTo('sth', spy);
+
+                        // when
+                        EventBus.trigger('sth', obj);
+
+                        // then
+                        expect(spy).toHaveBeenCalledWith(obj);
+                    });
+
+                    it('should pass all arguments to listener', function() {
+                        // given
+                        var arg1 = "asdfasdf";
+                        var arg2 = 5;
+                        var arg3 = function() {
+
+                        };
+                        var arg4 = null;
+
+                        EventBus.listenTo('sth', spy);
+
+                        // when
+                        EventBus.trigger('sth', arg1, arg2, arg3, arg4);
+
+                        // then
+                        expect(spy).toHaveBeenCalledWith(arg1, arg2, arg3, arg4); 
+                    });
+                });
+
+                describe("Extras", function() {
+                    it('should accept only functions as listeners', function(){
+                        var methodMock = {
+                            call: function() {
+
+                            }
+                        };
+
+                        expect(function() {
+                            EventBus.listenTo('sth', methodMock);
+                        }).toThrow();
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
