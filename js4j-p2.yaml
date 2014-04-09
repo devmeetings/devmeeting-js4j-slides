@@ -816,91 +816,233 @@ slides:
       jQuery automagically switches to JSONp; it uses a different mechanism (explain if there are questions)
 
       Say something about promises and how do they work.
+  - id: nodejs
+    name: Node.js
+    title: Node.js - <code>http</code> module
 
+    code:
+      hideOutput: false
+      language: express
+      run: false
+      big: true
+      content: |
+        var http = require('http');
+
+        var server = http.createServer(function (req, res) {
+          res.end("Hello world");
+        });
+
+        server.listen(process.env.PORT || 3000, function(){
+            console.log("Running on " + process.env.PORT);
+        });
+    iframe: true
   - id: connectjs
     name: Connect.js
     title: Connect.js
+    text: |
+      <h2 class="text-muted">
+        <a href="http://www.senchalabs.org/connect/">Connect</a> is a middleware framework for node.
+      </h2>
+
+    code:
+      hideOutput: false
+      language: express
+      run: false
+      big: true
+      content: |
+        var http = require('http'),
+            connect = require('connect');
+
+        var app = connect()
+        .use(connect.logger('dev'))
+        .use(function(req, res) {
+          res.end("Hello World!");
+        });
+
+        http.createServer(app).listen(process.env.PORT || 3000, function(){
+            console.log("Listening on " + (process.env.PORT || 3000));
+        });
+    iframe: true
+  - id: connectjs2
+    name: Connect.js
+    title: Connect.js - Middleware?
+    text: |
+      <h2 class="text-muted">
+        WTF is middleware?
+      </h2>
+
+    code:
+      hideOutput: false
+      language: express
+      run: false
+      big: true
+      content: |
+        var http = require('http'),
+            connect = require('connect');
+
+        var app = connect()
+        .use(function(req, res, next){
+          if (Math.random() < 0.5) {
+            next();
+          } else {
+            res.end("Busted!");
+          }
+        })
+        .use(function(req, res) {
+          res.end("Hello World!");
+        });
+
+        http.createServer(app).listen(process.env.PORT || 3000, function(){
+            console.log("Listening on " + (process.env.PORT || 3000));
+        });
+    iframe: true
   - id: expressjs
     name: Express.js
     title: Express.js
-  - id: expressjs2
+    text: |
+      <h2 class="text-muted">
+        <a href="http://expressjs.com/">Express</a> - web application framework for node
+      </h2>
+    code:
+      hideOutput: false
+      language: express
+      run: false
+      big: true
+      content: |
+        var express = require('express'), 
+            http = require('http'), path = require('path');
+
+        var app = express();
+        app.set('port', process.env.PORT || 3000);
+        app.set('views', path.join(__dirname, 'views'));
+        app.set('view engine', 'jade');
+        app.use(app.router);
+
+        app.get('/', function(req, res) {
+            res.send("Hello world!");
+        });
+
+        http.createServer(app).listen(app.get('port'), function(){
+            console.log('Express server listening on port ' + app.get('port'));
+        });
+    iframe: true
+  - id: expressjs-app
+    name: Express.js
+    title: Express.js - Full app
+    code:
+      hideOutput: false
+      language: express
+      run: false
+      big: true
+      content: |
+        var express = require('express'), 
+            http = require('http'), path = require('path');
+
+        var app = express();
+        app.set('port', process.env.PORT || 3000);
+        app.set('views', path.join(__dirname, 'views'));
+        app.set('view engine', 'jade');
+        app.use(express.favicon());
+        app.use(express.logger('dev'));
+        app.use(express.json());
+        app.use(express.urlencoded());
+        app.use(express.methodOverride());
+        app.use(express.cookieParser('your secret here'));
+        app.use(express.session());
+        app.use(express.bodyParser());
+        app.use(app.router);
+        app.use(express.static(path.join(__dirname, 'public')));
+
+        app.get('/', function(req, res) {
+            res.send("Hello world!");
+        });
+
+        http.createServer(app).listen(app.get('port'), function(){
+            console.log('Express server listening on port ' + app.get('port'));
+        });
+    iframe: true
+  - id: expressjs-api
     name: Express.js
     title: Express.js - API
+    code:
+      hideOutput: false
+      language: express
+      run: false
+      big: true
+      content: |
+        var express = require('express'), 
+            http = require('http'), path = require('path');
+
+        var app = express();
+        app.set('port', process.env.PORT || 3000);
+        app.set('views', path.join(__dirname, 'views'));
+        app.set('view engine', 'jade');
+        app.use(app.router);
+
+        var model = {
+          a: 5
+        };
+        app.get('/', function(req, res) {
+            res.header('Access-Control-Allow-Origin', '*');
+            res.send(model);
+        });
+
+        http.createServer(app).listen(app.get('port'), function(){
+            console.log('Express server listening on port ' + app.get('port'));
+        });
+    iframe: true
 
   - id: task-rest
     name: Task 3
-    title: "Task: Implement REST API in Java and use it for persistence"
+    title: "Task: Implement REST API in Express.js and use it for persistence"
     task:
       duration: 60
       objectives:
-        - Implement simplified REST API for Todos (Get list, Replace list)
-        - Add persistence to Todos application using created REST API.
+        - Implement simplified REST API for Todos or Facebook Stream (Get list, Replace list)
+        - Consume API in your app
       extras:
-        - Implement and use full REST API for Todos (Get list, Get Single, Update, Create, Delete)
+        - Implement and use full REST API for Todos or Facebook Stream (Get list, Get Single, Update, Create, Delete)
       solution:
         name: REST API - Solution
         title: REST API
-        code: &playRestCode
-          language: java
+        code:
+          hideOutput: false
+          language: express
+          run: false
           big: true
           content: |
-            package controllers;
+            var express = require('express'), 
+                http = require('http'), path = require('path');
 
-            import java.util.List;
-            import com.avaje.ebean.Ebean;
-            import com.fasterxml.jackson.databind.JsonNode;
-            import play.libs.Json;
-            import play.mvc.*;
-            import views.html.*;
+            var app = express();
+            app.set('port', process.env.PORT || 3000);
+            app.set('views', path.join(__dirname, 'views'));
+            app.set('view engine', 'jade');
+            app.use(express.json());
+            app.use(app.router);
+            app.use(function(req, res, next){
+              res.header('Access-Control-Allow-Origin', '*');
+              next();
+            });
 
-            public class Application extends Controller {
+            var todos = ['Hello world!'];
+            app.get('/todos', function(req, res) {
+                res.send(todos);
+            });
+            app.put('/todos', function(req, res){
+                todos = req.body;
+                res.send(todos);
+            });
+            app.post('/todos', function(req, res){
+                todos.push(req.body);
+                res.send(todos);
+            });
 
-              public static Result getTodos() {
-                List<models.Todo> todos = models.Todo.find.findList();
-                return okJsonResponse(todos);
-              }
+            http.createServer(app).listen(app.get('port'), function(){
+                console.log('Express server listening on port ' + app.get('port'));
+            });
+        iframe: true
 
-              public static Result createTodo() {
-                models.Todo todo = readTodo();
-                //add the new one
-                Ebean.save(todo);
-
-                return okJsonResponse(todo);
-              }
-
-              public static Result updateTodo(Long id) {
-                models.Todo todo = readTodo();
-                todo.id = id;
-
-                todo.update();
-
-                return okJsonResponse(todo);
-              }
-
-              private static models.Todo readTodo() {
-                JsonNode jsonNode = request().body().asJson();
-                models.Todo todo = Json.fromJson(jsonNode, models.Todo.class);
-                return todo;
-              }
-
-              private static Result okJsonResponse(Object o) {
-                return ok(Json.toJson(o)).as("application/json");
-              }
-            }
-      notes: |
-        Tell that we don't want to allow overriding id. this is why we ensure in updateTodo method that id is the same.
-        Instead of using todo.save() we can also use Ebean.save(todo)
-  - id: mongodb
-    name: MongoDB
-    title: MongoDB
-  - id: mongodb2
-    name: MongoDB
-    title: MongoDB and Express.js
-    
-  - id: task-mongo
-    name: Task 4
-    title: "Task: MongoDB and Express"
-    
   - id: demo-reference
     name: Demo (Vanilla)
     title: Vanilla.js implementation
@@ -1428,9 +1570,9 @@ slides:
           var routes = require('./routes');
           var http = require('http');
           var path = require('path');
-    
+
           var app = express();
-    
+
           // all environments
           app.set('port', process.env.PORT || 3000);
           app.set('views', path.join(__dirname, 'views'));
@@ -1442,7 +1584,7 @@ slides:
           app.use(express.methodOverride());
           app.use(app.router);
           app.use('/assets', express.static(path.join(__dirname, 'public')));
-    
+
           app.get ('/', routes.index);
           app.get ('/todos', routes.getTodos);
           app.post('/todos', routes.createTodo);
@@ -1475,57 +1617,52 @@ slides:
           </label>
         </h2>
     script: *trainingStats
-    left:
-      text: |
-        <h4>
-          <span class="glyphicon glyphicon-new-window text-muted"></span>
-          <a href="http://expressjs.com/">Express.js - web application framework for node.js</a>
-        </h4>
-        <h4>File <code>routes/index.js</code></h4>
-      code:
-        big: true
-        hideOutput: true
-        language: javascript-norun
-        content: |
-            var MongoClient = require('mongodb').MongoClient;
-            // Connect to the db
-            var mongoTodos = null;
-            MongoClient.connect("mongodb://localhost:27017/todos", function(err, db) {
-                if (err) { throw err; }
-                mongoTodos = db.collection('todos');
-            });
+    text: |
+      <h4>
+        <span class="glyphicon glyphicon-new-window text-muted"></span>
+        <a href="http://expressjs.com/">Express.js - web application framework for node.js</a>
+      </h4>
+      <h4>File <code>routes/index.js</code></h4>
+    code:
+      big: true
+      hideOutput: true
+      language: javascript-norun
+      content: |
+          var MongoClient = require('mongodb').MongoClient;
+          // Connect to the db
+          var mongoTodos = null;
+          MongoClient.connect("mongodb://localhost:27017/todos", function(err, db) {
+              if (err) { throw err; }
+              mongoTodos = db.collection('todos');
+          });
 
-            exports.index = function(req, res){
-              res.render('index');
-            };
+          exports.index = function(req, res){
+            res.render('index');
+          };
 
-            exports.getTodos = function(req, res) {
-                mongoTodos.find().toArray(function(err, todos){
-                    res.send(todos);
-                });
-            };
+          exports.getTodos = function(req, res) {
+              mongoTodos.find().toArray(function(err, todos){
+                  res.send(todos);
+              });
+          };
 
-            exports.createTodo = function(req, res) {
-                var todo = req.body;
-                mongoTodos.insert(todo, {w:1}, function(err, result) {
-                    res.send(result[0]);
-                });
-            };
+          exports.createTodo = function(req, res) {
+              var todo = req.body;
+              mongoTodos.insert(todo, {w:1}, function(err, result) {
+                  res.send(result[0]);
+              });
+          };
 
-            exports.updateTodo = function(req, res) {
-                var todo = req.body;
-                var id = parseInt(req.params.id, 10);
-                todo._id = id;
-                mongoTodos.update({
-                    _id: id
-                }, todo, function(err, updatedTodo){
-                    res.send(updatedTodo[0]);
-                });
-            };
-    right:
-      text: |
-        <h4>&nbsp;</h4><h4>&nbsp;</h4>
-      code: *playRestCode
+          exports.updateTodo = function(req, res) {
+              var todo = req.body;
+              var id = parseInt(req.params.id, 10);
+              todo._id = id;
+              mongoTodos.update({
+                  _id: id
+              }, todo, function(err, updatedTodo){
+                  res.send(updatedTodo[0]);
+              });
+          };
     notes: |
       Tell something about Mongo.DB - JSON document store.
       Make sure that everyone knows that it is Node.js and Express framework.
@@ -1539,7 +1676,7 @@ slides:
     title: Socket.io
     
   - id: task-sockets
-    name: Task 5
+    name: Task 4
     title: "Task: Socket.io integration"
     task:
         duration: 10
@@ -1642,7 +1779,7 @@ slides:
       Tell that there are plenty of such strange behaviour examples on wtfjs
 
   - id: task-survey
-    name: Task 6
+    name: Task 5
     title: "Task: Complete the survey"
     text: |
       <h2>
