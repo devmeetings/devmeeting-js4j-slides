@@ -60,37 +60,9 @@ slides:
       });
       $checkbox.attr('checked', !!localStorage.getItem('training-'+training));
 
-  - id: run
-    name: Run
-    title: Clone project
-    text: |
-        <h3>Download or checkout project</h3>
-        <h5>
-          <span class="glyphicon glyphicon-saved text-muted"></span>
-          <a href="http://todr.me/files/devmeetings-js4j.zip">Download ZIP file with project</a>
-        </h5>
-    code:
-      language: generic
-      content: |
-        $ svn co https://svne1.access.nsn.com/isource/svnroot/NetEngDevCommons/javascript/devmeetings-js4j
-        # OR 
-        $ git svn clone https://svne1.access.nsn.com/isource/svnroot/NetEngDevCommons/javascript/devmeetings-js4j
-
-  - id: run2
-    name: Run
-    title: Run Forest, Run!
-    text: |
-        <h3>Invoke in console (in project directory):</h3>
-        <pre class="editor"><code>$ play run
-        [info] Loading project definition from /share/public_html/devmeetings/Todos/project
-        [info] Set current project to Todos (in build file:/share/public_html/devmeetings/Todos/)
-
-        --- (Running the application from SBT, auto-reloading is enabled) ---
-        [info] play - Listening for HTTP on /0:0:0:0:0:0:0:0:9000
-
-        (Server started, use Ctrl+D to stop and go back to the console...)
-        </code></pre>
-        <h3>Open <a href="http://localhost:9000" target="page">localhost:9000</a> <span class="glyphicon glyphicon-new-window text-muted"></span> </h3>
+  - id: ready
+    name: Ready
+    title: Ready?
     microtasks:
       - description: Say that you are ready!
         hint: Change value of <code>ready</code> to <code>true</code>
@@ -1864,8 +1836,14 @@ slides:
     text: |
       <h2>
       <span class="glyphicon glyphicon-export text-muted"></span>
-        <a href="http://bit.ly/js4java-nsn">
-          Training Survey
+        <a href="https://docs.google.com/forms/d/1UeSFfv86eyG7HPLAWA1bW7NLjYphWhgj7HX8Kwt6mVk/viewform">
+          Survey @ Devmeetings
+        </a>
+      </h2>
+      <h2>
+      <span class="glyphicon glyphicon-export text-muted"></span>
+        <a href="http://todr.me:5000">
+          Survey @ NSN
         </a>
       </h2>
     task:
