@@ -482,6 +482,12 @@ slides:
   - id: task-contexts
     name: Task 2
     title: "Task: Event Bus"
+    text: |
+        <h2>
+        <span class="text-success"><span class="glyphicon glyphicon-download"></span></span>
+        <a href="http://todr.me/wp-content/uploads/2014/04/eventBus.zip">EventBus tests</a>
+        </h2>
+        
     code:
       hideOutput: true
       big: true
