@@ -1744,7 +1744,7 @@ slides:
         <html>
         <head>
           <title>Socket.io</title>
-          <script src="http://todr.me:1550/socket.io/socket.io.js"></script>
+          <script src="http://todr.me:3020/socket.io/socket.io.js"></script>
         </head>
         <body>
         <h1>Number of clients: <span class="label label-primary clients"></span></h1>
