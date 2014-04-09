@@ -1669,18 +1669,98 @@ slides:
 
   - id: websockets
     name: WebSockets
-    title: WebSockets
+    title: Server Push
+    text: |
+      <div>
+        <h2>
+          <span class="text-success"><span class="glyphicon glyphicon-ok"></span></span>
+          Polling
+        </h2>
+        <h2>
+          <span class="text-success"><span class="glyphicon glyphicon-ok"></span></span>
+          Long polling
+        </h2>
+        <h2>
+          <span class="text-success"><span class="glyphicon glyphicon-ok"></span></span>
+          Pushlet
+        </h2>
+        <h2>
+          <span class="text-success"><span class="glyphicon glyphicon-ok"></span></span>
+          Websockets
+        </h2>
+      </div>
     
   - id: websockets2
     name: WebSockets
-    title: Socket.io
-    
+    title: Socket.io - Server
+    iframe: true
+    code:
+      big: true
+      language: express
+      content: |
+        var express = require('express'), 
+            http = require('http'), socketio = require('socket.io'),
+            path = require('path');
+
+        var app = express();
+        app.set('port', process.env.PORT || 3000);
+        app.set('views', path.join(__dirname, 'views'));
+        app.set('view engine', 'jade');
+        app.use(app.router);
+
+        var clients = 0;
+        app.get('/', function(req, res) {
+            res.send("Hello world. We have " + clients + " clients.");
+        });
+
+        var server = http.Server(app);
+        var io = socketio.listen(server);
+        io.on('connection', function(socket) {
+          clients++;
+
+          socket.broadcast.emit('clients', clients);
+          socket.emit('clients', clients);
+
+          socket.on('disconnect', function() {
+            clients--;
+          });
+        });
+
+        server.listen(app.get('port'), function() {
+            console.log('Express and Socket.IO server listening on port ' + app.get('port'));
+        });
+
+  - id: websockets3
+    name: WebSockets
+    title: Socket.io - Client
+    fiddle:
+      active: js
+      js: |
+          var socket = io.connect('http://todr.me:1550');
+          socket.on('clients', function (data) {
+            document.querySelector('.clients').innerHTML = data;
+          });
+      html: |
+        <html>
+        <head>
+          <title>Socket.io</title>
+          <script src="http://todr.me:1550/socket.io/socket.io.js"></script>
+        </head>
+        <body>
+        <h1>Number of clients: <span class="label label-primary clients"></span></h1>
+        </body>
+        </html>
+
   - id: task-sockets
     name: Task 4
     title: "Task: Socket.io integration"
     task:
-        duration: 10
-    
+        duration: 30
+        objectives:
+          - Add live updates to your application.
+        extras:
+          - Display number of users on page
+          - Create live chat
 
   - id: comparison
     name: Comparison
